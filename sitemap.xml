@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://pythonlamb.github.io/2021/04/21/yeshi1ceshi/</loc>
+    
+    <lastmod>2021-04-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://pythonlamb.github.io/%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/index.html</loc>
+    
+    <lastmod>2021-04-21</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://pythonlamb.github.io/2021/04/15/hello-world/</loc>
     
-    <lastmod>2021-04-19</lastmod>
+    <lastmod>2021-04-21</lastmod>
     
   </url>
   
@@ -18,11 +32,18 @@
 
   <url>
     <loc>http://pythonlamb.github.io/</loc>
-    <lastmod>2021-04-20</lastmod>
+    <lastmod>2021-08-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
+  
+  <url>
+    <loc>http://pythonlamb.github.io/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E7%AF%87/</loc>
+    <lastmod>2021-08-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
   
 
   

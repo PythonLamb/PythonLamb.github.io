@@ -6,7 +6,7 @@
   <link href="http://pythonlamb.github.io/atom.xml" rel="self"/>
   
   <link href="http://pythonlamb.github.io/"/>
-  <updated>2021-04-18T14:07:32.053Z</updated>
+  <updated>2021-04-21T09:20:43.619Z</updated>
   <id>http://pythonlamb.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>yeshi1ceshi</title>
+    <link href="http://pythonlamb.github.io/2021/04/21/yeshi1ceshi/"/>
+    <id>http://pythonlamb.github.io/2021/04/21/yeshi1ceshi/</id>
+    <published>2021-04-21T09:16:37.000Z</published>
+    <updated>2021-04-21T09:20:43.619Z</updated>
+    
+    <content type="html"><![CDATA[        <h1 id="测试代码"   >          <a href="#测试代码" class="heading-link"><i class="fas fa-link"></i></a><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h1>      <p><code>print(lalal)</code></p><p>第一个测试副标题</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">
+        &lt;h1 id=&quot;测试代码&quot;   &gt;
+          &lt;a href=&quot;#测试代码&quot; class=&quot;heading-link&quot;&gt;&lt;i class=&quot;fas fa-link&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;a href=&quot;#测试代码&quot; class=&quot;headerlink&quot; </summary>
+      
+    
+    
+    
+    
+    <category term="基础语法篇" scheme="http://pythonlamb.github.io/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E7%AF%87/"/>
+    
+  </entry>
   
   <entry>
     <title>这是第二篇测试文章</title>
@@ -34,7 +58,7 @@
     <link href="http://pythonlamb.github.io/2021/04/15/hello-world/"/>
     <id>http://pythonlamb.github.io/2021/04/15/hello-world/</id>
     <published>2021-04-15T13:44:50.878Z</published>
-    <updated>2021-04-19T12:39:15.752Z</updated>
+    <updated>2021-04-21T07:57:01.803Z</updated>
     
     <content type="html"><![CDATA[<p>你愁啥呢?这只是一篇测试文章哦<del>略略略</del></p>        <h2 id="第一个测试标题"   >          <a href="#第一个测试标题" class="heading-link"><i class="fas fa-link"></i></a><a href="#第一个测试标题" class="headerlink" title="第一个测试标题"></a>第一个测试标题</h2>              <h3 id="第一个测试副标题"   >          <a href="#第一个测试副标题" class="heading-link"><i class="fas fa-link"></i></a><a href="#第一个测试副标题" class="headerlink" title="第一个测试副标题"></a>第一个测试副标题</h3>      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></div></figure>]]></content>
     
