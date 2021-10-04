@@ -6,7 +6,7 @@
   <link href="http://pythonlamb.github.io/atom.xml" rel="self"/>
   
   <link href="http://pythonlamb.github.io/"/>
-  <updated>2021-04-21T09:20:43.619Z</updated>
+  <updated>2021-10-03T13:39:32.612Z</updated>
   <id>http://pythonlamb.github.io/</id>
   
   <author>
@@ -15,6 +15,56 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>最新最新</title>
+    <link href="http://pythonlamb.github.io/2021/10/03/%E6%9C%80%E6%96%B0%E6%9C%80%E6%96%B0/"/>
+    <id>http://pythonlamb.github.io/2021/10/03/%E6%9C%80%E6%96%B0%E6%9C%80%E6%96%B0/</id>
+    <published>2021-10-03T13:39:13.000Z</published>
+    <updated>2021-10-03T13:39:32.612Z</updated>
+    
+    <content type="html"><![CDATA[<p>啊实打实的赶时间</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;啊实打实的赶时间&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="测试" scheme="http://pythonlamb.github.io/categories/%E6%B5%8B%E8%AF%95/"/>
+    
+    
+    <category term="标签厕所" scheme="http://pythonlamb.github.io/tags/%E6%A0%87%E7%AD%BE%E5%8E%95%E6%89%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>最新测试文章</title>
+    <link href="http://pythonlamb.github.io/2021/10/03/%E6%9C%80%E6%96%B0%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
+    <id>http://pythonlamb.github.io/2021/10/03/%E6%9C%80%E6%96%B0%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</id>
+    <published>2021-10-03T13:10:59.000Z</published>
+    <updated>2021-10-03T13:21:55.285Z</updated>
+    
+    <content type="html"><![CDATA[<p>这是文章的内容哦~~~~</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;这是文章的内容哦~~~~&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="Python基础" scheme="http://pythonlamb.github.io/categories/Python%E5%9F%BA%E7%A1%80/"/>
+    
+    
+    <category term="Python基础" scheme="http://pythonlamb.github.io/tags/Python%E5%9F%BA%E7%A1%80/"/>
+    
+  </entry>
   
   <entry>
     <title>yeshi1ceshi</title>
