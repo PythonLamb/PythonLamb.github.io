@@ -1,0 +1,632 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="文章主讲内容：基于Scrapy框架的分布式爬虫实现原理【最后一期】">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫主流框架分享--Scrapy【第七期】">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/06/%E7%88%AC%E8%99%AB%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6%E5%88%86%E4%BA%AB-Scrapy%E3%80%90%E7%AC%AC%E4%B8%83%E6%9C%9F%E3%80%91/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="文章主讲内容：基于Scrapy框架的分布式爬虫实现原理【最后一期】">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171332912.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171350568.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171459467.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171822068.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171857400.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171846421.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172332046.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172346851.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172359181.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172410385.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172420826.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172436073.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172504392.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172527373.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172539335.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172555705.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172624833.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172632486.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172640031.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172701668.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172712393.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172837040.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006173157977.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006173212638.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006173235228.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006173250361.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006173307161.png">
+<meta property="article:published_time" content="2021-10-06T08:16:05.000Z">
+<meta property="article:modified_time" content="2021-10-06T09:34:21.667Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="爬虫主流框架">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171332912.png"><title>爬虫主流框架分享--Scrapy【第七期】 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/06/%E7%88%AC%E8%99%AB%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6%E5%88%86%E4%BA%AB-Scrapy%E3%80%90%E7%AC%AC%E4%B8%83%E6%9C%9F%E3%80%91/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://liuyib.github.io/tags/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tages/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-2/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-2/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-2/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-2/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-2/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://docs.python.org/3.9/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-tutorial.html"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://space.bilibili.com/407501987/favlist?fid=1003574487&amp;ftype=create"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://space.bilibili.com/407501987/favlist?fid=1003574487&amp;ftype=create"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://space.bilibili.com/407501987/favlist?fid=1003574487&amp;ftype=create"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" target="_blank" rel="noopener" href="http://localhost:4000/2021/04/21/yeshi1ceshi/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">爬虫主流框架分享--Scrapy【第七期】</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-06</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">13分</span></span></div></header><div class="post-body"><p><em>文章主讲内容：基于Scrapy框架的分布式爬虫实现原理【最后一期】</em></p>
+<span id="more"></span>
+
+
+
+        <h2 id="分布式爬虫的原理及基于scrapy怎么实现分布式爬虫"   >
+          <a href="#分布式爬虫的原理及基于scrapy怎么实现分布式爬虫" class="heading-link"><i class="fas fa-link"></i></a><a href="#分布式爬虫的原理及基于scrapy怎么实现分布式爬虫" class="headerlink" title="分布式爬虫的原理及基于scrapy怎么实现分布式爬虫"></a>分布式爬虫的原理及基于scrapy怎么实现分布式爬虫</h2>
+      
+        <h3 id="分布式爬虫的原理"   >
+          <a href="#分布式爬虫的原理" class="heading-link"><i class="fas fa-link"></i></a><a href="#分布式爬虫的原理" class="headerlink" title="分布式爬虫的原理"></a>分布式爬虫的原理</h3>
+      <p>分布式爬虫目的：多台服务器抓取一个爬虫项目，数据不重复，提高数据抓取速度和效率！</p>
+<p>原理：多台服务器共享一个 url 队列（redis集合），然后一起进行数据的抓取</p>
+<p>原理实现图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171332912.png"  alt="image-20211006171332912">
+      </p>
+<p>注意：多台服务器共享爬取队列是通过 scrapy_redis 模块创建的 redis 集合</p>
+<p>你问我答：三台服务器都部署相同的爬虫项目，也就拥有相同数量的的爬虫url地址（假设500），当三台服务器将所有的url都经过自身调度器交给redis创建的集合（全局url队列）之后，集合里面有多少个url地址呢？</p>
+<p>答：有500个url地址，因为redis的集合有去重功能，三个相同的爬虫项目，那每台服务器上面的url都是一样的啊</p>
+<p>内部流程图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171350568.png"  alt="image-20211006171350568">
+      </p>
+<p>注意：</p>
+<p>1：当url通过自身调度器进入到redis创建的集合中之后，redis会为这个url生成一个指纹（实现增量式爬虫以及url的去重机制）</p>
+<p>2：自身调度器将url从redis集合中取出来之后，全局url队列会记录哪台服务器取走了哪个url地址，这样多台服务器协同工作时就不会出现取走相同的url并且下载的情况，也就实现了分布式！</p>
+<p>3：假如公司有四台服务器，做分布式爬虫时，一般需要一台服务器进行url地址的管理！！</p>
+<p>4：负责管理url地址的那台服务器也可以进行数据的抓取！！！</p>
+
+        <h3 id="实现分布式爬虫："   >
+          <a href="#实现分布式爬虫：" class="heading-link"><i class="fas fa-link"></i></a><a href="#实现分布式爬虫：" class="headerlink" title="实现分布式爬虫："></a>实现分布式爬虫：</h3>
+      <p>实现原理：因为 scrapy 自身的调度器不支持分布式爬虫，因此我们需要重写 scrapy 框架的调度器从而实现分布式爬虫</p>
+<p>具体实现：</p>
+<p>1：安装 scrapy_redis模块（用作分布式爬虫的 url 全局共享队列）→ 也就是重写scrapy的调度器</p>
+<p>安装指令：</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install scrapy_redis</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>须知：为什么要用redis的集合充当分布式爬虫的全局url共享队列呢？</p>
+<p>答：因为redis是基于内存存储的，url的进与出较快，另一个原因就是 redis的集合有去重功能</p>
+<p>2：创建非分布式的 scrapy 爬虫</p>
+<p>3：在 settings.py 文件内设置一些参数即可</p>
+<p>4：多台服务器同时运行一个爬虫项目实现分布式</p>
+
+        <h2 id="创建分布式爬虫的具体步骤"   >
+          <a href="#创建分布式爬虫的具体步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#创建分布式爬虫的具体步骤" class="headerlink" title="创建分布式爬虫的具体步骤"></a>创建分布式爬虫的具体步骤</h2>
+      <p>第一步：按照非分布式爬虫的流程创建scrapy爬虫</p>
+<p>第二步：在settings.py文件内进行参数设置，将非分布式爬虫设置为分布式爬虫（具体参数设置看下面）</p>
+<p>第三步：在多台服务器上面同时运行相同的爬虫文件</p>
+
+        <h2 id="分布式爬虫在settings-py文件内怎么设置参数"   >
+          <a href="#分布式爬虫在settings-py文件内怎么设置参数" class="heading-link"><i class="fas fa-link"></i></a><a href="#分布式爬虫在settings-py文件内怎么设置参数" class="headerlink" title="分布式爬虫在settings.py文件内怎么设置参数"></a>分布式爬虫在settings.py文件内怎么设置参数</h2>
+      <p>参数设置：</p>
+<p>重新指定调度器（重写调度器）：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SCHEDULER = <span class="string">&quot;scrapy_redis.scheduler.Scheduler&quot;</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>重新指定去重机制：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DUPEFILTER_CLASS = <span class="string">&quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>是否清除url指纹（默认False是清除）：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SCHEDULER_PERSIST = <span class="literal">True</span>     </span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>解释：爬虫项目结束之后，是否将url指纹清空，不清空将url指纹存在redis数据库内<br>这个参数很重要常常用作爬虫的暂停、回复、断点续爬，最重要是可以实现增量式爬虫！！！</p>
+<p>设置 redis 管道：ITEM_PIPELINES = { ‘scrapy_redis.pipelines.RedisPipeline’: 优先级系数,}<br>解释：如果需要将爬取的数据存入到redis数据库内就直接设置这个项目管道即可存入，不存redis就不用设置        </p>
+<p>指定当前服务器连接到哪台服务器上面的redis数据库（连接充当url地址管理的那台服务器上面的redis）：</p>
+<p>REDIS_HOST = “IP地址”    【充当 url 地址管理的那台服务器的IP地址】<br>REDIS_PORT = 端口号   【redis 端口号是 6379】</p>
+<p>如果 redis 设置了密码就这样设置：  REDIS_URL = “redis：//user：密码@用户名：PORT”</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171459467.png"  alt="image-20211006171459467">
+      </p>
+
+        <h2 id="RedisDesktopManager的使用"   >
+          <a href="#RedisDesktopManager的使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#RedisDesktopManager的使用" class="headerlink" title="RedisDesktopManager的使用"></a>RedisDesktopManager的使用</h2>
+      
+        <h3 id="RedisDesktopManager-怎么连接-redis-数据库"   >
+          <a href="#RedisDesktopManager-怎么连接-redis-数据库" class="heading-link"><i class="fas fa-link"></i></a><a href="#RedisDesktopManager-怎么连接-redis-数据库" class="headerlink" title="RedisDesktopManager 怎么连接 redis 数据库"></a>RedisDesktopManager 怎么连接 redis 数据库</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171822068.png"  alt="image-20211006171822068">
+      </p>
+
+        <h3 id="RedisDesktopManager-怎么刷新-redis-数据库里面的数据"   >
+          <a href="#RedisDesktopManager-怎么刷新-redis-数据库里面的数据" class="heading-link"><i class="fas fa-link"></i></a><a href="#RedisDesktopManager-怎么刷新-redis-数据库里面的数据" class="headerlink" title="RedisDesktopManager 怎么刷新 redis 数据库里面的数据"></a>RedisDesktopManager 怎么刷新 redis 数据库里面的数据</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171857400.png"  alt="image-20211006171857400">
+      </p>
+
+        <h3 id="RedisDesktopManager-怎么查看数据库里面的数据等操作"   >
+          <a href="#RedisDesktopManager-怎么查看数据库里面的数据等操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#RedisDesktopManager-怎么查看数据库里面的数据等操作" class="headerlink" title="RedisDesktopManager 怎么查看数据库里面的数据等操作"></a>RedisDesktopManager 怎么查看数据库里面的数据等操作</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006171846421.png"  alt="image-20211006171846421">
+      </p>
+
+        <h2 id="分布式爬虫的实现【实操】"   >
+          <a href="#分布式爬虫的实现【实操】" class="heading-link"><i class="fas fa-link"></i></a><a href="#分布式爬虫的实现【实操】" class="headerlink" title="分布式爬虫的实现【实操】"></a>分布式爬虫的实现【实操】</h2>
+      
+        <h3 id="实现分布式爬虫前的准备"   >
+          <a href="#实现分布式爬虫前的准备" class="heading-link"><i class="fas fa-link"></i></a><a href="#实现分布式爬虫前的准备" class="headerlink" title="实现分布式爬虫前的准备"></a>实现分布式爬虫前的准备</h3>
+      <p>1：准备多台服务器【每台服务器上都安装了 redis数据库以及 scrapy 框架】</p>
+<p>2：确保多台服务器都可以远程连接 url 地址管理的那台服务器的 redis 数据库</p>
+<p>3：在任意一台服务器上可安装 RedisDesktopManager 图形化远程查看 redis 数据库内数据的变化</p>
+
+        <h3 id="怎么远程连接-redis-数据库"   >
+          <a href="#怎么远程连接-redis-数据库" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么远程连接-redis-数据库" class="headerlink" title="怎么远程连接 redis 数据库"></a>怎么远程连接 redis 数据库</h3>
+      <p>安装前注意事项：待连接数据库主机以及连接数据库主机上面都需要安装 redis 数据库</p>
+<p>远程连接指令： </p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h 待连接 redis 数据库的 IP 地址</span><br></pre></td></tr></table></div></figure>
+
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172332046.png"  alt="image-20211006172332046">
+      </p>
+
+        <h3 id="怎么解决服务器不能远程连接另外一台服务器的-redis-数据库"   >
+          <a href="#怎么解决服务器不能远程连接另外一台服务器的-redis-数据库" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么解决服务器不能远程连接另外一台服务器的-redis-数据库" class="headerlink" title="怎么解决服务器不能远程连接另外一台服务器的 redis 数据库"></a>怎么解决服务器不能远程连接另外一台服务器的 redis 数据库</h3>
+      <p>第一步：在待远程链接的服务器（ubuntu）上面打开 /etc/redis/redis.conf 这个文件【在主目录下打开】</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172346851.png"  alt="image-20211006172346851">
+      </p>
+<p>第二步：将 bind 127.0.0.1这段代码注释</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172359181.png"  alt="image-20211006172359181">
+      </p>
+<p>第三步：将保护模式关闭</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172410385.png"  alt="image-20211006172410385">
+      </p>
+<p>第四步：重启 redis 服务</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172420826.png"  alt="image-20211006172420826">
+      </p>
+<p>第五步：重新远程连接 redis 数据库</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172436073.png"  alt="image-20211006172436073">
+      </p>
+
+        <h3 id="创建分布式爬虫的步骤"   >
+          <a href="#创建分布式爬虫的步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#创建分布式爬虫的步骤" class="headerlink" title="创建分布式爬虫的步骤"></a>创建分布式爬虫的步骤</h3>
+      <p>第一步：利用 scrapy 创建非分布式爬虫</p>
+<p>第二步：更改 settings.py 文件内的数据将非分布式爬虫部署为分布式爬虫</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172504392.png"  alt="image-20211006172504392">
+      </p>
+<p>第三步：将 scrapy 写好的爬虫项目复制到其他几台服务器上面（其他几台服务器必须都安装 scrapy 框架以及 redis 数据库和 scrapy_redis）</p>
+<p>注意：多台服务器上面还要保证 python 的版本都要一致</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172527373.png"  alt="image-20211006172527373">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172539335.png"  alt="image-20211006172539335">
+      </p>
+<p>第四步：其他几台服务器一起【同时】运行这个爬虫项目即可实现分布式</p>
+<p>Ubuntu系统运行爬虫项目：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172555705.png"  alt="image-20211006172555705">
+      </p>
+<p>其他服务器【win】运行分布式爬虫文件</p>
+<p>第一步：进入爬虫项目文件夹</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172624833.png"  alt="image-20211006172624833">
+      </p>
+<p>第二步：进入爬虫项目文件夹后进入终端</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172632486.png"  alt="image-20211006172632486">
+      </p>
+<p>第三步：输入指令运行爬虫文件</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172640031.png"  alt="image-20211006172640031">
+      </p>
+<p>注意：多台服务器实现分布式爬虫每台服务器都需要安装 redis 数据库</p>
+
+        <h3 id="当分布式爬虫运行-充当-url-地址管理的那台服务器上面的-redis-数据库内都存放了什么数据！"   >
+          <a href="#当分布式爬虫运行-充当-url-地址管理的那台服务器上面的-redis-数据库内都存放了什么数据！" class="heading-link"><i class="fas fa-link"></i></a><a href="#当分布式爬虫运行-充当-url-地址管理的那台服务器上面的-redis-数据库内都存放了什么数据！" class="headerlink" title="当分布式爬虫运行 充当 url 地址管理的那台服务器上面的 redis 数据库内都存放了什么数据！"></a>当分布式爬虫运行 充当 url 地址管理的那台服务器上面的 redis 数据库内都存放了什么数据！</h3>
+      <p>1：数据存放在了那里？</p>
+<p>答：redis 数据库默认将数据存放至代号为 db0 那个数据库里面</p>
+<p>2：db0 数据库里面都存放了哪些数据？</p>
+<p>答：存放了 url 地址指纹、以及爬取的数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172701668.png"  alt="image-20211006172701668">
+      </p>
+
+        <h3 id="如何实现分布式增量式爬虫"   >
+          <a href="#如何实现分布式增量式爬虫" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何实现分布式增量式爬虫" class="headerlink" title="如何实现分布式增量式爬虫"></a>如何实现分布式增量式爬虫</h3>
+      <p>实现原理：在分布式爬虫程序结束之后，不清除 url 指纹，下载再次运行这个分布式爬虫即可实现增量式爬虫</p>
+<p>不清除指纹设置：在 settings.py 文件内设置 SCHEDULER_PERSIST 的参数值为 True 即不清除 url 指纹</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172712393.png"  alt="image-20211006172712393">
+      </p>
+
+        <h3 id="运行分布式爬虫出现的问题解决"   >
+          <a href="#运行分布式爬虫出现的问题解决" class="heading-link"><i class="fas fa-link"></i></a><a href="#运行分布式爬虫出现的问题解决" class="headerlink" title="运行分布式爬虫出现的问题解决"></a>运行分布式爬虫出现的问题解决</h3>
+      <p>出现的问题：在多台服务器同时运行同一个爬虫项目，因为 python 版本的不同会出现 builtins.ValueError 这种错误！</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006172837040.png"  alt="image-20211006172837040">
+      </p>
+<p>问题解决：将所有爬虫服务器上面的 python 版本都设为一致【具体操作请看 python 怎么卸载和升级】</p>
+
+        <h2 id="redis-key部署分布式爬虫"   >
+          <a href="#redis-key部署分布式爬虫" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis-key部署分布式爬虫" class="headerlink" title="redis_key部署分布式爬虫"></a>redis_key部署分布式爬虫</h2>
+      
+        <h3 id="redis-key-部署分布式爬虫与上面正常部署分布式爬虫相比有哪些不同"   >
+          <a href="#redis-key-部署分布式爬虫与上面正常部署分布式爬虫相比有哪些不同" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis-key-部署分布式爬虫与上面正常部署分布式爬虫相比有哪些不同" class="headerlink" title="redis_key 部署分布式爬虫与上面正常部署分布式爬虫相比有哪些不同?"></a>redis_key 部署分布式爬虫与上面正常部署分布式爬虫相比有哪些不同?</h3>
+      <p>不同点：正常分布式爬虫多台主机同时运行后就开始数据的抓取了，redis_key 部署的分布式爬虫多台主机同时运行后不开始数据的抓取而是同时监听 6023 端口 等待在 redis 数据库命令行内压入初始 url 地址多台主机才同时进行数据的抓取，这样更好的控制多台主机的同步性</p>
+
+        <h3 id="redis-key-部署分布式爬虫的具体步骤"   >
+          <a href="#redis-key-部署分布式爬虫的具体步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis-key-部署分布式爬虫的具体步骤" class="headerlink" title="redis_key 部署分布式爬虫的具体步骤"></a>redis_key 部署分布式爬虫的具体步骤</h3>
+      <p>第一步：正常创建一个分布式爬虫【非分布式爬虫 → 设置 settings.py文件变成分布式爬虫】</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006173157977.png"  alt="image-20211006173157977">
+      </p>
+<p>第二步：在真的爬虫文件内导入 RdeisSpider 类，并且真的爬虫类继承这个类后，注释掉 start_urls 这段代码并设置 redis_key 的参数值</p>
+<p>导入模块语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy_redis.spiders <span class="keyword">import</span> RedisSpider</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006173212638.png"  alt="image-20211006173212638">
+      </p>
+<p>第三步：多台服务器同时运行部署的分布式爬虫</p>
+<p>windows服务器运行redis_key创建好的爬虫</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006173235228.png"  alt="image-20211006173235228">
+      </p>
+<p>ubuntu服务器运行redis_key创建好的爬虫</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006173250361.png"  alt="image-20211006173250361">
+      </p>
+<p>第四步：进入充当 url 地址管理的那台服务器的 redis 数据库内【命令行】并压入初始 url 地址实现多台主机同时抓取数据</p>
+<p>压入初始 url 指令：LPUSH  设置的redis_key值  初始的url地址</p>
+<p>注意：初始 url 地址就是注释的 start_urls 的 url 值</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006173307161.png"  alt="image-20211006173307161">
+      </p>
+
+        <h3 id="redis-key-部署分布式爬虫的缺点以及怎么解决这个缺点"   >
+          <a href="#redis-key-部署分布式爬虫的缺点以及怎么解决这个缺点" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis-key-部署分布式爬虫的缺点以及怎么解决这个缺点" class="headerlink" title="redis_key 部署分布式爬虫的缺点以及怎么解决这个缺点"></a>redis_key 部署分布式爬虫的缺点以及怎么解决这个缺点</h3>
+      <p>缺点：redis_key 部署的分布式爬虫在数据抓取结束后程序不会终止</p>
+<p>解决办法：在 settings.py 文件内设置 CLOSESPIDER_TIMEOUT = 3600  【到了3600时间后程序会自动退出】</p>
+<p>持续更新中……</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/06/%E7%88%AC%E8%99%AB%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6%E5%88%86%E4%BA%AB-Scrapy%E3%80%90%E7%AC%AC%E4%B8%83%E6%9C%9F%E3%80%91/">http://pythonlamb.github.io/2021/10/06/%E7%88%AC%E8%99%AB%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6%E5%88%86%E4%BA%AB-Scrapy%E3%80%90%E7%AC%AC%E4%B8%83%E6%9C%9F%E3%80%91/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E7%88%AC%E8%99%AB%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6/">爬虫主流框架</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/06/%E7%88%AC%E8%99%AB%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6%E5%88%86%E4%BA%AB-Pyspider/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">爬虫主流框架分享--Pyspider</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/06/%E7%88%AC%E8%99%AB%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6%E5%88%86%E4%BA%AB-Scrapy%E3%80%90%E7%AC%AC%E5%85%AD%E6%9C%9F%E3%80%91/"><span class="paginator-prev__text">爬虫主流框架分享--Scrapy【第六期】</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E5%9F%BA%E4%BA%8Escrapy%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB"><span class="toc-number">1.</span> <span class="toc-text">
+          分布式爬虫的原理及基于scrapy怎么实现分布式爬虫</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">
+          分布式爬虫的原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">
+          实现分布式爬虫：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E7%9A%84%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">
+          创建分布式爬虫的具体步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E5%9C%A8settings-py%E6%96%87%E4%BB%B6%E5%86%85%E6%80%8E%E4%B9%88%E8%AE%BE%E7%BD%AE%E5%8F%82%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">
+          分布式爬虫在settings.py文件内怎么设置参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RedisDesktopManager%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">
+          RedisDesktopManager的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RedisDesktopManager-%E6%80%8E%E4%B9%88%E8%BF%9E%E6%8E%A5-redis-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">4.1.</span> <span class="toc-text">
+          RedisDesktopManager 怎么连接 redis 数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RedisDesktopManager-%E6%80%8E%E4%B9%88%E5%88%B7%E6%96%B0-redis-%E6%95%B0%E6%8D%AE%E5%BA%93%E9%87%8C%E9%9D%A2%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">4.2.</span> <span class="toc-text">
+          RedisDesktopManager 怎么刷新 redis 数据库里面的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RedisDesktopManager-%E6%80%8E%E4%B9%88%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E9%87%8C%E9%9D%A2%E7%9A%84%E6%95%B0%E6%8D%AE%E7%AD%89%E6%93%8D%E4%BD%9C"><span class="toc-number">4.3.</span> <span class="toc-text">
+          RedisDesktopManager 怎么查看数据库里面的数据等操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%90%E5%AE%9E%E6%93%8D%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          分布式爬虫的实现【实操】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E5%89%8D%E7%9A%84%E5%87%86%E5%A4%87"><span class="toc-number">5.1.</span> <span class="toc-text">
+          实现分布式爬虫前的准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5-redis-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">5.2.</span> <span class="toc-text">
+          怎么远程连接 redis 数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8D%E8%83%BD%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E5%8F%A6%E5%A4%96%E4%B8%80%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84-redis-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">5.3.</span> <span class="toc-text">
+          怎么解决服务器不能远程连接另外一台服务器的 redis 数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-number">5.4.</span> <span class="toc-text">
+          创建分布式爬虫的步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E8%BF%90%E8%A1%8C-%E5%85%85%E5%BD%93-url-%E5%9C%B0%E5%9D%80%E7%AE%A1%E7%90%86%E7%9A%84%E9%82%A3%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E9%9D%A2%E7%9A%84-redis-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E9%83%BD%E5%AD%98%E6%94%BE%E4%BA%86%E4%BB%80%E4%B9%88%E6%95%B0%E6%8D%AE%EF%BC%81"><span class="toc-number">5.5.</span> <span class="toc-text">
+          当分布式爬虫运行 充当 url 地址管理的那台服务器上面的 redis 数据库内都存放了什么数据！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E5%A2%9E%E9%87%8F%E5%BC%8F%E7%88%AC%E8%99%AB"><span class="toc-number">5.6.</span> <span class="toc-text">
+          如何实现分布式增量式爬虫</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="toc-number">5.7.</span> <span class="toc-text">
+          运行分布式爬虫出现的问题解决</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis-key%E9%83%A8%E7%BD%B2%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB"><span class="toc-number">6.</span> <span class="toc-text">
+          redis_key部署分布式爬虫</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#redis-key-%E9%83%A8%E7%BD%B2%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E4%B8%8E%E4%B8%8A%E9%9D%A2%E6%AD%A3%E5%B8%B8%E9%83%A8%E7%BD%B2%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E7%9B%B8%E6%AF%94%E6%9C%89%E5%93%AA%E4%BA%9B%E4%B8%8D%E5%90%8C"><span class="toc-number">6.1.</span> <span class="toc-text">
+          redis_key 部署分布式爬虫与上面正常部署分布式爬虫相比有哪些不同?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis-key-%E9%83%A8%E7%BD%B2%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E7%9A%84%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4"><span class="toc-number">6.2.</span> <span class="toc-text">
+          redis_key 部署分布式爬虫的具体步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis-key-%E9%83%A8%E7%BD%B2%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB%E7%9A%84%E7%BC%BA%E7%82%B9%E4%BB%A5%E5%8F%8A%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3%E8%BF%99%E4%B8%AA%E7%BC%BA%E7%82%B9"><span class="toc-number">6.3.</span> <span class="toc-text">
+          redis_key 部署分布式爬虫的缺点以及怎么解决这个缺点</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/lamb.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

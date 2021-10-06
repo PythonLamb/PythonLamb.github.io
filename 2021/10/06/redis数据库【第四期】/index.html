@@ -1,0 +1,472 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：数据持久化存储、redis数据库主从概念、设置redis主从集群等….">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis数据库【第四期】">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/06/redis%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%90%E7%AC%AC%E5%9B%9B%E6%9C%9F%E3%80%91/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：数据持久化存储、redis数据库主从概念、设置redis主从集群等….">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204550454.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204617006.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204629469.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204649334.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204748492.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204923811.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204938140.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204959531.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205024844.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205047105.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205059238.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205113157.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205125160.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205216956.png">
+<meta property="article:published_time" content="2021-10-06T12:37:51.000Z">
+<meta property="article:modified_time" content="2021-10-06T12:52:30.762Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="数据存储篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204550454.png"><title>redis数据库【第四期】 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/06/redis%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%90%E7%AC%AC%E5%9B%9B%E6%9C%9F%E3%80%91/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://liuyib.github.io/tags/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tages/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-2/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-2/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-2/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-2/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-2/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/xxx1-1/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://docs.python.org/3.9/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-tutorial.html"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://space.bilibili.com/407501987/favlist?fid=1003574487&amp;ftype=create"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://space.bilibili.com/407501987/favlist?fid=1003574487&amp;ftype=create"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" target="_blank" rel="noopener" href="https://space.bilibili.com/407501987/favlist?fid=1003574487&amp;ftype=create"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" target="_blank" rel="noopener" href="http://localhost:4000/2021/04/21/yeshi1ceshi/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">redis数据库【第四期】</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-06</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">1.1k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">5分</span></span></div></header><div class="post-body"><p><em>本文主讲：数据持久化存储、redis数据库主从概念、设置redis主从集群等….</em></p>
+<span id="more"></span>
+
+
+        <h2 id="redis数据持久化存储"   >
+          <a href="#redis数据持久化存储" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis数据持久化存储" class="headerlink" title="redis数据持久化存储"></a>redis数据持久化存储</h2>
+      
+        <h3 id="为什么要对-redis-数据进行持久化存储"   >
+          <a href="#为什么要对-redis-数据进行持久化存储" class="heading-link"><i class="fas fa-link"></i></a><a href="#为什么要对-redis-数据进行持久化存储" class="headerlink" title="为什么要对 redis 数据进行持久化存储"></a>为什么要对 redis 数据进行持久化存储</h3>
+      <p>答：因为 redis 数据库是通过内存进行数据的增删改查的，如果遇到突然断电的情况，存放在redis数据库里面的数据将会消失，这时就不得不考虑数据持久化了</p>
+
+        <h3 id="redis-进行数据持久化存储的两种方式"   >
+          <a href="#redis-进行数据持久化存储的两种方式" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis-进行数据持久化存储的两种方式" class="headerlink" title="redis 进行数据持久化存储的两种方式"></a>redis 进行数据持久化存储的两种方式</h3>
+      <p>第一种方式：快照存储</p>
+<p>存储指令：bgsave</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204550454.png"  alt="image-20211006204550454">
+      </p>
+<p>关于快照存储的一些设置：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204617006.png"  alt="image-20211006204617006">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204629469.png"  alt="image-20211006204629469">
+      </p>
+<p>注意：</p>
+<p>1：dump.rdb文件是通过保存数据的 key 和value 进行数据持久化存储的</p>
+<p>2：快照存储方式还是会造成一部分数据的丢失，因为如果在部分时间内没有超过快照持久化存储的条件，那么是不会快照存储数据的</p>
+<p>第二种方式：aof 持久化存储【实时存储】</p>
+<p>打开 aof 持久化存储</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204649334.png"  alt="image-20211006204649334">
+      </p>
+<p>注意：</p>
+<p>1：aof 持久化存储数据是通过把 redis 命令存放到 appendonly.aof 文件内</p>
+<p>2：在 redis4.0 版本之前如果开启了 aof 持久化存储，那么快照持久化存储就会失效</p>
+
+        <h3 id="redis-进行数据持久化存储的两种方式优缺点"   >
+          <a href="#redis-进行数据持久化存储的两种方式优缺点" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis-进行数据持久化存储的两种方式优缺点" class="headerlink" title="redis 进行数据持久化存储的两种方式优缺点"></a>redis 进行数据持久化存储的两种方式优缺点</h3>
+      <p>快照存储：</p>
+<p>优点：长期进行数据的持久化存储不会占用太多内存<br>缺点：在特殊情况下还是会造成数据的缺失【更改key的数量未超过时间阈值时断电】</p>
+<p>aof存储：</p>
+<p>优点：可以实时进行数据的存储<br>缺点：长期进行数据的持久化存储占用太多内存</p>
+
+        <h2 id="redis数据库主从概念"   >
+          <a href="#redis数据库主从概念" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis数据库主从概念" class="headerlink" title="redis数据库主从概念"></a>redis数据库主从概念</h2>
+      
+        <h3 id="单台-redis-主机数据库的优缺点"   >
+          <a href="#单台-redis-主机数据库的优缺点" class="heading-link"><i class="fas fa-link"></i></a><a href="#单台-redis-主机数据库的优缺点" class="headerlink" title="单台 redis 主机数据库的优缺点"></a>单台 redis 主机数据库的优缺点</h3>
+      <p>优点：部署容易，数据的操作【增、删、改】也容易</p>
+<p>缺点：数据量特别大的时候，读取和写入数据压力特别大</p>
+
+        <h3 id="为什么要为-redis-数据库设置主从【集群】"   >
+          <a href="#为什么要为-redis-数据库设置主从【集群】" class="heading-link"><i class="fas fa-link"></i></a><a href="#为什么要为-redis-数据库设置主从【集群】" class="headerlink" title="为什么要为 redis 数据库设置主从【集群】"></a>为什么要为 redis 数据库设置主从【集群】</h3>
+      <p>答：因为 redis 经常用作缓存【大量的读操作】，这样如果读取数据的压力很大的时候，单台 redis 服务器就不够看了，因此就要布置 redis 数据库的主从集群</p>
+
+        <h3 id="redis-数据库主从的实现"   >
+          <a href="#redis-数据库主从的实现" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis-数据库主从的实现" class="headerlink" title="redis 数据库主从的实现"></a>redis 数据库主从的实现</h3>
+      <p>实现：准备多台用于部署 redis 集群的服务器，一般是单数，设置其中一台为主服务器，另外的其他服务器设置为从服务器</p>
+<p>注意：为什么设置 redis 集群，服务器的数量时是单数，因为当集群中有一半的服务器不能用的时候，整个集群系统就不能用了，设置双数那么不是浪费服务器资源吗！</p>
+<p>redis数据库集群优点：</p>
+<p>1：提高可用性，一台服务器宕机，其他服务器也可以完成这个操作</p>
+<p>2：分散 redis 数据库大量操作的压力！</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204748492.png"  alt="image-20211006204748492">
+      </p>
+<p>注意：从服务器也可以进行写操作，但是 Redis 做缓存的时候，从服务器只执行读操作是最理想的</p>
+
+        <h2 id="设置redis主从集群"   >
+          <a href="#设置redis主从集群" class="heading-link"><i class="fas fa-link"></i></a><a href="#设置redis主从集群" class="headerlink" title="设置redis主从集群"></a>设置redis主从集群</h2>
+      
+        <h3 id="为多台-redis-服务器设置主从集群的步骤【主服务器与从服务器的设置】"   >
+          <a href="#为多台-redis-服务器设置主从集群的步骤【主服务器与从服务器的设置】" class="heading-link"><i class="fas fa-link"></i></a><a href="#为多台-redis-服务器设置主从集群的步骤【主服务器与从服务器的设置】" class="headerlink" title="为多台 redis 服务器设置主从集群的步骤【主服务器与从服务器的设置】"></a>为多台 redis 服务器设置主从集群的步骤【主服务器与从服务器的设置】</h3>
+      <p>第一步：准备多台装了一个版本的 redis 的服务器</p>
+<p>第二步：主服务器的配置【修改主服务器的 redis.conf 文件】</p>
+<p>配置可以远程连接</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204923811.png"  alt="image-20211006204923811">
+      </p>
+<p>设置主服务器的密码</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204938140.png"  alt="image-20211006204938140">
+      </p>
+<p>开启redis-server后台启动</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006204959531.png"  alt="image-20211006204959531">
+      </p>
+<p>配置完之后重启主服务器</p>
+<p>第三步：从服务器的配置【修改从服务器的 redis.conf 文件】</p>
+<p>配置可以远程连接</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205024844.png"  alt="image-20211006205024844">
+      </p>
+<p>开启 redis-server 后台启动</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205047105.png"  alt="image-20211006205047105">
+      </p>
+<p>设置从服务器连接哪台主服务器以及连接那台主服务器的密码</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205059238.png"  alt="image-20211006205059238">
+      </p>
+<p>设置从服务器的读写权限</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205113157.png"  alt="image-20211006205113157">
+      </p>
+<p>配置完之后重启所有的从服务器</p>
+<p>第四步：重新连接主服务器以及所有的从服务器</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205125160.png"  alt="image-20211006205125160">
+      </p>
+
+        <h3 id="设置完-redis-主从集群之后，怎么查看当前服务器是主服务器还是从服务器"   >
+          <a href="#设置完-redis-主从集群之后，怎么查看当前服务器是主服务器还是从服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#设置完-redis-主从集群之后，怎么查看当前服务器是主服务器还是从服务器" class="headerlink" title="设置完 redis 主从集群之后，怎么查看当前服务器是主服务器还是从服务器"></a>设置完 redis 主从集群之后，怎么查看当前服务器是主服务器还是从服务器</h3>
+      <p>第一步：连接待查看的 redis 数据库</p>
+<p>连接指令：redis-cli</p>
+<p>第二步：输入下面指令即可查看</p>
+<p>查看指令：info replications</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211006205216956.png"  alt="image-20211006205216956">
+      </p>
+<p>持续更新中……</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/06/redis%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%90%E7%AC%AC%E5%9B%9B%E6%9C%9F%E3%80%91/">http://pythonlamb.github.io/2021/10/06/redis%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%90%E7%AC%AC%E5%9B%9B%E6%9C%9F%E3%80%91/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%AF%87/">数据存储篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/06/redis%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%90%E7%AC%AC%E4%B8%89%E6%9C%9F%E3%80%91/"><span class="paginator-prev__text">redis数据库【第三期】</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8"><span class="toc-number">1.</span> <span class="toc-text">
+          redis数据持久化存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AF%B9-redis-%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8"><span class="toc-number">1.1.</span> <span class="toc-text">
+          为什么要对 redis 数据进行持久化存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis-%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">
+          redis 进行数据持久化存储的两种方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis-%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">1.3.</span> <span class="toc-text">
+          redis 进行数据持久化存储的两种方式优缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BB%E4%BB%8E%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">
+          redis数据库主从概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E5%8F%B0-redis-%E4%B8%BB%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">2.1.</span> <span class="toc-text">
+          单台 redis 主机数据库的优缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%B8%BA-redis-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E7%BD%AE%E4%B8%BB%E4%BB%8E%E3%80%90%E9%9B%86%E7%BE%A4%E3%80%91"><span class="toc-number">2.2.</span> <span class="toc-text">
+          为什么要为 redis 数据库设置主从【集群】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BB%E4%BB%8E%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.3.</span> <span class="toc-text">
+          redis 数据库主从的实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEredis%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4"><span class="toc-number">3.</span> <span class="toc-text">
+          设置redis主从集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E5%A4%9A%E5%8F%B0-redis-%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4%E7%9A%84%E6%AD%A5%E9%AA%A4%E3%80%90%E4%B8%BB%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8E%E4%BB%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E8%AE%BE%E7%BD%AE%E3%80%91"><span class="toc-number">3.1.</span> <span class="toc-text">
+          为多台 redis 服务器设置主从集群的步骤【主服务器与从服务器的设置】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%AE%8C-redis-%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4%E4%B9%8B%E5%90%8E%EF%BC%8C%E6%80%8E%E4%B9%88%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%98%AF%E4%B8%BB%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%98%E6%98%AF%E4%BB%8E%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">3.2.</span> <span class="toc-text">
+          设置完 redis 主从集群之后，怎么查看当前服务器是主服务器还是从服务器</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/lamb.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>
