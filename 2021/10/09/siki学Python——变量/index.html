@@ -1,0 +1,454 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：Python中有关于变量的知识！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="siki学Python——变量">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/09/siki%E5%AD%A6Python%E2%80%94%E2%80%94%E5%8F%98%E9%87%8F/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：Python中有关于变量的知识！">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009090650174.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009090723817.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009090739113.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009090756084.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009090808875.png">
+<meta property="article:published_time" content="2021-10-09T00:58:22.000Z">
+<meta property="article:modified_time" content="2021-10-09T03:28:35.355Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="Python基础语法篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009090650174.png"><title>siki学Python——变量 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/09/siki%E5%AD%A6Python%E2%80%94%E2%80%94%E5%8F%98%E9%87%8F/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">siki学Python——变量</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-09</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-09</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">1.3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">7分</span></span></div></header><div class="post-body"><p>本文主讲：Python中有关于变量的知识！</p>
+<span id="more"></span>
+
+
+
+
+        <h2 id="什么是变量？"   >
+          <a href="#什么是变量？" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是变量？" class="headerlink" title="什么是变量？"></a>什么是变量？</h2>
+      <p>在python中，为了代码的书写简便，常常用简单的字母串代替固定的代码，则这个简单的字母串就叫变量</p>
+<p>1：例如：mess = “Hello World“就代表以后需要出现Hello World的地方可以用mess代替，为了书写简便。</p>
+<p>print(“Hello World”) 就可以用 print（mess）代替了。</p>
+<p>2：变量也可以存放数字，例如mess=100  <strong>数字不需要加引号</strong></p>
+<p>3：变量命名规则，变量名称只能以单词、数字、下划线进行命名，且变量名开头不能为数字，变量名称不能和 python 关键词重名，例</p>
+<p>不能以 print 命名。</p>
+<p><strong>不可以用空格命名</strong></p>
+
+        <h2 id="什么是字符串变量？"   >
+          <a href="#什么是字符串变量？" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是字符串变量？" class="headerlink" title="什么是字符串变量？"></a>什么是字符串变量？</h2>
+      <p>字符串变量是用双引号或者单引号括起来的字符串</p>
+<p>例如“l love you”中的l love you就是字符串变量，当然也可以用单引号表示‘l love you’ 什么时候用单引号什么时候用双引号呢？当字符串变量内包含双引号时就要用单引号表示了。</p>
+<p>那如果字符串中既包含单引号又包含双引号呢怎么表示？<br>如 变量 M = “my name’s is YHQ” → 要这么表示‘“my name &#39;s is YHQ”’即在单引号前面加\就可忽略其单引号，\名称为转义字符</p>
+
+        <h2 id="字符串变量的title（）调用"   >
+          <a href="#字符串变量的title（）调用" class="heading-link"><i class="fas fa-link"></i></a><a href="#字符串变量的title（）调用" class="headerlink" title="字符串变量的title（）调用"></a>字符串变量的title（）调用</h2>
+      <p>M = “my name is yhq” M为变量</p>
+<p>Title（）使用格式：M.title( )</p>
+<p>Title( )有什么用：将字符串变量内每个单词的第一个字母进行大写即M.title( )代表“My Name Is Yhq”</p>
+
+        <h2 id="字符串变量upper（）作用"   >
+          <a href="#字符串变量upper（）作用" class="heading-link"><i class="fas fa-link"></i></a><a href="#字符串变量upper（）作用" class="headerlink" title="字符串变量upper（）作用"></a>字符串变量upper（）作用</h2>
+      <p>和 title（）作用类似，upper（）的作用为将字符串变量内所有的字母进行大写。</p>
+
+        <h2 id="字符串变量的lower（）作用"   >
+          <a href="#字符串变量的lower（）作用" class="heading-link"><i class="fas fa-link"></i></a><a href="#字符串变量的lower（）作用" class="headerlink" title="字符串变量的lower（）作用"></a>字符串变量的lower（）作用</h2>
+      <p>lower（）作用是将字符串变量的所有字母和单体都变为小写</p>
+
+        <h2 id="怎么取字符串变量的长度"   >
+          <a href="#怎么取字符串变量的长度" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么取字符串变量的长度" class="headerlink" title="怎么取字符串变量的长度"></a>怎么取字符串变量的长度</h2>
+      <p>利用 len（）函数对字符串变量进行区长度，即求字符串变量中有多少个字符。</p>
+<p>例如 M = “l love you” 取字符串变量 M 中有多少个字符？</p>
+<p>利用 len （）函数进行运算 → len（M）后将 len（M）赋值给 O 打印出来即可， print（O）可求出字符串变量的长度。<strong>空格也算一个字符</strong></p>
+
+        <h2 id="字符串的拼接"   >
+          <a href="#字符串的拼接" class="heading-link"><i class="fas fa-link"></i></a><a href="#字符串的拼接" class="headerlink" title="字符串的拼接"></a>字符串的拼接</h2>
+      <p>有两个字符串“Hello” “World”怎么将两个字符串变量拼接到一起呢？</p>
+<p>借用 + 即可</p>
+<p>如</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">&#x27;Hello&#x27;</span> + <span class="string">&#x27;World&#x27;</span></span><br><span class="line"><span class="built_in">print</span>（name）</span><br><span class="line"><span class="built_in">print</span>（<span class="string">&#x27;Hello&#x27;</span> + <span class="string">&#x27;World&#x27;</span>）</span><br></pre></td></tr></table></div></figure>
+
+
+<p>打印的结果都是一样的，都是Hello world</p>
+
+        <h2 id="转义字符——制表符与换行符"   >
+          <a href="#转义字符——制表符与换行符" class="heading-link"><i class="fas fa-link"></i></a><a href="#转义字符——制表符与换行符" class="headerlink" title="转义字符——制表符与换行符"></a>转义字符——制表符与换行符</h2>
+      <p>制表符相当于一个字符，可以用 Tab 键打出来，占位相当于四个空格，注意的是四个空格表示四个字符长度，而一个 Tab 键表示一个字符长度。</p>
+<p>且制表符可以用 \ t 进行表示的。即 print（“a    b”）和 print（“a\tb”）打印的结果是一样的都为 a    b</p>
+<p>换行符用 \n 表示，意义为打印出来的东西要换行。</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009090650174.png"  alt="image-20211009090650174">
+      </p>
+
+        <h2 id="去空白函数"   >
+          <a href="#去空白函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#去空白函数" class="headerlink" title="去空白函数"></a>去空白函数</h2>
+      <p>有字符串常量 D =“     我爱你     ”大家可以看到在这字符串常量里前面和后面都有空白字符，那怎么去掉呢？</p>
+<p>利用 lstrip（）函数即可去除头部空白 格式如下 E =  D.lstrip( )  print( E ) 即可</p>
+<p>同理，利用 rstrip（）函数可以去除尾部空白，strip（）函数可以去除顶部与尾部空白</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009090723817.png"  alt="image-20211009090723817">
+      </p>
+
+        <h2 id="整形变量的运算"   >
+          <a href="#整形变量的运算" class="heading-link"><i class="fas fa-link"></i></a><a href="#整形变量的运算" class="headerlink" title="整形变量的运算"></a>整形变量的运算</h2>
+      <p>利用 python 分别运算下面几个式子</p>
+<p>1：3+6<br>2：3-6<br>3：3乘以6<br>4：6除以4<br>5：6除以4的整数部分<br>6：4除以3的余数</p>
+<p>补充：4的三次方用代码这么表示 4**3</p>
+<p>运算之前首先要明白 /   //   % 运算符的含义，/ 代表除以  //代表除完之后取整<br>%代表除完之后取余数。</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009090739113.png"  alt="image-20211009090739113">
+      </p>
+
+        <h2 id="运算符优先级修改"   >
+          <a href="#运算符优先级修改" class="heading-link"><i class="fas fa-link"></i></a><a href="#运算符优先级修改" class="headerlink" title="运算符优先级修改"></a>运算符优先级修改</h2>
+      <p>正常来说运算符优先级为先乘除后加减</p>
+<p>怎么进行更改呢？</p>
+<p>答案是加括号啊！</p>
+
+        <h2 id="浮点数运算"   >
+          <a href="#浮点数运算" class="heading-link"><i class="fas fa-link"></i></a><a href="#浮点数运算" class="headerlink" title="浮点数运算"></a>浮点数运算</h2>
+      <p>浮点数之间的运算是存在精度问题的，即运算结果不准确</p>
+
+        <h2 id="数字与数字字符串"   >
+          <a href="#数字与数字字符串" class="heading-link"><i class="fas fa-link"></i></a><a href="#数字与数字字符串" class="headerlink" title="数字与数字字符串"></a>数字与数字字符串</h2>
+      <p>18  与 “18” 是不同的，第一个18为数字，第二个 18 为数字字符串</p>
+<p>例：message = ”我的年龄是“ + 18 是不可以的，必须要加上数字字符串，即 message = ”我的年龄是“ + ”18“ </p>
+<p>str（）可以将数字转化为数字字符串    如 message = ”我的年龄是“ + str（18）</p>
+<p>Maeeage = “love”* 3 是什么意思，即将字符串复制三遍，三个love</p>
+
+        <h2 id="代码注释"   >
+          <a href="#代码注释" class="heading-link"><i class="fas fa-link"></i></a><a href="#代码注释" class="headerlink" title="代码注释"></a>代码注释</h2>
+      <p>在 python 一行中 # 后面的所有文字与代码都为注释</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009090756084.png"  alt="image-20211009090756084">
+      </p>
+
+        <h2 id="input（）的用法"   >
+          <a href="#input（）的用法" class="heading-link"><i class="fas fa-link"></i></a><a href="#input（）的用法" class="headerlink" title="input（）的用法"></a>input（）的用法</h2>
+      <p>input（）具有接收用户输入的信息功能，但是不管用户输入的是什么，input（）都将其转换为 字符串（不是数字字符串）</p>
+<p>怎么获取  input（）的结果呢？很简单，将   input（）存放在变量内即可</p>
+<p>Massage = input（）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009090808875.png"  alt="image-20211009090808875">
+      </p>
+
+        <h2 id="python文档"   >
+          <a href="#python文档" class="heading-link"><i class="fas fa-link"></i></a><a href="#python文档" class="headerlink" title="python文档"></a>python文档</h2>
+      <p>查询python中文文档链接地址<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.sogou.com/link?url=hedJjaC291PES9QO_EuJFi2wiAdA0Gor1TiwqFhz0z6t5pUc3zy0dg" >https://www.sogou.com/link?url=hedJjaC291PES9QO_EuJFi2wiAdA0Gor1TiwqFhz0z6t5pUc3zy0dg</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>..</p>
+<p>持续更新中…..</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/09/siki%E5%AD%A6Python%E2%80%94%E2%80%94%E5%8F%98%E9%87%8F/">http://pythonlamb.github.io/2021/10/09/siki%E5%AD%A6Python%E2%80%94%E2%80%94%E5%8F%98%E9%87%8F/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/Python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E7%AF%87/">Python基础语法篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/09/siki%E5%AD%A6Python%E2%80%94%E2%80%94%E5%88%97%E8%A1%A8%E4%B8%8E%E8%AF%AD%E5%8F%A5/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">siki学Python——列表与语句</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/08/Win%E7%AC%94%E8%AE%B0%E6%9C%AC%E7%9A%84%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/"><span class="paginator-prev__text">Win电脑的相关操作【疑难杂症解决】</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%98%E9%87%8F%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">
+          什么是变量？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%98%E9%87%8F%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">
+          什么是字符串变量？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%98%E9%87%8F%E7%9A%84title%EF%BC%88%EF%BC%89%E8%B0%83%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">
+          字符串变量的title（）调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%98%E9%87%8Fupper%EF%BC%88%EF%BC%89%E4%BD%9C%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">
+          字符串变量upper（）作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%98%E9%87%8F%E7%9A%84lower%EF%BC%88%EF%BC%89%E4%BD%9C%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">
+          字符串变量的lower（）作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%8F%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%98%E9%87%8F%E7%9A%84%E9%95%BF%E5%BA%A6"><span class="toc-number">6.</span> <span class="toc-text">
+          怎么取字符串变量的长度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%8B%BC%E6%8E%A5"><span class="toc-number">7.</span> <span class="toc-text">
+          字符串的拼接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6%E2%80%94%E2%80%94%E5%88%B6%E8%A1%A8%E7%AC%A6%E4%B8%8E%E6%8D%A2%E8%A1%8C%E7%AC%A6"><span class="toc-number">8.</span> <span class="toc-text">
+          转义字符——制表符与换行符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%BB%E7%A9%BA%E7%99%BD%E5%87%BD%E6%95%B0"><span class="toc-number">9.</span> <span class="toc-text">
+          去空白函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E5%BD%A2%E5%8F%98%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97"><span class="toc-number">10.</span> <span class="toc-text">
+          整形变量的运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E4%BF%AE%E6%94%B9"><span class="toc-number">11.</span> <span class="toc-text">
+          运算符优先级修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E8%BF%90%E7%AE%97"><span class="toc-number">12.</span> <span class="toc-text">
+          浮点数运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E4%B8%8E%E6%95%B0%E5%AD%97%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">13.</span> <span class="toc-text">
+          数字与数字字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A"><span class="toc-number">14.</span> <span class="toc-text">
+          代码注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#input%EF%BC%88%EF%BC%89%E7%9A%84%E7%94%A8%E6%B3%95"><span class="toc-number">15.</span> <span class="toc-text">
+          input（）的用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python%E6%96%87%E6%A1%A3"><span class="toc-number">16.</span> <span class="toc-text">
+          python文档</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

@@ -1,0 +1,602 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：selenium的安装与使用等等…..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫基础——selenium的使用">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94selenium%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：selenium的安装与使用等等…..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152832885.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152021640.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152113696.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152123877.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152123877.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152144737.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152221244.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152239461.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152255642.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152310256.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152321863.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152405296.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152428259.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152506145.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152526149.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152534553.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152555406.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152716642.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152746826.png">
+<meta property="article:published_time" content="2021-10-13T07:07:05.000Z">
+<meta property="article:modified_time" content="2021-10-13T07:28:40.291Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="爬虫基础篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152832885.png"><title>爬虫基础——selenium的使用 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94selenium%E7%9A%84%E4%BD%BF%E7%94%A8/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">爬虫基础——selenium的使用</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-13</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">17分</span></span></div></header><div class="post-body"><p>本文主讲：selenium的安装与使用等等…..</p>
+<span id="more"></span>
+
+
+
+
+
+
+        <h2 id="selenium环境安装【重点】"   >
+          <a href="#selenium环境安装【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#selenium环境安装【重点】" class="headerlink" title="selenium环境安装【重点】"></a>selenium环境安装【重点】</h2>
+      
+        <h3 id="什么是selenium以及selenium怎么实现抓取网页数据"   >
+          <a href="#什么是selenium以及selenium怎么实现抓取网页数据" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是selenium以及selenium怎么实现抓取网页数据" class="headerlink" title="什么是selenium以及selenium怎么实现抓取网页数据"></a>什么是selenium以及selenium怎么实现抓取网页数据</h3>
+      <p>答：selenium是web自动化测试工具，不是浏览器，它常常配合浏览器来实现网站的自动化测试，也就是说selenium可以自动化操作留浏览器进行一些行为，selenium配合浏览器就可以实现数据的抓取（可见即可得）</p>
+
+        <h3 id="怎么查看python安装在哪个路径的指令（win与linux）"   >
+          <a href="#怎么查看python安装在哪个路径的指令（win与linux）" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么查看python安装在哪个路径的指令（win与linux）" class="headerlink" title="怎么查看python安装在哪个路径的指令（win与linux）"></a>怎么查看python安装在哪个路径的指令（win与linux）</h3>
+      <p>window指令：<code>where python</code></p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152832885.png"  alt="image-20211013152832885">
+      </p>
+<p>linux指令：<code>whereis python</code></p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152021640.png"  alt="image-20211013152021640">
+      </p>
+
+        <h3 id="怎么安装-selenium-工具（库）"   >
+          <a href="#怎么安装-selenium-工具（库）" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么安装-selenium-工具（库）" class="headerlink" title="怎么安装 selenium 工具（库）"></a>怎么安装 selenium 工具（库）</h3>
+      <p>Windows + linux指令：<code>pip3 install selenium</code></p>
+
+        <h3 id="安装-selenium-浏览器工具的环境步骤"   >
+          <a href="#安装-selenium-浏览器工具的环境步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装-selenium-浏览器工具的环境步骤" class="headerlink" title="安装 selenium + 浏览器工具的环境步骤"></a>安装 selenium + 浏览器工具的环境步骤</h3>
+      <p>使用selenium + 浏览器最常见的四种组合如下：</p>
+<p>1：selenium + PhantomJS</p>
+<p>2：selenium + Chrome + chromedriver</p>
+<p>3：selenium + Firefox + geckodriver</p>
+<p>4：selenium + Edge + </p>
+<p>注意：其中后面带有driver就是浏览器驱动程序，PhantomJS是无头浏览器因此不需要驱动（行为都在内存中发生！）</p>
+<p>安装步骤：</p>
+<p>注意：下面常用的程序都可以在淘宝镜像网站中下载：   <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://npm.taobao.org/mirrors" >https://npm.taobao.org/mirrors</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>第一步：首先确保你的电脑（windows与linux）都安装了这四个浏览器以及 selenium 工具，剩下的就是安装对应的浏览器驱动</p>
+<p>PhantomJS下载地址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://npm.taobao.org/mirrors/phantomjs/" >https://npm.taobao.org/mirrors/phantomjs/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>第二步：下载每个浏览器的驱动（下载windows以及linxu版本）</p>
+<p>chromedriver下载地址（下载与chrome版本一致的驱动）：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://npm.taobao.org/mirrors/chromedriver/" >https://npm.taobao.org/mirrors/chromedriver/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>注意：没有一致的版本就下载最接近的</p>
+<p>geckodriver下载地址（下载版本最大的那个驱动）：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://npm.taobao.org/mirrors/geckodriver/v0.29.1/" >https://npm.taobao.org/mirrors/geckodriver/v0.29.1/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152113696.png"  alt="image-20211013152113696">
+      </p>
+<p>第三步：下载完成驱动后将驱动解压（所有压缩文件全部解压），剪切到对应文件夹下面</p>
+<p>windows：python路径下面的Scripts文件夹下</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152123877.png"  alt="image-20211013152123877">
+      </p>
+<p>linux：家目录下的usr文件夹下的bin文件夹放入成功后，将这个驱动程序权限更改为最高权限</p>
+<p>注意：在linux下放入指定文件夹下的浏览器驱动程序是解压完成的程序，不是压缩文件！！</p>
+<p>对应指令：</p>
+<p><code>sudo cp 驱动文件名 /usr/bin  将驱动放入对应文件</code><br><code>sudo chmod  777  /use/bin/驱动文件名</code></p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152123877.png" >
+      </p>
+<p>第四步：进行测试，可以正常打开浏览器并且不闪退即可</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152144737.png"  alt="image-20211013152144737">
+      </p>
+
+        <h2 id="selenium应用【重点】"   >
+          <a href="#selenium应用【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#selenium应用【重点】" class="headerlink" title="selenium应用【重点】"></a>selenium应用【重点】</h2>
+      
+        <h3 id="怎么利用selenium配合浏览器打开指定网页并且对网页进行一些操作"   >
+          <a href="#怎么利用selenium配合浏览器打开指定网页并且对网页进行一些操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么利用selenium配合浏览器打开指定网页并且对网页进行一些操作" class="headerlink" title="怎么利用selenium配合浏览器打开指定网页并且对网页进行一些操作"></a>怎么利用selenium配合浏览器打开指定网页并且对网页进行一些操作</h3>
+      <p>语法： </p>
+<p><code>from selenium import webdriver</code>                导入模块</p>
+<p><code>浏览器对象 = webdriver.Chrome( )</code>      打开Chrome浏览器（也可以是其他浏览器，前提是安装其他浏览器的驱动）</p>
+<p><code>浏览器对象.get（“指定网站”）</code>           在Chrome浏览器内打开指定网站</p>
+<p>​    </p>
+
+        <h3 id="浏览器对象的一些常用方法以及属性"   >
+          <a href="#浏览器对象的一些常用方法以及属性" class="heading-link"><i class="fas fa-link"></i></a><a href="#浏览器对象的一些常用方法以及属性" class="headerlink" title="浏览器对象的一些常用方法以及属性"></a>浏览器对象的一些常用方法以及属性</h3>
+      <p>答：在获得浏览器对象之后，我们可以对浏览器对象执行以下方法  其中browser代指浏览器对象</p>
+<p><code>browser.get（“指定网站”）</code> ：在浏览器内打开指定网站</p>
+<p><code>browser.maximize_window( )</code>：将浏览器窗口最大化</p>
+<p><code>browser.save_scrrenshot(&quot;图片名称&quot;)</code>：将浏览器当前所在的页面进行截图保存</p>
+<p><code>browser.page_scurce</code>：获取浏览器当前页面的前端最终渲染的数据代码</p>
+<p><code>browser.page_scurce.find（“字符串”）</code>：获取浏览器当前页面的前端最终渲染的数据代码，并在代码中查找执行字符串，查不到直接返回-1，常常用于网站最后一页的判断</p>
+<p><code>browser.quit( )</code>：关闭浏览器</p>
+<p><code>browser.close（）</code>：关闭当前网页</p>
+<p><code>element_obj= browser.find_element_by_xpath(xpath语法)</code>：在浏览器内获取第一个符合xpath语法的结点对象</p>
+<p><code>element_obj= browser.find_element_by_id (id属性值)</code>：在浏览器内获取第一个符合id属性值的结点对象</p>
+<p><code>element_obj= browser.find_element_by_name (name属性值)</code>：在浏览器内获取第一个符合name属性值的结点对象</p>
+<p><code>element_obj= browser.find_element_by_class_name (class属性值)</code>：在浏览器内获取第一个符合class属性值的结点对象</p>
+<p><code>element_obj= browser.find_element_by_link_text (a标签文本)</code>：在浏览器内获取第一个符合a标签内文本的结点对象</p>
+<p><code>element_obj_list = browser.find_elements_by_xpath(xpath语法)</code>：在浏览器内获取全部符合xpath语法的结点对象，并且返回存放所有对象的列表</p>
+
+        <h3 id="利用selenium-浏览器匹配数据的注意事项"   >
+          <a href="#利用selenium-浏览器匹配数据的注意事项" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用selenium-浏览器匹配数据的注意事项" class="headerlink" title="利用selenium+浏览器匹配数据的注意事项"></a>利用selenium+浏览器匹配数据的注意事项</h3>
+      <p>1：浏览器对象在查找指定节点对象时，如果方法中的element不带s，那么就查找第一个符合规则的结点对象返回，如果带s，那就查找所有符合规则的结点对象，并且存放在指定列表中返回这个列表</p>
+<p>2：浏览器对象根据xpath查找指定节点时，可以直接在前端的控制台找到指定节点，右键复制当前节点的xpath即可，这是为什么呢？因为利用selenium获得的数据是前端最终渲染出来的数据，而不是响应源代码，因此利用selenium匹配数据真正实现了可见即可得，管你是动态渲染还是什么，只有一句话，牛批！</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152221244.png"  alt="image-20211013152221244">
+      </p>
+<p>四：浏览器对象在成功匹配指定节点后对这个结点的一些操作指令</p>
+<p>指定节点对象 . send_keys(“待查找的数据”)：向这个结点对象发送指定数据，一般这样的结点都是搜索框结点</p>
+<p><code>指定节点对象.click（）</code>：点击这个结点</p>
+<p><code>指定节点对象.clear（）</code>：清空结点对象中的内容（常用于清空搜索框中的默认数据）</p>
+<p><code>指定节点对象.get_attribute( )</code>：获取这个结点的属性值</p>
+<p><code>指定节点对象.get_attribute( “title”)</code>：获取这个结点的 title 属性值</p>
+<p><code>指定节点对象.text</code> ：获取这个结点对象的文本值（包括当前节点以及所有子节点的文本）！</p>
+<p>注意事项：</p>
+<p>1：获取结点以及子节点的文本内容，是利用结点对象的text属性，而不是text方法！！！！，切记切记！！！</p>
+<p>2：浏览器对象.find_elements_by_xpath（xpath表达式）获取到所有符合xpath表达式的结点对象，这个结点对象与利用etree库的xpath表达式在响应源代码中提取的结点对象不一样！！！</p>
+<p>总结截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152239461.png"  alt="image-20211013152239461">
+      </p>
+
+        <h2 id="selenium高级应用【重中之重】"   >
+          <a href="#selenium高级应用【重中之重】" class="heading-link"><i class="fas fa-link"></i></a><a href="#selenium高级应用【重中之重】" class="headerlink" title="selenium高级应用【重中之重】"></a>selenium高级应用【重中之重】</h2>
+      
+        <h3 id="怎么把Chrome以及firefox浏览器设置为无头模式！"   >
+          <a href="#怎么把Chrome以及firefox浏览器设置为无头模式！" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么把Chrome以及firefox浏览器设置为无头模式！" class="headerlink" title="怎么把Chrome以及firefox浏览器设置为无头模式！"></a>怎么把Chrome以及firefox浏览器设置为无头模式！</h3>
+      <p>为什么要设置为无头浏览器？</p>
+<p>答：无头浏览器性能更好一些，可以在不打开浏览器窗口的情况下进行数据的抓取</p>
+<p>设置语法：</p>
+<p><code>from selenium import webdriver </code>            导入模块</p>
+<p><code>options = webdriver.ChromeOptions( )</code>     创建选项对象，注意ChromeOptions( ) 中的O是大写</p>
+<p><code>options.add_argument(&quot;--headless&quot;) </code>        向这个选项对象中添加“headless”参数，代表无头</p>
+<p><code>Browser = webdriver.Chrome(options = options) </code>    创建浏览器时，将设置好的options参数传入</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152255642.png"  alt="image-20211013152255642">
+      </p>
+
+        <h3 id="selenium打开的浏览器怎么执行javascript脚本"   >
+          <a href="#selenium打开的浏览器怎么执行javascript脚本" class="heading-link"><i class="fas fa-link"></i></a><a href="#selenium打开的浏览器怎么执行javascript脚本" class="headerlink" title="selenium打开的浏览器怎么执行javascript脚本"></a>selenium打开的浏览器怎么执行javascript脚本</h3>
+      <p>语法：<code>浏览器对象.excute_script(&quot;javascript脚本代码)</code></p>
+<p>实例：<code>browser.excute_script ( &quot; window.scrollTo (0,document.body.scrollHeight ）&quot; )</code></p>
+<p>浏览器执行 window.scrollTo (0,document.body.scrollHeight）这段javascript代码，将滚动条滚到最下方</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152310256.png"  alt="image-20211013152310256">
+      </p>
+
+        <h3 id="selenium配合浏览器抓取数据的注意事项"   >
+          <a href="#selenium配合浏览器抓取数据的注意事项" class="heading-link"><i class="fas fa-link"></i></a><a href="#selenium配合浏览器抓取数据的注意事项" class="headerlink" title="selenium配合浏览器抓取数据的注意事项"></a>selenium配合浏览器抓取数据的注意事项</h3>
+      <p>1：执行网站换页操作时，如果网站有输入第几页跳转，尽量用那个进行换页，因为如果程序在某一页报错，可以很容易知道在那一页报错</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152321863.png"  alt="image-20211013152321863">
+      </p>
+<p>2：抓取动态网页时，浏览器对象需要执行javascript脚本代码（将滚轮滑到最底部！）</p>
+<p>3：利用find_enements_by_xpath抓取的结点对象集合，然后再循环遍历，调用结点的text属性，获取当前节点以及后代节点的所有文本数据，如果数据不容易被处理，可以在当前节点下调用find_enement_by_xpath方法，在查找具体的数据结点，然后调用text属性获取数据！！</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152405296.png"  alt="image-20211013152405296">
+      </p>
+<p>4：如果在前端页面源码内复制结点的xpath查找不到数据！！！！，记得要自己在写一下xpath语句试一试</p>
+
+        <h3 id="怎么利用selenium操控键盘操作（不是特别重要）"   >
+          <a href="#怎么利用selenium操控键盘操作（不是特别重要）" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么利用selenium操控键盘操作（不是特别重要）" class="headerlink" title="怎么利用selenium操控键盘操作（不是特别重要）"></a>怎么利用selenium操控键盘操作（不是特别重要）</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152428259.png"  alt="image-20211013152428259">
+      </p>
+
+        <h3 id="怎么利用selenium操控鼠标操作"   >
+          <a href="#怎么利用selenium操控鼠标操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么利用selenium操控鼠标操作" class="headerlink" title="怎么利用selenium操控鼠标操作"></a>怎么利用selenium操控鼠标操作</h3>
+      <p>用selenium操作鼠标有什么用？</p>
+<p>答：有的网站部分功能是动态加载的，你需要把鼠标放在一些元素结点上面，其他的元素结点才能被加载出来，这是我们就要用selenium模拟鼠标操作，将鼠标移动到元素节点上，这样才可以操作动态加载的其他元素结点</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152506145.png"  alt="image-20211013152506145">
+      </p>
+<p>操作语法：</p>
+<p><code>from selenium.webdriver import ActionChains</code>            导入模块</p>
+<p><code>ActionsChains（浏览器对象）.move_to_element(to_element = 指定节点). perform（）</code>   将鼠标移动到指定目标结点处！</p>
+<p>注意事项：必须要执行 perform方法才能真正将鼠标移动到目标结点处！</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152526149.png"  alt="image-20211013152526149">
+      </p>
+<p>代码截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152534553.png"  alt="image-20211013152534553">
+      </p>
+
+        <h3 id="怎么利用selenium切换句柄（切换浏览器窗口）"   >
+          <a href="#怎么利用selenium切换句柄（切换浏览器窗口）" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么利用selenium切换句柄（切换浏览器窗口）" class="headerlink" title="怎么利用selenium切换句柄（切换浏览器窗口）"></a>怎么利用selenium切换句柄（切换浏览器窗口）</h3>
+      <p>切换句柄的使用场景：利用selenium创建浏览器对象，打开指定网站，在网站内点击一个链接后，又打开了一个新的窗口，但是我们的浏览器对象还是处在第一个网站的结点源代码中，想要对新窗口中的网站进行一些操作就要将浏览器对象切换到后打开网站的那个结点源代码中（句柄）</p>
+<p>语法：</p>
+<p><code>from selenium  import webdriver</code>                                 导入模块</p>
+<p><code>浏览器对象 = webdriver.Chrome( )</code>                  创建浏览器对象</p>
+<p><code>all_handles = 浏览器对象.window_handles</code>            获取当前浏览器对象所有打开的窗口对象，并存放到列表内（左边第一个窗口列表下标为0）</p>
+<p><code>浏览器对象.switch_to.windows(指定窗口对象)</code>      将浏览器切换到指定窗口</p>
+<p>注意事项：</p>
+<p>1：window_headles 方法功能是获取当前浏览器的所有窗口对象，并存放在一个列表内，最左面的窗口列表下标为0</p>
+<p>2：切换窗口中的窗口不是正常浏览器中的窗口，这里指代浏览器所处在的那个结点源代码中！</p>
+<p>代码截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152555406.png"  alt="image-20211013152555406">
+      </p>
+
+        <h2 id="selenium高级操作【重中之重】"   >
+          <a href="#selenium高级操作【重中之重】" class="heading-link"><i class="fas fa-link"></i></a><a href="#selenium高级操作【重中之重】" class="headerlink" title="selenium高级操作【重中之重】"></a>selenium高级操作【重中之重】</h2>
+      <p>须知：如果在前端页面源码内复制结点的xpath查找不到数据！！！！，记得要自己在写一下xpath语句试一试</p>
+
+        <h3 id="selenium-控制浏览器对象切换iframe（内嵌框架）的背景"   >
+          <a href="#selenium-控制浏览器对象切换iframe（内嵌框架）的背景" class="heading-link"><i class="fas fa-link"></i></a><a href="#selenium-控制浏览器对象切换iframe（内嵌框架）的背景" class="headerlink" title="selenium 控制浏览器对象切换iframe（内嵌框架）的背景"></a>selenium 控制浏览器对象切换iframe（内嵌框架）的背景</h3>
+      <p>答：有的网站前端渲染后的html代码是嵌套类型的，就是一个网页html代码中有一个或者多个iframe结点，其中一个iframe结点就代表一个全新的网页（一般网站的登录功能都是一个iframe结点），当利用 selenium 获取 iframe 结点下面子节点并对其操作时，是不能成功的，因为 selenium 只能从 iframe 结点外面的其他结点数据中查找其他的元素，对于这种情况就要用 selenium 控制浏览器切换 iframe了，这样就可以定位到 iframe 结点中的其他结点并对其操作啦！！</p>
+<p>注意：一般登录功能区都在iframe结点下面哦！！</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152716642.png" >
+      </p>
+
+        <h3 id="selenium-怎么切换-iframe"   >
+          <a href="#selenium-怎么切换-iframe" class="heading-link"><i class="fas fa-link"></i></a><a href="#selenium-怎么切换-iframe" class="headerlink" title="selenium 怎么切换 iframe"></a>selenium 怎么切换 iframe</h3>
+      <p>语法1：</p>
+<p><code>from selenium import webdriver    </code></p>
+<p>导入模块</p>
+<p><code>iframe_node = 浏览器对象.find_element_by_xpath( &quot;xpath语法&quot; )</code>          查找待切换的iframe结点对象</p>
+<p><code>浏览器对象.switch_to.frame(查找到的iframe结点对象)</code>                利用switch方法进行切换，切换成功后即可定位iframe结点下的子节点并对其操作</p>
+<p>语法2：<br><code>from selenium import webdriver  </code>        </p>
+<p>导入模块<br><code>浏览器对象.switch_to.frame ( iframe结点的 id|name 属性值 ) </code>                              通过目标 iframe 结点的 id、name属性值可直接定位iframe结点切换</p>
+<p>注意事项：</p>
+<p>1：浏览器对象.switch_to.frame(查找到的iframe结点对象)  中的frame没有I</p>
+<p>2：如果目标 iframe 结点中有 id 以及 name 属性，那么直接通过第二种语法定位iframe结点</p>
+<p>代码截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013152746826.png"  alt="image-20211013152746826">
+      </p>
+
+        <h3 id="selenium-切换到iframe结点后怎么切换回来（其他的层）"   >
+          <a href="#selenium-切换到iframe结点后怎么切换回来（其他的层）" class="heading-link"><i class="fas fa-link"></i></a><a href="#selenium-切换到iframe结点后怎么切换回来（其他的层）" class="headerlink" title="selenium 切换到iframe结点后怎么切换回来（其他的层）"></a>selenium 切换到iframe结点后怎么切换回来（其他的层）</h3>
+      <p>语法：</p>
+<p><code>浏览器对象.switch_to.parent_frame( )</code>：切换到当前iframe结点的上一级处！</p>
+<p><code>浏览器对象.switch_to.default_content( )</code>：切换到主界面（刚打开浏览器所在的界面）</p>
+<p>未完待续……</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94selenium%E7%9A%84%E4%BD%BF%E7%94%A8/">http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94selenium%E7%9A%84%E4%BD%BF%E7%94%A8/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E7%AF%87/">爬虫基础篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/13/%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94%E2%80%94%E2%80%94%E8%BF%99%E6%98%AF%E7%94%B0%E9%9B%AA%EF%BC%81/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">生活随笔——这是田雪！</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94%E7%88%AC%E5%8F%96%E5%8A%A8%E6%80%81%E7%BD%91%E9%A1%B5%E4%B8%8ECookie%E6%A8%A1%E6%8B%9F%E7%99%BB%E5%BD%95/"><span class="paginator-prev__text">爬虫基础——爬取动态网页与Cookie模拟登录</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#selenium%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">1.</span> <span class="toc-text">
+          selenium环境安装【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFselenium%E4%BB%A5%E5%8F%8Aselenium%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E6%8A%93%E5%8F%96%E7%BD%91%E9%A1%B5%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.</span> <span class="toc-text">
+          什么是selenium以及selenium怎么实现抓取网页数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%9F%A5%E7%9C%8Bpython%E5%AE%89%E8%A3%85%E5%9C%A8%E5%93%AA%E4%B8%AA%E8%B7%AF%E5%BE%84%E7%9A%84%E6%8C%87%E4%BB%A4%EF%BC%88win%E4%B8%8Elinux%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">
+          怎么查看python安装在哪个路径的指令（win与linux）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%AE%89%E8%A3%85-selenium-%E5%B7%A5%E5%85%B7%EF%BC%88%E5%BA%93%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">
+          怎么安装 selenium 工具（库）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-selenium-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E5%85%B7%E7%9A%84%E7%8E%AF%E5%A2%83%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.4.</span> <span class="toc-text">
+          安装 selenium + 浏览器工具的环境步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#selenium%E5%BA%94%E7%94%A8%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">2.</span> <span class="toc-text">
+          selenium应用【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%A9%E7%94%A8selenium%E9%85%8D%E5%90%88%E6%B5%8F%E8%A7%88%E5%99%A8%E6%89%93%E5%BC%80%E6%8C%87%E5%AE%9A%E7%BD%91%E9%A1%B5%E5%B9%B6%E4%B8%94%E5%AF%B9%E7%BD%91%E9%A1%B5%E8%BF%9B%E8%A1%8C%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C"><span class="toc-number">2.1.</span> <span class="toc-text">
+          怎么利用selenium配合浏览器打开指定网页并且对网页进行一些操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E4%BB%A5%E5%8F%8A%E5%B1%9E%E6%80%A7"><span class="toc-number">2.2.</span> <span class="toc-text">
+          浏览器对象的一些常用方法以及属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8selenium-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8C%B9%E9%85%8D%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.3.</span> <span class="toc-text">
+          利用selenium+浏览器匹配数据的注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#selenium%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8%E3%80%90%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          selenium高级应用【重中之重】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%8A%8AChrome%E4%BB%A5%E5%8F%8Afirefox%E6%B5%8F%E8%A7%88%E5%99%A8%E8%AE%BE%E7%BD%AE%E4%B8%BA%E6%97%A0%E5%A4%B4%E6%A8%A1%E5%BC%8F%EF%BC%81"><span class="toc-number">3.1.</span> <span class="toc-text">
+          怎么把Chrome以及firefox浏览器设置为无头模式！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#selenium%E6%89%93%E5%BC%80%E7%9A%84%E6%B5%8F%E8%A7%88%E5%99%A8%E6%80%8E%E4%B9%88%E6%89%A7%E8%A1%8Cjavascript%E8%84%9A%E6%9C%AC"><span class="toc-number">3.2.</span> <span class="toc-text">
+          selenium打开的浏览器怎么执行javascript脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#selenium%E9%85%8D%E5%90%88%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8A%93%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.3.</span> <span class="toc-text">
+          selenium配合浏览器抓取数据的注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%A9%E7%94%A8selenium%E6%93%8D%E6%8E%A7%E9%94%AE%E7%9B%98%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%8D%E6%98%AF%E7%89%B9%E5%88%AB%E9%87%8D%E8%A6%81%EF%BC%89"><span class="toc-number">3.4.</span> <span class="toc-text">
+          怎么利用selenium操控键盘操作（不是特别重要）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%A9%E7%94%A8selenium%E6%93%8D%E6%8E%A7%E9%BC%A0%E6%A0%87%E6%93%8D%E4%BD%9C"><span class="toc-number">3.5.</span> <span class="toc-text">
+          怎么利用selenium操控鼠标操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%A9%E7%94%A8selenium%E5%88%87%E6%8D%A2%E5%8F%A5%E6%9F%84%EF%BC%88%E5%88%87%E6%8D%A2%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AA%97%E5%8F%A3%EF%BC%89"><span class="toc-number">3.6.</span> <span class="toc-text">
+          怎么利用selenium切换句柄（切换浏览器窗口）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#selenium%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C%E3%80%90%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          selenium高级操作【重中之重】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#selenium-%E6%8E%A7%E5%88%B6%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AF%B9%E8%B1%A1%E5%88%87%E6%8D%A2iframe%EF%BC%88%E5%86%85%E5%B5%8C%E6%A1%86%E6%9E%B6%EF%BC%89%E7%9A%84%E8%83%8C%E6%99%AF"><span class="toc-number">4.1.</span> <span class="toc-text">
+          selenium 控制浏览器对象切换iframe（内嵌框架）的背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#selenium-%E6%80%8E%E4%B9%88%E5%88%87%E6%8D%A2-iframe"><span class="toc-number">4.2.</span> <span class="toc-text">
+          selenium 怎么切换 iframe</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#selenium-%E5%88%87%E6%8D%A2%E5%88%B0iframe%E7%BB%93%E7%82%B9%E5%90%8E%E6%80%8E%E4%B9%88%E5%88%87%E6%8D%A2%E5%9B%9E%E6%9D%A5%EF%BC%88%E5%85%B6%E4%BB%96%E7%9A%84%E5%B1%82%EF%BC%89"><span class="toc-number">4.3.</span> <span class="toc-text">
+          selenium 切换到iframe结点后怎么切换回来（其他的层）</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

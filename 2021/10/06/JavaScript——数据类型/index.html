@@ -1,0 +1,601 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文所讲：JS中变量的数据类型及详解、三种数据类型的prototype属性、创建数组、undefined与null和NaN的区别！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript——数据类型">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/06/JavaScript%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文所讲：JS中变量的数据类型及详解、三种数据类型的prototype属性、创建数组、undefined与null和NaN的区别！">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007104859859.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007104920789.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105002072.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105028397.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105037898.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105122818.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105139789.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105213597.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105240305.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105248244.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105324485.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105347243.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105416429.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105452195.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105510895.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105523408.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105542919.png">
+<meta property="article:published_time" content="2021-10-06T13:45:16.000Z">
+<meta property="article:modified_time" content="2021-10-07T02:55:51.371Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007104859859.png"><title>JavaScript——数据类型 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/06/JavaScript%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">JavaScript——数据类型</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-07</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.6k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">15分</span></span></div></header><div class="post-body"><p><em>本文所讲：JS中变量的数据类型及详解、三种数据类型的prototype属性、创建数组、undefined与null和NaN的区别！</em></p>
+<span id="more"></span>
+
+
+
+        <h2 id="JS中的变量数据类型"   >
+          <a href="#JS中的变量数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS中的变量数据类型" class="headerlink" title="JS中的变量数据类型"></a>JS中的变量数据类型</h2>
+      
+        <h3 id="JS-中变量都有哪几种基本数据类型"   >
+          <a href="#JS-中变量都有哪几种基本数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中变量都有哪几种基本数据类型" class="headerlink" title="JS 中变量都有哪几种基本数据类型"></a>JS 中变量都有哪几种基本数据类型</h3>
+      <p> ES6【ECMAScript6】（欧洲计算机脚本规范） 之前：JS的变量数据类型总共有6种，分为原始数据类型和引用数据类型</p>
+<p>原始数据类型：String、Number、Undefined、Boolean、Null<br>引用数据类型：object以及其子类【类】</p>
+<p>ES6【ECMAScript6】（欧洲计算机脚本规范） 之后：在之前的6中数据类型基础上加上了 Symbol</p>
+
+        <h3 id="JS-中-typeof-方法的功能以及其语法"   >
+          <a href="#JS-中-typeof-方法的功能以及其语法" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中-typeof-方法的功能以及其语法" class="headerlink" title="JS 中 typeof 方法的功能以及其语法"></a>JS 中 typeof 方法的功能以及其语法</h3>
+      <p>功能：在程序运行过程中动判断变量的数据类型<br>语法：typeof 变量名</p>
+<p>结果：typeof 方法的返回值【结果】有六种，结果都是小写的字符串！！！</p>
+<pre><code>     6种结果分别为：“string”、“number”、“boolean”、“undefined”、“function”、“object”
+</code></pre>
+<p>注意：</p>
+<p>1：数据类型为 Null 的变量，利用 typeof 方法获得的结果为 “object”，这也是 JS 历史遗留的BUG吧</p>
+<p>2：在 JS 中判断两个变量是否相等用的是 “==”</p>
+<p>3：利用 typeof 检测函数数据类型时，typeof 后面的函数不能加括号</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007104859859.png"  alt="image-20211007104859859">
+      </p>
+
+        <h2 id="Undefined数据类型"   >
+          <a href="#Undefined数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#Undefined数据类型" class="headerlink" title="Undefined数据类型"></a>Undefined数据类型</h2>
+      <p>变量数据类型：Undefined<br>Undefined变量数据值：undefined 【一定要是小写】</p>
+<p>须知：在 JS 中如果声明了一个变量却没有赋值，那么系统默认给这个变量赋值为 undefined，当然我们也可以手动给一个变量赋值为 undefined</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007104920789.png"  alt="image-20211007104920789">
+      </p>
+
+        <h2 id="Number数据类型"   >
+          <a href="#Number数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#Number数据类型" class="headerlink" title="Number数据类型"></a>Number数据类型</h2>
+      
+        <h3 id="JS-中变量的-Number-数据类型"   >
+          <a href="#JS-中变量的-Number-数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中变量的-Number-数据类型" class="headerlink" title="JS 中变量的 Number 数据类型"></a>JS 中变量的 Number 数据类型</h3>
+      <p>变量数据类型：Number<br>Number变量数据值：正数、负数、小数、零、整数……NaN【不是一个数字】、Infintiy【无穷大】</p>
+<p>NaN解答：当运算结果本应该是一个数字的时候，最后算完却不是一个数字，例如 10 / “啦啦啦”的结果就是 NaN【有除号结果本应该是一个数字】</p>
+<p>Infintiy解答：除法运算时，除数为0结果就是 Infinity</p>
+<p>注意：</p>
+<p>1：Number数据类型的变量值不一定只是数字，例如 NaN、Infinity</p>
+<p>2：+符号有两个功能，一个功能是做字符串的拼接，第二个功能是做加法运算符，当+符号两边变量有一个为字符串的时候，那么+充当字符串的拼接，而不是加法的运算，这点非常重要！</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105002072.png"  alt="image-20211007105002072">
+      </p>
+
+        <h3 id="JS-内置的-isNaN（）、parseInt（）、parseFloat（）、Math-ceil（）方法的功能"   >
+          <a href="#JS-内置的-isNaN（）、parseInt（）、parseFloat（）、Math-ceil（）方法的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-内置的-isNaN（）、parseInt（）、parseFloat（）、Math-ceil（）方法的功能" class="headerlink" title="JS 内置的 isNaN（）、parseInt（）、parseFloat（）、Math.ceil（）方法的功能"></a>JS 内置的 isNaN（）、parseInt（）、parseFloat（）、Math.ceil（）方法的功能</h3>
+      <p>isNaN（变量值或者变量名）函数功能：判断变量是否为一个数字，不是数字返回结果为 ture，是数字返回 false<br>ps：isNaN就是 is Not a Number  翻译为中文就是，不是一个数字</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105028397.png"  alt="image-20211007105028397">
+      </p>
+<p>parseInt（字符串或者数字类型变量）函数功能：如果变量是一个字符串，首先将字符串转为数字，并且取这个数字的整数部分，不是字符串就直接取整</p>
+<p>parseFloat（字符串或者数字类型变量）函数功能：自动将字符串转为一个数字</p>
+<p>Math.ceil（字符串或者数字类型变量）函数功能：如果变量是一个字符串，首先将字符串转为数字，并且在数字基础上向上取整，不是字符串就直接向上取整<br>ps：2.1向上取整为3，2.99向上取整也为3</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105037898.png"  alt="image-20211007105037898">
+      </p>
+
+        <h2 id="Boolean数据类型"   >
+          <a href="#Boolean数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#Boolean数据类型" class="headerlink" title="Boolean数据类型"></a>Boolean数据类型</h2>
+      
+        <h3 id="JS-中变量的-Boolean-数据类型"   >
+          <a href="#JS-中变量的-Boolean-数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中变量的-Boolean-数据类型" class="headerlink" title="JS 中变量的 Boolean 数据类型"></a>JS 中变量的 Boolean 数据类型</h3>
+      <p>变量数据类型：Boolean<br>Boolean数据类型值：true和false     【Boolean数据类型只有这两个值】</p>
+<p>注意：Boolean变量数据类型只有两个值，true和false</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105122818.png"  alt="image-20211007105122818">
+      </p>
+
+        <h3 id="JS-中-Boolean（）函数的应用场景"   >
+          <a href="#JS-中-Boolean（）函数的应用场景" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中-Boolean（）函数的应用场景" class="headerlink" title="JS 中 Boolean（）函数的应用场景"></a>JS 中 Boolean（）函数的应用场景</h3>
+      <p>应用场景：分支语句和循环语句后面括号里的数据必须是Boolean数据类型，也就只能是 true 和 false 两个值，如果后面括号里面的数据不是 Boolean</p>
+<p>数据类型，那么分支语句和循环语句会自动调用 Boolean（）函数，将非Boolean的数据转为Boolean数据类型</p>
+<p>语法：Boolean（变量或者数据）</p>
+<p>转换结果：</p>
+<p>Boolean（1）：true</p>
+<p>Boolean（0）：false</p>
+<p>Boolean（“ ”）：false</p>
+<p>Boolean（“啦啦啦”）：true</p>
+<p>Boolean（undefined）：false</p>
+<p>Boolean（NaN）：false</p>
+<p>Boolean（null）：false</p>
+<p>Boolean（Infinity）：true</p>
+<p>口诀：有就是true，没有就是false</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105139789.png"  alt="image-20211007105139789">
+      </p>
+
+        <h2 id="String数据类型"   >
+          <a href="#String数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#String数据类型" class="headerlink" title="String数据类型"></a>String数据类型</h2>
+      
+        <h3 id="JS-中的-String-变量数据类型"   >
+          <a href="#JS-中的-String-变量数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中的-String-变量数据类型" class="headerlink" title="JS 中的 String 变量数据类型"></a>JS 中的 String 变量数据类型</h3>
+      <p>变量数据类型：String<br>String变量数据值：“数据”    ‘数据’</p>
+<p>创建字符串对象的两种方式：</p>
+<p>1：var str1=”啦啦啦“        【这种的字符串数据类型称为小String，用typeof 测该变量数据类型为 string】</p>
+<p>2：var str2 = new String（“啦啦啦”）         【这种的字符串数据类型称为大String，用typeof 测该变量数据类型为 object】</p>
+<p>注意：</p>
+<p>1：利用第二种方式创建字符串，其中 String（）是 JS 的内置类，它的父类是 Object（），因此它创建的字符串称为大String，用typeof 测该变量数据类型为 object</p>
+<p>2：不管是哪种方式创建的字符串对象【大String和小String】他们的方法和属性都是共用的</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105213597.png"  alt="image-20211007105213597">
+      </p>
+
+        <h3 id="JS-中-String-数据类型常用的属性和方法"   >
+          <a href="#JS-中-String-数据类型常用的属性和方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中-String-数据类型常用的属性和方法" class="headerlink" title="JS 中 String 数据类型常用的属性和方法"></a>JS 中 String 数据类型常用的属性和方法</h3>
+      <p>常用属性：字符串.length    【获取字符串的长度】</p>
+<p>常用方法：</p>
+<p>总字符串.indexOf（指定字符串）：获取指定字符串在总字符串内第一次出现的下标索引，没有出现过返回 -1 ，出现了则返回下标</p>
+<p>总字符串.lastIndexOf（指定字符串）：获取指定字符串在总字符串内最后一次出现的下标索引，没有出现过返回 -1 ，出现了则返回下标</p>
+<p>字符串.replace（待替换字符串，替换字符串）：将字符串内的指定字符进行替换，如果待替换的字符有多个只替换第一个，全部替换需要正则</p>
+<p>字符串.substr（startIndex，length）：根据字符串开始位置的下标索引和截取长度，截取字符串</p>
+<p>字符串.substring（startIndex，endIndex）：根据字符串开始位置的下表索引和结束位置的下标索引截取字符串，ps：截取的字符串不包括结束索引</p>
+<p>字符串.toLowerCase（）：将字符串全部转为小写</p>
+<p>字符串.toUpperCase（）：将字符串全部转为大写</p>
+<p>字符串.split（字符）：根据括号内的字符将字符串进行分割，分割为多个字符串存放到Object对象内</p>
+<p>注意：substr和substring两个方法的区别是面试问题</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105240305.png"  alt="image-20211007105240305">
+      </p>
+
+        <h3 id="JS-中的三目运算符格式"   >
+          <a href="#JS-中的三目运算符格式" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中的三目运算符格式" class="headerlink" title="JS 中的三目运算符格式"></a>JS 中的三目运算符格式</h3>
+      <p>格式：条件 ？ 条件成立执行的语句 ： 条件不成立执行的语句</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105248244.png"  alt="image-20211007105248244">
+      </p>
+
+        <h2 id="Object数据类型"   >
+          <a href="#Object数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#Object数据类型" class="headerlink" title="Object数据类型"></a>Object数据类型</h2>
+      
+        <h3 id="JS-中-Object-数据类型的一些知识"   >
+          <a href="#JS-中-Object-数据类型的一些知识" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中-Object-数据类型的一些知识" class="headerlink" title="JS 中 Object 数据类型的一些知识"></a>JS 中 Object 数据类型的一些知识</h3>
+      <p>概念：Object是所有自定义类的父类【超类】，也就是所有自定义的类都会默认继承 Object 类的所有属性和方法，自定义的类可以重写Object类的属性和方法，也就是说自己定义的类里面可以使用 Object类里面的所有属性和方法，和python一样</p>
+<p>Object 类的属性：</p>
+<p>prototype【就学这个】：作用是动态的给类扩展属性和方法<br>constructor：……..</p>
+<p>Object 类的方法【知道就行】：</p>
+<p>toString（）：…….<br>valueOf（）：…….<br>toLocaleString（）：……</p>
+<p>​    </p>
+
+        <h3 id="JS-中怎么定义类和创建类对象"   >
+          <a href="#JS-中怎么定义类和创建类对象" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中怎么定义类和创建类对象" class="headerlink" title="JS 中怎么定义类和创建类对象"></a>JS 中怎么定义类和创建类对象</h3>
+      <p>定义类的方式：</p>
+<p>第一种方式：function 类名（形参）{ }</p>
+<p>第二种方式：类名 = function（形参）{ }</p>
+<p>注意：对，你没有看错，定义类的方法和定义函数的两种方法一样！！！就是这么六批！！！就是说构造函数和创建类是放在一起完成的</p>
+<p>创建【实例化】类对象的方法：var 类对象 = new 已经定义的类名（实参）           【可以看做先调用这个函数，在实例化对象，就可以解释下面的注意了】</p>
+<p>注意：在利用定义好的类创建对象时，会自动执行类里面的代码！</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105324485.png"  alt="image-20211007105324485">
+      </p>
+
+        <h3 id="JS-中如何为定义的类添加属性以及访问类实例化对象的属性两种方法"   >
+          <a href="#JS-中如何为定义的类添加属性以及访问类实例化对象的属性两种方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中如何为定义的类添加属性以及访问类实例化对象的属性两种方法" class="headerlink" title="JS 中如何为定义的类添加属性以及访问类实例化对象的属性两种方法"></a>JS 中如何为定义的类添加属性以及访问类实例化对象的属性两种方法</h3>
+      <p>为类添加自身属性语法：this.类的属性名 = 类的属性值      【this代表当前类，类似于 python 的 self】</p>
+<p>访问类属性的两种方法：</p>
+<p>1：类的属性值 = 实例化对象.类的属性名<br>2：类的属性值 = 实例化对象[“类的属性名”]</p>
+<p>​                
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105347243.png"  alt="image-20211007105347243">
+      </p>
+
+        <h3 id="JS-中如何为定义的类添加函数以及如何调用类实例化对象的方法"   >
+          <a href="#JS-中如何为定义的类添加函数以及如何调用类实例化对象的方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中如何为定义的类添加函数以及如何调用类实例化对象的方法" class="headerlink" title="JS 中如何为定义的类添加函数以及如何调用类实例化对象的方法"></a>JS 中如何为定义的类添加函数以及如何调用类实例化对象的方法</h3>
+      <p>为类添加自身函数：this.函数名 = funtion（）{ }</p>
+<p>调用类实例化对象自身的函数：实例化对象.函数名</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105416429.png"  alt="image-20211007105416429">
+      </p>
+
+        <h2 id="JS三种数据类型的prototype属性"   >
+          <a href="#JS三种数据类型的prototype属性" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS三种数据类型的prototype属性" class="headerlink" title="JS三种数据类型的prototype属性"></a>JS三种数据类型的prototype属性</h2>
+      
+        <h3 id="JS-中有哪六种数据类型"   >
+          <a href="#JS-中有哪六种数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中有哪六种数据类型" class="headerlink" title="JS 中有哪六种数据类型"></a>JS 中有哪六种数据类型</h3>
+      <p>答：Undefined、String、Number、Null、Boolean、Object</p>
+
+        <h3 id="JS-中六种数据类型中的-prototype-属性的功能以及用法"   >
+          <a href="#JS-中六种数据类型中的-prototype-属性的功能以及用法" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中六种数据类型中的-prototype-属性的功能以及用法" class="headerlink" title="JS 中六种数据类型中的 prototype 属性的功能以及用法"></a>JS 中六种数据类型中的 prototype 属性的功能以及用法</h3>
+      <p>pytotype属性功能：为String、Boolean、Object 数据类型动态添加【扩展】属性以及方法，方便后面使用</p>
+<p>添加属性语法：</p>
+<p>1：String.prototype.添加的属性或者方法名<br>2：Boolean.prototype.添加的属性或者方法名<br>3：Object【方法名】.prototype.添加的属性或者方法名</p>
+<p>获取【调用】prototype 添加的属性和方法语法：<br>1：“略略库”.添加的属性或者方法名<br>2：false.添加的属性或者方法名<br>3：实例化对象.添加的属性或者方法名</p>
+<p>注意：</p>
+<p>1：prototype 为什么样的数据类型动态添加属性和方法，那么获取或调用添加的属性和方法时，就用这个数据类型获取！！！</p>
+<p>2：prototype 可以为上面哪三种数据类型动态添加属性和方法，当然也可以重写！</p>
+<p>3：利用 prototype 为类添加属性时，要这样  类名.prototype.添加的属性或方法名</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105452195.png"  alt="image-20211007105452195">
+      </p>
+
+        <h2 id="JS中undefind、null、NaN的区别"   >
+          <a href="#JS中undefind、null、NaN的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS中undefind、null、NaN的区别" class="headerlink" title="JS中undefind、null、NaN的区别"></a>JS中undefind、null、NaN的区别</h2>
+      
+        <h3 id="JS-中undefind、null、NaN-三者的区别"   >
+          <a href="#JS-中undefind、null、NaN-三者的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中undefind、null、NaN-三者的区别" class="headerlink" title="JS 中undefind、null、NaN 三者的区别"></a>JS 中undefind、null、NaN 三者的区别</h3>
+      <p>1：undefind、null、NaN 数据类型不一样</p>
+<p>undefined：Udefined</p>
+<p>null：Null</p>
+<p>NaN：Number</p>
+<p>2：null 与 undefined 值【类型不相同】相等，其他两者不相等！</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105510895.png"  alt="image-20211007105510895">
+      </p>
+
+        <h3 id="JS-中-“-”以及“-”的区别"   >
+          <a href="#JS-中-“-”以及“-”的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中-“-”以及“-”的区别" class="headerlink" title="JS 中 “==”以及“===”的区别"></a>JS 中 “==”以及“===”的区别</h3>
+      <p>“==”：等号运算法，判断运算符两边的数据值是否相等，相等返回 true、不等返回 false</p>
+<p>“===”：全等运算符，判断运算符两边的数据值与类型是否相等，相等返回 true、不等返回 false   【JS特有】</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105523408.png"  alt="image-20211007105523408">
+      </p>
+
+        <h2 id="JS-中怎么创建数组"   >
+          <a href="#JS-中怎么创建数组" class="heading-link"><i class="fas fa-link"></i></a><a href="#JS-中怎么创建数组" class="headerlink" title="JS 中怎么创建数组"></a>JS 中怎么创建数组</h2>
+      <p>创建语法：var arr = [“啦啦啦”，false，“略”，26，null ]</p>
+<p>获取元组内数据：元组名 [ 数据的下标索引 ]</p>
+<p>注意：</p>
+<p>1：在 JS 中元组就相当于 python 中的列表</p>
+<p>2：在 JS 中的元组内可以存放任何类型的数据！</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007105542919.png"  alt="image-20211007105542919">
+      </p>
+<p>持续更新中…….</p>
+<p>​    </p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/06/JavaScript%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">http://pythonlamb.github.io/2021/10/06/JavaScript%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/JavaScript/">JavaScript</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/07/JavaScript-%E8%BF%90%E7%AE%97%E7%AC%A6/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">JavaScript--运算符</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/06/JavaScript%E2%80%94%E2%80%94JS%E5%9F%BA%E7%A1%80/"><span class="paginator-prev__text">JavaScript——JS基础</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JS%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">
+          JS中的变量数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD%E5%8F%98%E9%87%8F%E9%83%BD%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">
+          JS 中变量都有哪几种基本数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD-typeof-%E6%96%B9%E6%B3%95%E7%9A%84%E5%8A%9F%E8%83%BD%E4%BB%A5%E5%8F%8A%E5%85%B6%E8%AF%AD%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">
+          JS 中 typeof 方法的功能以及其语法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Undefined%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">
+          Undefined数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Number%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">
+          Number数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84-Number-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.1.</span> <span class="toc-text">
+          JS 中变量的 Number 数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E5%86%85%E7%BD%AE%E7%9A%84-isNaN%EF%BC%88%EF%BC%89%E3%80%81parseInt%EF%BC%88%EF%BC%89%E3%80%81parseFloat%EF%BC%88%EF%BC%89%E3%80%81Math-ceil%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">3.2.</span> <span class="toc-text">
+          JS 内置的 isNaN（）、parseInt（）、parseFloat（）、Math.ceil（）方法的功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Boolean%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">
+          Boolean数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84-Boolean-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.1.</span> <span class="toc-text">
+          JS 中变量的 Boolean 数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD-Boolean%EF%BC%88%EF%BC%89%E5%87%BD%E6%95%B0%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">4.2.</span> <span class="toc-text">
+          JS 中 Boolean（）函数的应用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.</span> <span class="toc-text">
+          String数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD%E7%9A%84-String-%E5%8F%98%E9%87%8F%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.1.</span> <span class="toc-text">
+          JS 中的 String 变量数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD-String-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%B8%B8%E7%94%A8%E7%9A%84%E5%B1%9E%E6%80%A7%E5%92%8C%E6%96%B9%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">
+          JS 中 String 数据类型常用的属性和方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD%E7%9A%84%E4%B8%89%E7%9B%AE%E8%BF%90%E7%AE%97%E7%AC%A6%E6%A0%BC%E5%BC%8F"><span class="toc-number">5.3.</span> <span class="toc-text">
+          JS 中的三目运算符格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Object%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.</span> <span class="toc-text">
+          Object数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD-Object-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86"><span class="toc-number">6.1.</span> <span class="toc-text">
+          JS 中 Object 数据类型的一些知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD%E6%80%8E%E4%B9%88%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%92%8C%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%AF%B9%E8%B1%A1"><span class="toc-number">6.2.</span> <span class="toc-text">
+          JS 中怎么定义类和创建类对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD%E5%A6%82%E4%BD%95%E4%B8%BA%E5%AE%9A%E4%B9%89%E7%9A%84%E7%B1%BB%E6%B7%BB%E5%8A%A0%E5%B1%9E%E6%80%A7%E4%BB%A5%E5%8F%8A%E8%AE%BF%E9%97%AE%E7%B1%BB%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="toc-number">6.3.</span> <span class="toc-text">
+          JS 中如何为定义的类添加属性以及访问类实例化对象的属性两种方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD%E5%A6%82%E4%BD%95%E4%B8%BA%E5%AE%9A%E4%B9%89%E7%9A%84%E7%B1%BB%E6%B7%BB%E5%8A%A0%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E8%B0%83%E7%94%A8%E7%B1%BB%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">6.4.</span> <span class="toc-text">
+          JS 中如何为定义的类添加函数以及如何调用类实例化对象的方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JS%E4%B8%89%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84prototype%E5%B1%9E%E6%80%A7"><span class="toc-number">7.</span> <span class="toc-text">
+          JS三种数据类型的prototype属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD%E6%9C%89%E5%93%AA%E5%85%AD%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">7.1.</span> <span class="toc-text">
+          JS 中有哪六种数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD%E5%85%AD%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%AD%E7%9A%84-prototype-%E5%B1%9E%E6%80%A7%E7%9A%84%E5%8A%9F%E8%83%BD%E4%BB%A5%E5%8F%8A%E7%94%A8%E6%B3%95"><span class="toc-number">7.2.</span> <span class="toc-text">
+          JS 中六种数据类型中的 prototype 属性的功能以及用法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JS%E4%B8%ADundefind%E3%80%81null%E3%80%81NaN%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">8.</span> <span class="toc-text">
+          JS中undefind、null、NaN的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%ADundefind%E3%80%81null%E3%80%81NaN-%E4%B8%89%E8%80%85%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">8.1.</span> <span class="toc-text">
+          JS 中undefind、null、NaN 三者的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E4%B8%AD-%E2%80%9C-%E2%80%9D%E4%BB%A5%E5%8F%8A%E2%80%9C-%E2%80%9D%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">8.2.</span> <span class="toc-text">
+          JS 中 “&#x3D;&#x3D;”以及“&#x3D;&#x3D;&#x3D;”的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JS-%E4%B8%AD%E6%80%8E%E4%B9%88%E5%88%9B%E5%BB%BA%E6%95%B0%E7%BB%84"><span class="toc-number">9.</span> <span class="toc-text">
+          JS 中怎么创建数组</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

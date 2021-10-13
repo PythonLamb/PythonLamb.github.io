@@ -1,0 +1,643 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：抓包工具Charles的简单配置，抓取电脑端及手机端的https协议的数据包、小程序的抓包等..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="抓包工具Charles详解">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/08/%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7Charles%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：抓包工具Charles的简单配置，抓取电脑端及手机端的https协议的数据包、小程序的抓包等..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105218270.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105244168.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105253163.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105328041.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105355560.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105409074.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105421034.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105438963.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105449613.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105504129.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105514136.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105533962.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105545301.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105556849.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105606809.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105644864.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105653263.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105813297.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105830763.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105841010.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105849159.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105906752.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105914773.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105924014.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105933467.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105942279.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105956121.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110018005.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110037139.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110046252.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110056133.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110115177.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110124684.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110137503.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110146330.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110212309.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110220963.png">
+<meta property="article:published_time" content="2021-10-08T02:42:23.000Z">
+<meta property="article:modified_time" content="2021-10-08T03:03:11.363Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="爬虫常用工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105218270.png"><title>抓包工具Charles详解 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/08/%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7Charles%E8%AF%A6%E8%A7%A3/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">抓包工具Charles详解</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-08</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-08</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">961</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">5分</span></span></div></header><div class="post-body"><p>本文主讲：抓包工具Charles的简单配置，抓取电脑端及手机端的https协议的数据包、小程序的抓包等..</p>
+<span id="more"></span>
+
+
+
+        <h2 id="Charles安装以及破解"   >
+          <a href="#Charles安装以及破解" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles安装以及破解" class="headerlink" title="Charles安装以及破解"></a>Charles安装以及破解</h2>
+      
+        <h3 id="为什么要学习Charles工具抓包【对比与Fiddler】"   >
+          <a href="#为什么要学习Charles工具抓包【对比与Fiddler】" class="heading-link"><i class="fas fa-link"></i></a><a href="#为什么要学习Charles工具抓包【对比与Fiddler】" class="headerlink" title="为什么要学习Charles工具抓包【对比与Fiddler】"></a>为什么要学习Charles工具抓包【对比与Fiddler】</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105218270.png"  alt="image-20211008105218270">
+      </p>
+
+        <h3 id="如何安装-Charles-工具以及破解使用‘"   >
+          <a href="#如何安装-Charles-工具以及破解使用‘" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何安装-Charles-工具以及破解使用‘" class="headerlink" title="如何安装 Charles 工具以及破解使用‘"></a>如何安装 Charles 工具以及破解使用‘</h3>
+      <p>软件官网：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.charlesproxy.com/latest-release/download.do" >https://www.charlesproxy.com/latest-release/download.do</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>如何破解：</p>
+<p>第一步：打开下面网站获取 Charles 秘钥</p>
+<p>破解网站：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.zzzmode.com/mytools/charles/" >https://www.zzzmode.com/mytools/charles/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>获取秘钥</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105244168.png"  alt="image-20211008105244168">
+      </p>
+<p>第二步：打开 Charles 软件菜单栏上的【Help】最上方的一个选项就是输入秘钥激活软件</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105253163.png"  alt="image-20211008105253163">
+      </p>
+
+        <h2 id="认识Charles界面"   >
+          <a href="#认识Charles界面" class="heading-link"><i class="fas fa-link"></i></a><a href="#认识Charles界面" class="headerlink" title="认识Charles界面"></a>认识Charles界面</h2>
+      
+        <h3 id="Charles-界面的框架"   >
+          <a href="#Charles-界面的框架" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles-界面的框架" class="headerlink" title="Charles 界面的框架"></a>Charles 界面的框架</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105328041.png"  alt="image-20211008105328041">
+      </p>
+
+        <h3 id="Charles-菜单栏的功能"   >
+          <a href="#Charles-菜单栏的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles-菜单栏的功能" class="headerlink" title="Charles 菜单栏的功能"></a>Charles 菜单栏的功能</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105355560.png"  alt="image-20211008105355560">
+      </p>
+<p>禁止缓存</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105409074.png"  alt="image-20211008105409074">
+      </p>
+<p>查看当前计算机的IP地址</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105421034.png"  alt="image-20211008105421034">
+      </p>
+
+        <h3 id="Charles-工具栏的功能"   >
+          <a href="#Charles-工具栏的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles-工具栏的功能" class="headerlink" title="Charles 工具栏的功能"></a>Charles 工具栏的功能</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105438963.png"  alt="image-20211008105438963">
+      </p>
+
+        <h3 id="Charles-监听面板【会话展示窗口】的功能"   >
+          <a href="#Charles-监听面板【会话展示窗口】的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles-监听面板【会话展示窗口】的功能" class="headerlink" title="Charles 监听面板【会话展示窗口】的功能"></a>Charles 监听面板【会话展示窗口】的功能</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105449613.png"  alt="image-20211008105449613">
+      </p>
+
+        <h3 id="Charles-指定数据包详细信息展示面板的功能"   >
+          <a href="#Charles-指定数据包详细信息展示面板的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles-指定数据包详细信息展示面板的功能" class="headerlink" title="Charles 指定数据包详细信息展示面板的功能"></a>Charles 指定数据包详细信息展示面板的功能</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105504129.png"  alt="image-20211008105504129">
+      </p>
+<p>查看查询参数或者表单数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105514136.png"  alt="image-20211008105514136">
+      </p>
+
+        <h2 id="抓包前的设置【Charles与浏览器设置】"   >
+          <a href="#抓包前的设置【Charles与浏览器设置】" class="heading-link"><i class="fas fa-link"></i></a><a href="#抓包前的设置【Charles与浏览器设置】" class="headerlink" title="抓包前的设置【Charles与浏览器设置】"></a>抓包前的设置【Charles与浏览器设置】</h2>
+      
+        <h3 id="利用-Charles-抓-http包前的设置【计算机设置、Charles设置、浏览器设置】"   >
+          <a href="#利用-Charles-抓-http包前的设置【计算机设置、Charles设置、浏览器设置】" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用-Charles-抓-http包前的设置【计算机设置、Charles设置、浏览器设置】" class="headerlink" title="利用 Charles 抓 http包前的设置【计算机设置、Charles设置、浏览器设置】"></a>利用 Charles 抓 http包前的设置【计算机设置、Charles设置、浏览器设置】</h3>
+      <p>各种程序设置的顺序【从前到后】：计算机设置 → Charles设置 → 浏览器设置</p>
+<p>注意：以下设置的步骤只针对抓取 http 协议的数据包，抓取 https 协议数据包还要额外设置【安装证书】</p>
+
+        <h4 id="计算机代理设置："   >
+          <a href="#计算机代理设置：" class="heading-link"><i class="fas fa-link"></i></a><a href="#计算机代理设置：" class="headerlink" title="计算机代理设置："></a>计算机代理设置：</h4>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105533962.png"  alt="image-20211008105533962">
+      </p>
+
+        <h4 id="Charles客户端设置："   >
+          <a href="#Charles客户端设置：" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles客户端设置：" class="headerlink" title="Charles客户端设置："></a>Charles客户端设置：</h4>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105545301.png"  alt="image-20211008105545301">
+      </p>
+
+        <h4 id="浏览器设置【在SwitchyOmega插件内设置浏览器使用Charles为代理服务器】"   >
+          <a href="#浏览器设置【在SwitchyOmega插件内设置浏览器使用Charles为代理服务器】" class="heading-link"><i class="fas fa-link"></i></a><a href="#浏览器设置【在SwitchyOmega插件内设置浏览器使用Charles为代理服务器】" class="headerlink" title="浏览器设置【在SwitchyOmega插件内设置浏览器使用Charles为代理服务器】"></a>浏览器设置【在SwitchyOmega插件内设置浏览器使用Charles为代理服务器】</h4>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105556849.png"  alt="image-20211008105556849">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105606809.png"  alt="image-20211008105606809">
+      </p>
+
+        <h2 id="Charles抓取https数据包的设置【重点】"   >
+          <a href="#Charles抓取https数据包的设置【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles抓取https数据包的设置【重点】" class="headerlink" title="Charles抓取https数据包的设置【重点】"></a>Charles抓取https数据包的设置【重点】</h2>
+      
+        <h3 id="一：Charles-抓取-https-数据包的设置"   >
+          <a href="#一：Charles-抓取-https-数据包的设置" class="heading-link"><i class="fas fa-link"></i></a><a href="#一：Charles-抓取-https-数据包的设置" class="headerlink" title="一：Charles 抓取 https 数据包的设置"></a>一：Charles 抓取 https 数据包的设置</h3>
+      <p>第一步：在 Charles 上安装根证书</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105644864.png"  alt="image-20211008105644864">
+      </p>
+<p>将证书安装在【受信任的证书颁发机构】内</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105653263.png"  alt="image-20211008105653263">
+      </p>
+<p>第二步：启用 HTTP 透明代理</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105813297.png"  alt="image-20211008105813297">
+      </p>
+<p>第三步：进行 SSH 代理设置【安全证书代理设置】</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105830763.png"  alt="image-20211008105830763">
+      </p>
+<p>导入规则</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105841010.png"  alt="image-20211008105841010">
+      </p>
+<p>第四步：重启浏览器以及 Charles 后进行 HTTPS 协议数据包的抓取</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105849159.png"  alt="image-20211008105849159">
+      </p>
+
+        <h2 id="Charles对指定请求打断点【重要】"   >
+          <a href="#Charles对指定请求打断点【重要】" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles对指定请求打断点【重要】" class="headerlink" title="Charles对指定请求打断点【重要】"></a>Charles对指定请求打断点【重要】</h2>
+      
+        <h3 id="Charles-怎么对指定请求打断点"   >
+          <a href="#Charles-怎么对指定请求打断点" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles-怎么对指定请求打断点" class="headerlink" title="Charles 怎么对指定请求打断点"></a>Charles 怎么对指定请求打断点</h3>
+      <p>第一步：开启断点选项</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105906752.png"  alt="image-20211008105906752">
+      </p>
+<p>第二步：找到需要打断点的数据包后鼠标在上面右击选择【Breakpoints】</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105914773.png"  alt="image-20211008105914773">
+      </p>
+<p>第三步：对刚才打断点的数据包进行重新发送</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105924014.png"  alt="image-20211008105924014">
+      </p>
+<p>第四步：对打断点的数据包进行修改【修改请求协议】</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105933467.png"  alt="image-20211008105933467">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105942279.png"  alt="image-20211008105942279">
+      </p>
+<p>第五步：对打完断点后的数据包取消断点选项</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008105956121.png"  alt="image-20211008105956121">
+      </p>
+
+        <h2 id="Charles重新指定数据包的请求【爬虫用到！】"   >
+          <a href="#Charles重新指定数据包的请求【爬虫用到！】" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles重新指定数据包的请求【爬虫用到！】" class="headerlink" title="Charles重新指定数据包的请求【爬虫用到！】"></a>Charles重新指定数据包的请求【爬虫用到！】</h2>
+      
+        <h3 id="Charles-怎么对指定数据包进行更改后重新发送请求"   >
+          <a href="#Charles-怎么对指定数据包进行更改后重新发送请求" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles-怎么对指定数据包进行更改后重新发送请求" class="headerlink" title="Charles 怎么对指定数据包进行更改后重新发送请求"></a>Charles 怎么对指定数据包进行更改后重新发送请求</h3>
+      <p>第一步：找到需要更改请求重新发送的数据包，鼠标左键选中</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110018005.png"  alt="image-20211008110018005">
+      </p>
+<p>第二步：点击【钢笔】图标对数据包请求进行更改</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110037139.png"  alt="image-20211008110037139">
+      </p>
+<p>第三步：获取更改请求后重新发送的数据包信息</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110046252.png"  alt="image-20211008110046252">
+      </p>
+<p>第四步：删除初始化数据包</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110056133.png"  alt="image-20211008110056133">
+      </p>
+
+        <h3 id="Charles-怎么对指定数据包进行更改后重新发送请求在爬虫领域的应用"   >
+          <a href="#Charles-怎么对指定数据包进行更改后重新发送请求在爬虫领域的应用" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles-怎么对指定数据包进行更改后重新发送请求在爬虫领域的应用" class="headerlink" title="Charles 怎么对指定数据包进行更改后重新发送请求在爬虫领域的应用"></a>Charles 怎么对指定数据包进行更改后重新发送请求在爬虫领域的应用</h3>
+      <p>答：找到指定数据包后，对查询参数或者表单数据进行更改分析返回的数据</p>
+
+        <h2 id="Charles抓取手机数据包【重点】"   >
+          <a href="#Charles抓取手机数据包【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles抓取手机数据包【重点】" class="headerlink" title="Charles抓取手机数据包【重点】"></a>Charles抓取手机数据包【重点】</h2>
+      
+        <h3 id="Charles-抓取手机数据包的设置【charles与手机客户端的设置】"   >
+          <a href="#Charles-抓取手机数据包的设置【charles与手机客户端的设置】" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles-抓取手机数据包的设置【charles与手机客户端的设置】" class="headerlink" title="Charles 抓取手机数据包的设置【charles与手机客户端的设置】"></a>Charles 抓取手机数据包的设置【charles与手机客户端的设置】</h3>
+      
+        <h4 id="Chrales设置"   >
+          <a href="#Chrales设置" class="heading-link"><i class="fas fa-link"></i></a><a href="#Chrales设置" class="headerlink" title="Chrales设置"></a>Chrales设置</h4>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110115177.png"  alt="image-20211008110115177">
+      </p>
+<p>提示信息</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110124684.png"  alt="image-20211008110124684">
+      </p>
+
+        <h4 id="移动设备设置："   >
+          <a href="#移动设备设置：" class="heading-link"><i class="fas fa-link"></i></a><a href="#移动设备设置：" class="headerlink" title="移动设备设置："></a>移动设备设置：</h4>
+      <p>第一步：将手机与 charles 所在的计算机处在同一局域网下面</p>
+<p>第二步：对手机的网络进行代理设置【手动设置代理】</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110137503.png"  alt="image-20211008110137503">
+      </p>
+<p>第三步：手机登录 chls.pro/ssl 网站下载根证书后并安装这个证书</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110146330.png"  alt="image-20211008110146330">
+      </p>
+<p>安装证书</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110212309.png"  alt="image-20211008110212309">
+      </p>
+<p>第四步：手机打开 APP 进行抓包即可</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008110220963.png"  alt="image-20211008110220963">
+      </p>
+
+        <h2 id="Charles对小程序进行抓包"   >
+          <a href="#Charles对小程序进行抓包" class="heading-link"><i class="fas fa-link"></i></a><a href="#Charles对小程序进行抓包" class="headerlink" title="Charles对小程序进行抓包"></a>Charles对小程序进行抓包</h2>
+      
+        <h3 id="如何利用-Charles-对小程序进行抓包"   >
+          <a href="#如何利用-Charles-对小程序进行抓包" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何利用-Charles-对小程序进行抓包" class="headerlink" title="如何利用 Charles 对小程序进行抓包"></a>如何利用 Charles 对小程序进行抓包</h3>
+      <p>答：设置代理的步骤和用手机抓APP数据包是一样的，代理设置好之后，利用微信打开某个小程序进行抓包即可！！</p>
+<p>持续更新中…..</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/08/%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7Charles%E8%AF%A6%E8%A7%A3/">http://pythonlamb.github.io/2021/10/08/%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7Charles%E8%AF%A6%E8%A7%A3/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E7%88%AC%E8%99%AB%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">爬虫常用工具</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/08/%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7Mitmproxy%E8%AF%A6%E8%A7%A3/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">抓包工具Mitmproxy详解</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/08/%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7Fiddler%E8%AF%A6%E8%A7%A3/"><span class="paginator-prev__text">抓包工具Fiddler详解</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Charles%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E7%A0%B4%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">
+          Charles安装以及破解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AD%A6%E4%B9%A0Charles%E5%B7%A5%E5%85%B7%E6%8A%93%E5%8C%85%E3%80%90%E5%AF%B9%E6%AF%94%E4%B8%8EFiddler%E3%80%91"><span class="toc-number">1.1.</span> <span class="toc-text">
+          为什么要学习Charles工具抓包【对比与Fiddler】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Charles-%E5%B7%A5%E5%85%B7%E4%BB%A5%E5%8F%8A%E7%A0%B4%E8%A7%A3%E4%BD%BF%E7%94%A8%E2%80%98"><span class="toc-number">1.2.</span> <span class="toc-text">
+          如何安装 Charles 工具以及破解使用‘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86Charles%E7%95%8C%E9%9D%A2"><span class="toc-number">2.</span> <span class="toc-text">
+          认识Charles界面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Charles-%E7%95%8C%E9%9D%A2%E7%9A%84%E6%A1%86%E6%9E%B6"><span class="toc-number">2.1.</span> <span class="toc-text">
+          Charles 界面的框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Charles-%E8%8F%9C%E5%8D%95%E6%A0%8F%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">2.2.</span> <span class="toc-text">
+          Charles 菜单栏的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Charles-%E5%B7%A5%E5%85%B7%E6%A0%8F%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">2.3.</span> <span class="toc-text">
+          Charles 工具栏的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Charles-%E7%9B%91%E5%90%AC%E9%9D%A2%E6%9D%BF%E3%80%90%E4%BC%9A%E8%AF%9D%E5%B1%95%E7%A4%BA%E7%AA%97%E5%8F%A3%E3%80%91%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">2.4.</span> <span class="toc-text">
+          Charles 监听面板【会话展示窗口】的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Charles-%E6%8C%87%E5%AE%9A%E6%95%B0%E6%8D%AE%E5%8C%85%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF%E5%B1%95%E7%A4%BA%E9%9D%A2%E6%9D%BF%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">2.5.</span> <span class="toc-text">
+          Charles 指定数据包详细信息展示面板的功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%93%E5%8C%85%E5%89%8D%E7%9A%84%E8%AE%BE%E7%BD%AE%E3%80%90Charles%E4%B8%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E8%AE%BE%E7%BD%AE%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          抓包前的设置【Charles与浏览器设置】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-Charles-%E6%8A%93-http%E5%8C%85%E5%89%8D%E7%9A%84%E8%AE%BE%E7%BD%AE%E3%80%90%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AE%BE%E7%BD%AE%E3%80%81Charles%E8%AE%BE%E7%BD%AE%E3%80%81%E6%B5%8F%E8%A7%88%E5%99%A8%E8%AE%BE%E7%BD%AE%E3%80%91"><span class="toc-number">3.1.</span> <span class="toc-text">
+          利用 Charles 抓 http包前的设置【计算机设置、Charles设置、浏览器设置】</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BB%A3%E7%90%86%E8%AE%BE%E7%BD%AE%EF%BC%9A"><span class="toc-number">3.1.1.</span> <span class="toc-text">
+          计算机代理设置：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Charles%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AE%BE%E7%BD%AE%EF%BC%9A"><span class="toc-number">3.1.2.</span> <span class="toc-text">
+          Charles客户端设置：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E8%AE%BE%E7%BD%AE%E3%80%90%E5%9C%A8SwitchyOmega%E6%8F%92%E4%BB%B6%E5%86%85%E8%AE%BE%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BD%BF%E7%94%A8Charles%E4%B8%BA%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%91"><span class="toc-number">3.1.3.</span> <span class="toc-text">
+          浏览器设置【在SwitchyOmega插件内设置浏览器使用Charles为代理服务器】</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Charles%E6%8A%93%E5%8F%96https%E6%95%B0%E6%8D%AE%E5%8C%85%E7%9A%84%E8%AE%BE%E7%BD%AE%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          Charles抓取https数据包的设置【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%EF%BC%9ACharles-%E6%8A%93%E5%8F%96-https-%E6%95%B0%E6%8D%AE%E5%8C%85%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="toc-number">4.1.</span> <span class="toc-text">
+          一：Charles 抓取 https 数据包的设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Charles%E5%AF%B9%E6%8C%87%E5%AE%9A%E8%AF%B7%E6%B1%82%E6%89%93%E6%96%AD%E7%82%B9%E3%80%90%E9%87%8D%E8%A6%81%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          Charles对指定请求打断点【重要】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Charles-%E6%80%8E%E4%B9%88%E5%AF%B9%E6%8C%87%E5%AE%9A%E8%AF%B7%E6%B1%82%E6%89%93%E6%96%AD%E7%82%B9"><span class="toc-number">5.1.</span> <span class="toc-text">
+          Charles 怎么对指定请求打断点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Charles%E9%87%8D%E6%96%B0%E6%8C%87%E5%AE%9A%E6%95%B0%E6%8D%AE%E5%8C%85%E7%9A%84%E8%AF%B7%E6%B1%82%E3%80%90%E7%88%AC%E8%99%AB%E7%94%A8%E5%88%B0%EF%BC%81%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          Charles重新指定数据包的请求【爬虫用到！】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Charles-%E6%80%8E%E4%B9%88%E5%AF%B9%E6%8C%87%E5%AE%9A%E6%95%B0%E6%8D%AE%E5%8C%85%E8%BF%9B%E8%A1%8C%E6%9B%B4%E6%94%B9%E5%90%8E%E9%87%8D%E6%96%B0%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82"><span class="toc-number">6.1.</span> <span class="toc-text">
+          Charles 怎么对指定数据包进行更改后重新发送请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Charles-%E6%80%8E%E4%B9%88%E5%AF%B9%E6%8C%87%E5%AE%9A%E6%95%B0%E6%8D%AE%E5%8C%85%E8%BF%9B%E8%A1%8C%E6%9B%B4%E6%94%B9%E5%90%8E%E9%87%8D%E6%96%B0%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82%E5%9C%A8%E7%88%AC%E8%99%AB%E9%A2%86%E5%9F%9F%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">6.2.</span> <span class="toc-text">
+          Charles 怎么对指定数据包进行更改后重新发送请求在爬虫领域的应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Charles%E6%8A%93%E5%8F%96%E6%89%8B%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%8C%85%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">7.</span> <span class="toc-text">
+          Charles抓取手机数据包【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Charles-%E6%8A%93%E5%8F%96%E6%89%8B%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%8C%85%E7%9A%84%E8%AE%BE%E7%BD%AE%E3%80%90charles%E4%B8%8E%E6%89%8B%E6%9C%BA%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%AE%BE%E7%BD%AE%E3%80%91"><span class="toc-number">7.1.</span> <span class="toc-text">
+          Charles 抓取手机数据包的设置【charles与手机客户端的设置】</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Chrales%E8%AE%BE%E7%BD%AE"><span class="toc-number">7.1.1.</span> <span class="toc-text">
+          Chrales设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E8%AE%BE%E5%A4%87%E8%AE%BE%E7%BD%AE%EF%BC%9A"><span class="toc-number">7.1.2.</span> <span class="toc-text">
+          移动设备设置：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Charles%E5%AF%B9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%BF%9B%E8%A1%8C%E6%8A%93%E5%8C%85"><span class="toc-number">8.</span> <span class="toc-text">
+          Charles对小程序进行抓包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8-Charles-%E5%AF%B9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%BF%9B%E8%A1%8C%E6%8A%93%E5%8C%85"><span class="toc-number">8.1.</span> <span class="toc-text">
+          如何利用 Charles 对小程序进行抓包</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

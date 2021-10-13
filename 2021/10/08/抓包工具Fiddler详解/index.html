@@ -1,0 +1,619 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：对Fiddler的简单配置、认识Fiddler面板各项选项功能、利用Fiddler对电脑浏览器及其手机APP进行抓包等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="抓包工具Fiddler详解">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/08/%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7Fiddler%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：对Fiddler的简单配置、认识Fiddler面板各项选项功能、利用Fiddler对电脑浏览器及其手机APP进行抓包等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008102912950.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008102947599.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103026332.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103037698.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103052064.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103103371.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103113620.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103128746.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103138219.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103209918.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103227112.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103250236.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103306911.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103319641.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103344501.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103356130.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103409198.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103421562.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103433390.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103454335.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103509719.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103526760.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103557629.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103620171.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103633176.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103644624.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103658329.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103721179.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103742568.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103801258.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103813220.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103835693.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103904261.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103918034.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103936009.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103949649.png">
+<meta property="article:published_time" content="2021-10-08T02:21:18.000Z">
+<meta property="article:modified_time" content="2021-10-08T02:39:57.250Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="爬虫常用工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008102912950.png"><title>抓包工具Fiddler详解 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/08/%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7Fiddler%E8%AF%A6%E8%A7%A3/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">抓包工具Fiddler详解</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-08</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-08</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">1.1k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">5分</span></span></div></header><div class="post-body"><p>本文主讲：对Fiddler的简单配置、认识Fiddler面板各项选项功能、利用Fiddler对电脑浏览器及其手机APP进行抓包等</p>
+<span id="more"></span>
+
+
+
+        <h2 id="一些名词的解释"   >
+          <a href="#一些名词的解释" class="heading-link"><i class="fas fa-link"></i></a><a href="#一些名词的解释" class="headerlink" title="一些名词的解释"></a>一些名词的解释</h2>
+      <p>URL：统一资源定位符   格式：协议类型 ：// 域名 ：端口号 资源路径</p>
+<p>响应状态码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008102912950.png"  alt="image-20211008102912950">
+      </p>
+
+        <h2 id="Fiddler工具安装以及使用"   >
+          <a href="#Fiddler工具安装以及使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#Fiddler工具安装以及使用" class="headerlink" title="Fiddler工具安装以及使用"></a>Fiddler工具安装以及使用</h2>
+      
+        <h3 id="什么是-Fiddler"   >
+          <a href="#什么是-Fiddler" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是-Fiddler" class="headerlink" title="什么是 Fiddler"></a>什么是 Fiddler</h3>
+      <p>答：Fiddler是一种抓包工具，可用于网页端以及手机端的抓包，与浏览器开发者模式的网络选项功能差不多，浏览器通过Fiddler向服务器发送请求，服务器将数据包先发给 Fiddler 后通过 Fiddler 在发给浏览器，Fiddler 就相当于服务器代理</p>
+
+        <h3 id="如何安装-Fiddler"   >
+          <a href="#如何安装-Fiddler" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何安装-Fiddler" class="headerlink" title="如何安装 Fiddler"></a>如何安装 Fiddler</h3>
+      <p>软件官网：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.telerik.com/download/fiddler" >https://www.telerik.com/download/fiddler</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>傻瓜式安装即可</p>
+
+        <h3 id="Fiddler-抓包前的配置【Fiddler客户端配置、浏览器配置】"   >
+          <a href="#Fiddler-抓包前的配置【Fiddler客户端配置、浏览器配置】" class="heading-link"><i class="fas fa-link"></i></a><a href="#Fiddler-抓包前的配置【Fiddler客户端配置、浏览器配置】" class="headerlink" title="Fiddler 抓包前的配置【Fiddler客户端配置、浏览器配置】"></a>Fiddler 抓包前的配置【Fiddler客户端配置、浏览器配置】</h3>
+      
+        <h4 id="本地计算机的配置："   >
+          <a href="#本地计算机的配置：" class="heading-link"><i class="fas fa-link"></i></a><a href="#本地计算机的配置：" class="headerlink" title="本地计算机的配置："></a>本地计算机的配置：</h4>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008102947599.png"  alt="image-20211008102947599">
+      </p>
+<p>ps：因为作者太懒了，所以将图中的 charles 换成 fiddler 即可</p>
+
+        <h4 id="Fiddler客户端的配置："   >
+          <a href="#Fiddler客户端的配置：" class="heading-link"><i class="fas fa-link"></i></a><a href="#Fiddler客户端的配置：" class="headerlink" title="Fiddler客户端的配置："></a>Fiddler客户端的配置：</h4>
+      <p> 注意：Fiddler 客户端配置完成后一定要重启客户端以及浏览器才能生效！【不要忘记重启浏览器】</p>
+<p>配置 Fiddler 监听的端口号</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103026332.png"  alt="image-20211008103026332">
+      </p>
+<p>配置截取 HTTPS 的数据流量包</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103037698.png"  alt="image-20211008103037698">
+      </p>
+
+        <h4 id="浏览器的配置："   >
+          <a href="#浏览器的配置：" class="heading-link"><i class="fas fa-link"></i></a><a href="#浏览器的配置：" class="headerlink" title="浏览器的配置："></a>浏览器的配置：</h4>
+      <p>第一步：安装 switchyomega 插件【用于管理浏览器的代理服务器】</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103052064.png"  alt="image-20211008103052064">
+      </p>
+<p>第二步：在插件内设置 fiddler 为浏览器的代理服务器</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103103371.png"  alt="image-20211008103103371">
+      </p>
+<p>第三步：使用刚才设置的代理服务器为浏览器的代理服务器</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103113620.png"  alt="image-20211008103113620">
+      </p>
+
+        <h3 id="利用-Fiddler-抓包的步骤【前提是fiddler客户端与浏览器全部配置完成】"   >
+          <a href="#利用-Fiddler-抓包的步骤【前提是fiddler客户端与浏览器全部配置完成】" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用-Fiddler-抓包的步骤【前提是fiddler客户端与浏览器全部配置完成】" class="headerlink" title="利用 Fiddler 抓包的步骤【前提是fiddler客户端与浏览器全部配置完成】"></a>利用 Fiddler 抓包的步骤【前提是fiddler客户端与浏览器全部配置完成】</h3>
+      <p>第一步：打开 fiddler</p>
+<p>第二步：打开浏览器通过 switchyomega  插件将浏览器代理服务器设置为 fiddler</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103128746.png"  alt="image-20211008103128746">
+      </p>
+<p>第三步：浏览器打开需要抓包的网站</p>
+<p>第四步：fiddler客户端对指定网站进行抓包</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103138219.png"  alt="image-20211008103138219">
+      </p>
+
+        <h2 id="初识Fiddler界面以及一些常用功能"   >
+          <a href="#初识Fiddler界面以及一些常用功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#初识Fiddler界面以及一些常用功能" class="headerlink" title="初识Fiddler界面以及一些常用功能"></a>初识Fiddler界面以及一些常用功能</h2>
+      
+        <h3 id="Fiddler-界面的组成"   >
+          <a href="#Fiddler-界面的组成" class="heading-link"><i class="fas fa-link"></i></a><a href="#Fiddler-界面的组成" class="headerlink" title="Fiddler 界面的组成"></a>Fiddler 界面的组成</h3>
+      <p>答：Fiddler 界面由五部分组成，分别是菜单栏、工具栏、数据包监听面板、命令行+状态栏、辅助标签+工具</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103209918.png"  alt="image-20211008103209918">
+      </p>
+
+        <h3 id="Fiddler-界面的一些常用功能"   >
+          <a href="#Fiddler-界面的一些常用功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#Fiddler-界面的一些常用功能" class="headerlink" title="Fiddler 界面的一些常用功能"></a>Fiddler 界面的一些常用功能</h3>
+      <p>菜单栏常用功能</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103227112.png"  alt="image-20211008103227112">
+      </p>
+<p>工具栏常用功能：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103250236.png"  alt="image-20211008103250236">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103306911.png"  alt="image-20211008103306911">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103319641.png"  alt="image-20211008103319641">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103344501.png"  alt="image-20211008103344501">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103356130.png"  alt="image-20211008103356130">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103409198.png"  alt="image-20211008103409198">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103421562.png"  alt="image-20211008103421562">
+      </p>
+<p>认识数据包监听面板：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103433390.png"  alt="image-20211008103433390">
+      </p>
+<p>命令行+状态栏常用功能：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103454335.png"  alt="image-20211008103454335">
+      </p>
+<p>辅助标签+工具常用功能：</p>
+<p>统计信息工具</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103509719.png"  alt="image-20211008103509719">
+      </p>
+<p>查看工具</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103526760.png"  alt="image-20211008103526760">
+      </p>
+<p>自动响应器工具</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103557629.png"  alt="image-20211008103557629">
+      </p>
+<p>设计者工具</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103620171.png"  alt="image-20211008103620171">
+      </p>
+<p>过滤器工具</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103633176.png"  alt="image-20211008103633176">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103644624.png"  alt="image-20211008103644624">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103658329.png"  alt="image-20211008103658329">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103721179.png"  alt="image-20211008103721179">
+      </p>
+
+        <h2 id="Fiddler抓取安卓APP数据包【重点】"   >
+          <a href="#Fiddler抓取安卓APP数据包【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#Fiddler抓取安卓APP数据包【重点】" class="headerlink" title="Fiddler抓取安卓APP数据包【重点】"></a>Fiddler抓取安卓APP数据包【重点】</h2>
+      
+        <h3 id="Fiddler-对安卓手机进行抓包前的设置【fiddler客户端以及安卓手机设置】"   >
+          <a href="#Fiddler-对安卓手机进行抓包前的设置【fiddler客户端以及安卓手机设置】" class="heading-link"><i class="fas fa-link"></i></a><a href="#Fiddler-对安卓手机进行抓包前的设置【fiddler客户端以及安卓手机设置】" class="headerlink" title="Fiddler 对安卓手机进行抓包前的设置【fiddler客户端以及安卓手机设置】"></a>Fiddler 对安卓手机进行抓包前的设置【fiddler客户端以及安卓手机设置】</h3>
+      
+        <h4 id="FIddler客户端设置："   >
+          <a href="#FIddler客户端设置：" class="heading-link"><i class="fas fa-link"></i></a><a href="#FIddler客户端设置：" class="headerlink" title="FIddler客户端设置："></a>FIddler客户端设置：</h4>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103742568.png"  alt="image-20211008103742568">
+      </p>
+<p>ps：设置完成后重启 fiddler</p>
+
+        <h4 id="安卓手机设置："   >
+          <a href="#安卓手机设置：" class="heading-link"><i class="fas fa-link"></i></a><a href="#安卓手机设置：" class="headerlink" title="安卓手机设置："></a>安卓手机设置：</h4>
+      <p>第一步：将安卓手机与 fiddler 所在的电脑连接在同一局域网下【同一wifi】</p>
+<p>第二步：手机打开 Wifi 设置找到所连接的 Wifi 选择代理</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103801258.png"  alt="image-20211008103801258">
+      </p>
+<p>第三步：在代理选项内找到手动后输入fiddler 所在的电脑的ip地址以及 fiddler监听的端口号点击保存</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103813220.png"  alt="image-20211008103813220">
+      </p>
+<p>第四步：设置完成之后手机就利用 fiddler 做代理上网，fiddler就可以抓到手机 APP 的数据包了</p>
+
+        <h2 id="Fiddler-怎么抓取-http-协议的安卓-APP-数据包"   >
+          <a href="#Fiddler-怎么抓取-http-协议的安卓-APP-数据包" class="heading-link"><i class="fas fa-link"></i></a><a href="#Fiddler-怎么抓取-http-协议的安卓-APP-数据包" class="headerlink" title="Fiddler 怎么抓取 http 协议的安卓 APP 数据包"></a>Fiddler 怎么抓取 http 协议的安卓 APP 数据包</h2>
+      <p>答：手机与 Fiddler 进行上面的设置之后，手机打开浏览器或者其他 APP ，fillder就可以抓到 http 协议的数据包了</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103835693.png"  alt="image-20211008103835693">
+      </p>
+
+        <h2 id="Fiddler-怎么抓取-https-协议的安卓-APP-数据包"   >
+          <a href="#Fiddler-怎么抓取-https-协议的安卓-APP-数据包" class="heading-link"><i class="fas fa-link"></i></a><a href="#Fiddler-怎么抓取-https-协议的安卓-APP-数据包" class="headerlink" title="Fiddler 怎么抓取 https 协议的安卓 APP 数据包"></a>Fiddler 怎么抓取 https 协议的安卓 APP 数据包</h2>
+      
+        <h3 id="fiddler客户端设置："   >
+          <a href="#fiddler客户端设置：" class="heading-link"><i class="fas fa-link"></i></a><a href="#fiddler客户端设置：" class="headerlink" title="fiddler客户端设置："></a>fiddler客户端设置：</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103904261.png"  alt="image-20211008103904261">
+      </p>
+
+        <h3 id="安卓手机设置：-1"   >
+          <a href="#安卓手机设置：-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#安卓手机设置：-1" class="headerlink" title="安卓手机设置："></a>安卓手机设置：</h3>
+      <p>第一步：手机浏览器打开网站   <a href="https://fiddler所在计算机ip地址:fiddler监听的端口号">https://fiddler所在计算机ip地址:fiddler监听的端口号</a> 下载数字证书 例如 https：//192.168.1.8：8888 </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103918034.png"  alt="image-20211008103918034">
+      </p>
+<p>第二步：手机打开设置 → 更多设置 → 系统安全→ 加密与凭证 →从存储设备上进行安装→选择下载好的fiddler数字证书</p>
+<p>这个步骤进行省略……….</p>
+<p>第三步：手机打开 app 应用进行抓包【Http协议以及Https协议的】</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103936009.png"  alt="image-20211008103936009">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008103949649.png"  alt="image-20211008103949649">
+      </p>
+<p>注意：在抓包结束后应该将代理关闭，否则会造成手机无法上网的情况@！！</p>
+
+        <h2 id="Fiddler插件下载与使用"   >
+          <a href="#Fiddler插件下载与使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#Fiddler插件下载与使用" class="headerlink" title="Fiddler插件下载与使用"></a>Fiddler插件下载与使用</h2>
+      <p>Fiddler插件下载网：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.telerik.com/fiddler/add-ons" >https://www.telerik.com/fiddler/add-ons</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>插件使用：下载完插件后直接运行即可安装</p>
+<p>持续更新中…….</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/08/%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7Fiddler%E8%AF%A6%E8%A7%A3/">http://pythonlamb.github.io/2021/10/08/%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7Fiddler%E8%AF%A6%E8%A7%A3/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E7%88%AC%E8%99%AB%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">爬虫常用工具</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/08/%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7Charles%E8%AF%A6%E8%A7%A3/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">抓包工具Charles详解</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/08/Python%E7%9A%84%E6%9C%89%E8%B6%A3%E6%A1%88%E4%BE%8B%E3%80%90%E7%AC%AC%E4%B8%80%E6%9C%9F%E3%80%91/"><span class="paginator-prev__text">Python的有趣案例【第一期】</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%90%8D%E8%AF%8D%E7%9A%84%E8%A7%A3%E9%87%8A"><span class="toc-number">1.</span> <span class="toc-text">
+          一些名词的解释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fiddler%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">
+          Fiddler工具安装以及使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-Fiddler"><span class="toc-number">2.1.</span> <span class="toc-text">
+          什么是 Fiddler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Fiddler"><span class="toc-number">2.2.</span> <span class="toc-text">
+          如何安装 Fiddler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fiddler-%E6%8A%93%E5%8C%85%E5%89%8D%E7%9A%84%E9%85%8D%E7%BD%AE%E3%80%90Fiddler%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E3%80%81%E6%B5%8F%E8%A7%88%E5%99%A8%E9%85%8D%E7%BD%AE%E3%80%91"><span class="toc-number">2.3.</span> <span class="toc-text">
+          Fiddler 抓包前的配置【Fiddler客户端配置、浏览器配置】</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E9%85%8D%E7%BD%AE%EF%BC%9A"><span class="toc-number">2.3.1.</span> <span class="toc-text">
+          本地计算机的配置：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Fiddler%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E9%85%8D%E7%BD%AE%EF%BC%9A"><span class="toc-number">2.3.2.</span> <span class="toc-text">
+          Fiddler客户端的配置：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E9%85%8D%E7%BD%AE%EF%BC%9A"><span class="toc-number">2.3.3.</span> <span class="toc-text">
+          浏览器的配置：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-Fiddler-%E6%8A%93%E5%8C%85%E7%9A%84%E6%AD%A5%E9%AA%A4%E3%80%90%E5%89%8D%E6%8F%90%E6%98%AFfiddler%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%A8%E9%83%A8%E9%85%8D%E7%BD%AE%E5%AE%8C%E6%88%90%E3%80%91"><span class="toc-number">2.4.</span> <span class="toc-text">
+          利用 Fiddler 抓包的步骤【前提是fiddler客户端与浏览器全部配置完成】</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E8%AF%86Fiddler%E7%95%8C%E9%9D%A2%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD"><span class="toc-number">3.</span> <span class="toc-text">
+          初识Fiddler界面以及一些常用功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fiddler-%E7%95%8C%E9%9D%A2%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">3.1.</span> <span class="toc-text">
+          Fiddler 界面的组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fiddler-%E7%95%8C%E9%9D%A2%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD"><span class="toc-number">3.2.</span> <span class="toc-text">
+          Fiddler 界面的一些常用功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fiddler%E6%8A%93%E5%8F%96%E5%AE%89%E5%8D%93APP%E6%95%B0%E6%8D%AE%E5%8C%85%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          Fiddler抓取安卓APP数据包【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fiddler-%E5%AF%B9%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E8%BF%9B%E8%A1%8C%E6%8A%93%E5%8C%85%E5%89%8D%E7%9A%84%E8%AE%BE%E7%BD%AE%E3%80%90fiddler%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A5%E5%8F%8A%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E8%AE%BE%E7%BD%AE%E3%80%91"><span class="toc-number">4.1.</span> <span class="toc-text">
+          Fiddler 对安卓手机进行抓包前的设置【fiddler客户端以及安卓手机设置】</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#FIddler%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AE%BE%E7%BD%AE%EF%BC%9A"><span class="toc-number">4.1.1.</span> <span class="toc-text">
+          FIddler客户端设置：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E8%AE%BE%E7%BD%AE%EF%BC%9A"><span class="toc-number">4.1.2.</span> <span class="toc-text">
+          安卓手机设置：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fiddler-%E6%80%8E%E4%B9%88%E6%8A%93%E5%8F%96-http-%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%AE%89%E5%8D%93-APP-%E6%95%B0%E6%8D%AE%E5%8C%85"><span class="toc-number">5.</span> <span class="toc-text">
+          Fiddler 怎么抓取 http 协议的安卓 APP 数据包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fiddler-%E6%80%8E%E4%B9%88%E6%8A%93%E5%8F%96-https-%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%AE%89%E5%8D%93-APP-%E6%95%B0%E6%8D%AE%E5%8C%85"><span class="toc-number">6.</span> <span class="toc-text">
+          Fiddler 怎么抓取 https 协议的安卓 APP 数据包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fiddler%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AE%BE%E7%BD%AE%EF%BC%9A"><span class="toc-number">6.1.</span> <span class="toc-text">
+          fiddler客户端设置：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E8%AE%BE%E7%BD%AE%EF%BC%9A-1"><span class="toc-number">6.2.</span> <span class="toc-text">
+          安卓手机设置：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fiddler%E6%8F%92%E4%BB%B6%E4%B8%8B%E8%BD%BD%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="toc-number">7.</span> <span class="toc-text">
+          Fiddler插件下载与使用</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

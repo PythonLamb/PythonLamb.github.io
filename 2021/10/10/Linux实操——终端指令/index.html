@@ -1,0 +1,1183 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：常用的Linux终端指令，这些内容非常重要…..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux实操——终端指令">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/10/Linux%E5%AE%9E%E6%93%8D%E2%80%94%E2%80%94%E7%BB%88%E7%AB%AF%E6%8C%87%E4%BB%A4/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：常用的Linux终端指令，这些内容非常重要…..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010102908855.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010102922782.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010102945028.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010102957109.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103005183.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103013151.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103013151.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103045233.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103114072.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103131153.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103138325.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103242969.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103251874.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103332984.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103342711.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103355140.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103355140.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103432132.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103440133.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103449438.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103507401.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103521948.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103540580.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103552250.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103600097.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103617328.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103631127.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103642486.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103715953.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103725517.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103755814.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103810762.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103828252.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103835686.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103850295.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103915571.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103925314.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103934270.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104000076.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104015954.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104027884.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104043272.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104142436.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104202776.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104230013.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104244612.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104308997.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104318242.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104330892.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104355405.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104417091.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104424560.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104433434.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104441903.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104515493.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104527177.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104557635.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104610634.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104635535.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104652373.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104730198.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104739332.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104800173.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104838338.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104856352.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104909879.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104927083.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104941424.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105015484.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105024894.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105135874.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105147104.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105155010.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105204699.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105213641.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105229913.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105240135.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105259391.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105309767.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105347913.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105358011.png">
+<meta property="article:published_time" content="2021-10-10T02:04:55.000Z">
+<meta property="article:modified_time" content="2021-10-10T02:54:02.969Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="Linux实操">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010102908855.png"><title>Linux实操——终端指令 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/10/Linux%E5%AE%9E%E6%93%8D%E2%80%94%E2%80%94%E7%BB%88%E7%AB%AF%E6%8C%87%E4%BB%A4/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Linux实操——终端指令</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-10</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-10</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">7.5k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">42分</span></span></div></header><div class="post-body"><p>本文主讲：常用的Linux终端指令，这些内容非常重要…..</p>
+<span id="more"></span>
+
+
+
+
+
+
+        <h2 id="Linux命令——显示文件和目录（路径）"   >
+          <a href="#Linux命令——显示文件和目录（路径）" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——显示文件和目录（路径）" class="headerlink" title="Linux命令——显示文件和目录（路径）"></a>Linux命令——显示文件和目录（路径）</h2>
+      <p>注意事项：在Linux终端中~代表家目录</p>
+<p>终端命令一：pwd指令</p>
+<p>功能：在终端输入指令pwd，显示当前工作的的路径（目录）<br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010102908855.png"  alt="image-20211010102908855">
+      </p>
+<p>终端命令二：tree指令【centos没有这个】</p>
+<p>功能：tree指令不加参数时，以树状图的方式显示当前工作文件夹下面的所有文件及文件夹内容<br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010102922782.png"  alt="image-20211010102922782">
+      </p>
+<p>终端命令三：ls指令</p>
+<p>功能：以列表的方式显示当前文件夹下面的所有可见文件及文件夹名称</p>
+<p>指令选项：ls - a （以列表的形式显示当前文件夹下所有的文件（可见和不可见）及文件夹名称）</p>
+<p>注意事项：在linxu中文件或者文件夹前面加点 . 代表这个文件为隐藏文件</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010102945028.png"  alt="image-20211010102945028">
+      </p>
+
+        <h2 id="Linux命令——显示详细信息"   >
+          <a href="#Linux命令——显示详细信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——显示详细信息" class="headerlink" title="Linux命令——显示详细信息"></a>Linux命令——显示详细信息</h2>
+      <p>一：终端中ls指令的 -l 选项功能</p>
+<p>功能：详细显示当前工作目录下的文件及目录（文件夹）信息<br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010102957109.png"  alt="image-20211010102957109">
+      </p>
+<p>二：终端ls指令的 -h 选项功能</p>
+<p>功能：选项 - h 配合选项 -l 以人性化的方式显示文件大小<br>注意事项：终端指令的选项可以有多个也可以没有<br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103005183.png"  alt="image-20211010103005183">
+      </p>
+<p>硬链接数</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103013151.png"  alt="image-20211010103013151">
+      </p>
+
+        <h2 id="Linux命令——切换目录"   >
+          <a href="#Linux命令——切换目录" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——切换目录" class="headerlink" title="Linux命令——切换目录"></a>Linux命令——切换目录</h2>
+      <p>本课掌握：能够使用cd命令切换根目录、家目录、当前目录、上级目录等</p>
+<p>一：Linux指令——cd命令（切换目录）</p>
+<p>功能：在Linux中利用cd命令切换工作目录</p>
+<p>注意事项：</p>
+<p>1：在Linux中大小写敏感，即a文件夹与A文件夹是不同的<br>2：cd指令后面如果什么都没写（没有选项和参数），默认回到家目录（主目录）<br>3：cd指令后面可以写绝对路径也可以写相对路径<br>4：相对路径是相对于某个路径的路径，绝对路径是从根目录开始写的路径</p>
+<p>cd指令的参数及其功能：</p>
+<p>1：指令 cd ~ 或者指令 cd 代表转换到家目录<br>2：指令 cd .  代表当前目录<br>3：指令 cd .. 代表切换到上级目录<br>4：指令 cd - 代表切换到上次的目录，注意不是上级<br>5：指令 cd ./a 代表切换到当前目录下的a目录，当然./也可以省略，代表进入当前目录下的a目录<br>6：指令 cd ../b 代表切换到当前目录的上级的b目录</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103013151.png" >
+      </p>
+
+        <h2 id="Linux命令——创建文件和文件夹"   >
+          <a href="#Linux命令——创建文件和文件夹" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——创建文件和文件夹" class="headerlink" title="Linux命令——创建文件和文件夹"></a>Linux命令——创建文件和文件夹</h2>
+      <p>Linux指令——mkdir（创建目录）</p>
+<p>功能：利用 mkdir 指令可以在Linux中创建指定文件夹<br>指令选项：mkdir - p 的功能是递归创建文件夹<br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103045233.png"  alt="image-20211010103045233">
+      </p>
+<p>Linux指令——touch（创建文件）</p>
+<p>功能：利用 touch 指令可以在Linux中创建指定文件</p>
+<p>注意事项：</p>
+<p>1：可以利用 touch 指令创建一个或者多个文件，多个文件之间空格隔开</p>
+<p>2：touch指令后面可以是相对路径也可以是绝对路径用于创建文件</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103114072.png"  alt="image-20211010103114072">
+      </p>
+<p>Linux指令——gedit（打开并编辑文件）</p>
+<p>功能：利用 gedit 指令打开指定文件并用于编辑</p>
+<p>注意事项：</p>
+<p>1：利用gedit指令可打开多个文件用于编辑</p>
+<p>2：gedit 指令后面的文件可以是相对路径也可以是绝对路径</p>
+<p>3：不是所有的Linux发行版本都支持gedit指令，比如CentOS就不支持</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103131153.png"  alt="image-20211010103131153">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103138325.png"  alt="image-20211010103138325">
+      </p>
+
+        <h2 id="Linux命令——删除文件与文件夹"   >
+          <a href="#Linux命令——删除文件与文件夹" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——删除文件与文件夹" class="headerlink" title="Linux命令——删除文件与文件夹"></a>Linux命令——删除文件与文件夹</h2>
+      <p>Linux指令 —— rm （删除文件或目录）</p>
+<p>功能：在Ubuntu中利用 rm 指令可以删除指定文件或目录</p>
+<p>指令选项：</p>
+<p>文件删除选项<br>1：rm 文件名   没有选项功能默认就是强制删除指定文件，没有任何提示，相当于 rm -f<br>2：rm -i  文件名   功能是以人机交互的方式删除文件或目录，有提示信息3：rm -f  文件名   功能是强制删除指定的文件，没有任何的提示</p>
+<p>目录删除选项</p>
+<p>1：rm -r  目录名   意思是按照递归的方式删除指定目录，在利用rm指令删除目录的时候一定要书写选项 - r 否则会报错</p>
+<p>注意事项：</p>
+<p>1：rm 指令后面的文件可以是相对路径的也可以是绝对路径的</p>
+<p>2：在CentOS中 rm 指令是以人机交互的方式删除文件，相当于Ubuntu中的 rm -I</p>
+<p>快速代码体验（利用rm指令删除文件）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103242969.png"  alt="image-20211010103242969">
+      </p>
+<p>快速代码体验（利用rm删除指定目录）</p>
+<p>注意事项：在利用 rm 指令删除指定文件夹（目录）时，rm指令后一定要加上选项 -r 代表递归删除文件夹，不加 -r 会报错</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103251874.png"  alt="image-20211010103251874">
+      </p>
+
+        <h2 id="Linux命令——拷贝文件或目录"   >
+          <a href="#Linux命令——拷贝文件或目录" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——拷贝文件或目录" class="headerlink" title="Linux命令——拷贝文件或目录"></a>Linux命令——拷贝文件或目录</h2>
+      <p>Linux指令—— cp 拷贝文件与目录（文件夹）</p>
+<p>功能：利用 cp 指令可以实现对文件和文件夹的复制</p>
+<p>语法：cp 源文件路径  复制后的文件路径</p>
+<p>指令选项：</p>
+<p>文件拷贝选项</p>
+<p>1：cp -i  功能是人机交互式复制文件，如果目标路径有同名的文件则提示用户同名，是否覆盖<br>2：cp -f 功能是强制复制，目标目录下存在同名文件，直接覆盖掉，不提示<br>3：cp -v 功能是显示文件拷贝过程</p>
+<p>目录（文件夹）拷贝选项</p>
+<p>1：cp -r  功能是递归拷贝，在拷贝目录的时候必须加上 -r选项，否则会报错</p>
+<p>注意事项：</p>
+<p>1：如果目标文件夹内有同名的文件，则这个复制的文件将这个同名的文件覆盖掉<br>2：在拷贝目录的时候，必须加上选项 -r 递归拷贝，否则会报错 </p>
+<p>快速代码体验（cp指令无选项复制文件）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103332984.png"  alt="image-20211010103332984">
+      </p>
+<p>（cp指令有选项复制）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103342711.png"  alt="image-20211010103342711">
+      </p>
+<p>快速代码体验（cp指令复制目录）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103355140.png"  alt="image-20211010103355140">
+      </p>
+
+        <h2 id="Linux命令——移动（剪切）文件和目录"   >
+          <a href="#Linux命令——移动（剪切）文件和目录" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——移动（剪切）文件和目录" class="headerlink" title="Linux命令——移动（剪切）文件和目录"></a>Linux命令——移动（剪切）文件和目录</h2>
+      <p>Linux指令—— mv</p>
+<p>功能：快速实现文件及目录的移动、重命名<br>语法：mv 源文件路径 目标文件路径</p>
+<p>选项：</p>
+<p>移动文件</p>
+<p>-i  ：交互式移动文件，如果目标目录存在同名文件，则给出提示是否覆盖掉同名文件<br>-f ：强制移动文件，无论目标目录是否有同名文件，都会进行强制移动，无任何提示<br>-v：显示文件移动过程</p>
+<p>移动文件夹（目录）</p>
+<p>没有任何选项，无选项 -r</p>
+<p>注意事项：利用 mv 指令移动目录（文件夹）时，不需要加选项 -r 可直接移动也不会报错！！</p>
+<p>快速代码体验（无选项移动文件）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103355140.png" >
+      </p>
+<p>（有选项移动文件）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103432132.png"  alt="image-20211010103432132">
+      </p>
+<p>（mv指令移动文件夹）<br>注意事项：mv指令移动文件夹时不需要书写选项 -r 可直接移动，不报错</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103440133.png"  alt="image-20211010103440133">
+      </p>
+<p>（利用 mv 指令重命名文件和目录）</p>
+<p>同理也可以重命名目录</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103449438.png"  alt="image-20211010103449438">
+      </p>
+
+        <h2 id="Linux命令——其他"   >
+          <a href="#Linux命令——其他" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——其他" class="headerlink" title="Linux命令——其他"></a>Linux命令——其他</h2>
+      <p>一：清屏指令——clear （快捷键 Ctrl + l）</p>
+<p>功能：清空终端所有的指令，其实是换了多次行，达到清屏的效果<br>语法：clear 或者快捷键 Ctrl + l<br>注意事项： l 为小写的  L键，不是大写的 i 键<br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103507401.png"  alt="image-20211010103507401">
+      </p>
+<p>二：自动补全按键—— Tab键</p>
+<p>功能：按下Tab键自动补全文件或者目录名称</p>
+<p>三：查看指令的路径指令——which</p>
+<p>功能：可以查看Linux终端指令在计算机根目录的具体位置<br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103521948.png"  alt="image-20211010103521948">
+      </p>
+<p>四：Linux终端小技巧</p>
+<p>技巧1：按住键盘的 ↑ ↓ 键可以快速在曾经输入的指令间切换<br>技巧2：按住 Ctrl + Shift + “=”可快速增大终端界面字体大小<br>技巧3：按住 Ctrl + “ - ”（等号旁边的按键）可快速缩小终端界面字体大小</p>
+
+        <h2 id="Linux命令——日历、日期"   >
+          <a href="#Linux命令——日历、日期" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——日历、日期" class="headerlink" title="Linux命令——日历、日期"></a>Linux命令——日历、日期</h2>
+      <p>一：日历指令 —— cal</p>
+<p>功能：cal 无选项指令可以查看当前月份的日历</p>
+<p>指令选项：</p>
+<p>-3 ：功能是查看当前月份前一个月和后一个月这三个月份的日历<br>-y：显示这一年的日历<br>-j：把当前的时期按照一年中第多少天显示</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103540580.png"  alt="image-20211010103540580">
+      </p>
+<p>日期指令 —— date </p>
+<p>功能：查看当前的日期，即年月日、时间<br>语法：date</p>
+<p>指令参数</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103552250.png"  alt="image-20211010103552250">
+      </p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103600097.png"  alt="image-20211010103600097">
+      </p>
+
+        <h2 id="Linux命令——历史指令"   >
+          <a href="#Linux命令——历史指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——历史指令" class="headerlink" title="Linux命令——历史指令"></a>Linux命令——历史指令</h2>
+      <p>一：历史指令 —— history</p>
+<p>功能：利用 history 指令可查看在终端内曾经输入过的指令，并且进行编号</p>
+<p>指令参数：history 10 表示显示最近的十条历史指令</p>
+<p>调用历史指令：！历史指令编号  即可快速调用历史指令</p>
+<p>注意事项：历史指令保存在家目录中的 .bash_history 的隐藏文件中，可以用 gedit 进行查看</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103617328.png"  alt="image-20211010103617328">
+      </p>
+
+        <h2 id="Linux命令——查看与合并文件"   >
+          <a href="#Linux命令——查看与合并文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——查看与合并文件" class="headerlink" title="Linux命令——查看与合并文件"></a>Linux命令——查看与合并文件</h2>
+      <p>本课须知：利用 cat 指令 查看文件、连接多个文件查看内容</p>
+<p>8000.txt文件内容如下</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103631127.png"  alt="image-20211010103631127">
+      </p>
+<p>4000.txt文件内容如下</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103642486.png"  alt="image-20211010103642486">
+      </p>
+<p>查看文件、合并文件指令 —— cat </p>
+<p>功能：利用 cat 无选项指令可在终端查看文件内容，并且终端可以继续运行，这是 gedit 指令没办法比的</p>
+<p>指令选项：</p>
+<p>-n ：将文件内每一行（算上空白行）进行编号<br>-b：将文件内的每一行数据（不算空白行）进行编号<br>-s：如果两行数据之间有两行空白行，利用 -s 选项显示一行空白行</p>
+<p>注意事项：</p>
+<p>1：指令选项可以合并在一起写，比如说 -n -b 可以写成 -sb，效果是一样的</p>
+<p>2：cat 指令与 gedit 指令区别在 gedit打开文件出现窗口，且终端不能继续运行，cat 直接将文件内容打印在终端上，终端继续运行。</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103715953.png"  alt="image-20211010103715953">
+      </p>
+<p>cat 指令连接多个文件查看内容</p>
+<p>功能：cat 指令后面可以连接多个文件一起查看内容，并且一起编号等<br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103725517.png"  alt="image-20211010103725517">
+      </p>
+
+        <h2 id="Linux指令——分页查看文件内容"   >
+          <a href="#Linux指令——分页查看文件内容" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux指令——分页查看文件内容" class="headerlink" title="Linux指令——分页查看文件内容"></a>Linux指令——分页查看文件内容</h2>
+      <p>目标：利用 more 指令分页查看文件内容</p>
+<p>分页查看文件内容指令 —— more</p>
+<p>功能：利用 cat 指令查看一个内容非常多的文件内容很不方便，这时候我们就要用到 more 指令分页查看文件内容了</p>
+<p>无选项语法：more 文件名</p>
+<p>指令参数：more   +num  文件名    表示从第num行开始分页显示文件内容（加号不能省略，必须有加号）</p>
+<p>指令选项：<br>-p：先清空终端屏幕内容，在显示查看的文件内容<br>-s：文件内容中有两行空白行按照一行空白行显示</p>
+<p>指令常用操作：</p>
+<p>回车键：按下回车键向下显示一行文件内容</p>
+<p>空格键：按下空格键向下显示一页（终端一屏）文件内容</p>
+<p>Ctrl + b （b）：查看上一页内容</p>
+<p>Ctrl + f （f）：查看下一页内容</p>
+<p>q键：退出</p>
+<p>​                </p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103755814.png"  alt="image-20211010103755814">
+      </p>
+
+        <h2 id="Linux常用命令——数据流、管道"   >
+          <a href="#Linux常用命令——数据流、管道" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux常用命令——数据流、管道" class="headerlink" title="Linux常用命令——数据流、管道"></a>Linux常用命令——数据流、管道</h2>
+      <p>一：什么数据流？</p>
+<p>数据流分为输入流与输出流<br>输入流：从键盘输入数据或者从文件读取数据到内存中<br>输出流：将内存中的数据显示在屏幕（终端）上或者写入到一个文件中</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103810762.png"  alt="image-20211010103810762">
+      </p>
+<p>Linux数据流的分类：标准输入流、标准输出流、标准错误输出流</p>
+<p>二：数据流重定向指令 ——  &gt;</p>
+<p>使用背景：将输出在终端上的数据保存到文件内时，就用到了数据流重定向</p>
+<p>功能：数据流重定向是改变数据流的原输出方向（一般数据输出方向从屏幕显示改变为保存至文件内）</p>
+<p>指令：&gt; 或者 &gt;&gt;（ &gt;重定向的数据会覆盖文件内的数据，&gt;&gt;重定向的数据不会覆盖文件内容，追加在数据后面）</p>
+<p>数据流重定向图示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103828252.png"  alt="image-20211010103828252">
+      </p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103835686.png"  alt="image-20211010103835686">
+      </p>
+<p>管道指令—— | （多个Linux指令协同工作）</p>
+<p>功能：管道指令可以让多个Liux指令协同工作</p>
+<p>语法：指令1 | 指令2 | 指令3</p>
+<p>图解：指令1的输出信息相当于指令2的输入信息</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103850295.png" >
+      </p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103915571.png"  alt="image-20211010103915571">
+      </p>
+
+        <h2 id="Linux指令——查看进程以及杀死进程"   >
+          <a href="#Linux指令——查看进程以及杀死进程" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux指令——查看进程以及杀死进程" class="headerlink" title="Linux指令——查看进程以及杀死进程"></a>Linux指令——查看进程以及杀死进程</h2>
+      <p>一：Linux 指令如何查看当前指定项目的进程是否开启</p>
+<p>指令： ps -ef | grep 指定进程名</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103925314.png"  alt="image-20211010103925314">
+      </p>
+<p>二：什么 Linux 指令可以杀死指定进程</p>
+<p>指令：kill -9 任务进程号</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010103934270.png"  alt="image-20211010103934270">
+      </p>
+
+        <h2 id="Linux指令-——-IP地址"   >
+          <a href="#Linux指令-——-IP地址" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux指令-——-IP地址" class="headerlink" title="Linux指令 —— IP地址"></a>Linux指令 —— IP地址</h2>
+      <p>目标：</p>
+<p>1：掌握虚拟机网络设置两种模式的不同，NAT模式与桥接模式<br>3：利用 ifconfig 指令查看主机的 IP 地址<br>4：利用 ping 指令查看两台计算机网络的连通性</p>
+<p>一：虚拟机的NAT模式与桥接模式在IP地址上有和不同</p>
+<p>答：NAT模式的IP地址与物理机的IP地址是一样的（共享IP），而桥接模式IP地址是与物理机不同的，因为它向物理机网段又重新要了一个IP地址</p>
+<p>桥接模式优缺点：</p>
+<p>优点：不需要任何设置虚拟机就可以和物理主机进行通信</p>
+<p>缺点：虚拟机需要占一个物理机真实网段的IP地址</p>
+<p>二：查看主机的IP地址指令 —— ifconfig</p>
+<p>功能：查看主机（虚拟机）的 IP 地址<br>语法：ifconfig<br>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104000076.png"  alt="image-20211010104000076">
+      </p>
+<p>三：查看网络是否可达（可通信）指令—— ping</p>
+<p>功能：用于查看两个主机（同一个网段下）或者主机与网站之间是否可以进行通信（是否可达）的指令</p>
+<p>语法：<br>主机与主机：ping 另一台主机的 ip 地址<br>主机与网站：ping 网站名</p>
+<p>注意事项：两个IP地址是在同一个网段下，就是具有相同的网络号</p>
+<p>快速代码体验（主机与主机）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104015954.png"  alt="image-20211010104015954">
+      </p>
+<p>主机与网站的通信是否可达</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104027884.png"  alt="image-20211010104027884">
+      </p>
+<p>知识提升：如何在Windows系统中查看IP地址</p>
+<p>答：进入终端输入指令 ipconfig 即可查看Window主机的IP地址</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104043272.png"  alt="image-20211010104043272">
+      </p>
+
+        <h2 id="Linux命令——建立链接文件"   >
+          <a href="#Linux命令——建立链接文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——建立链接文件" class="headerlink" title="Linux命令——建立链接文件"></a>Linux命令——建立链接文件</h2>
+      <p>本课须知：<br>1：能够说出Linux文件的硬链接文件与软链接文件概念<br>2：掌握 ln 命令创建硬链接与软链接<br>3：掌握 ln -s 创建软链接</p>
+<p>一：文件软链接与硬链接概念</p>
+<p>文件软链接：给文件创建一个快捷方式，这个快捷方式指向文件名（文件内存地址名），从而打开文件，获取文件内容，软链接被删除对文件无影响，文件删除，则软链接失效，通过软链接可以更改源文件内容。</p>
+<p>文件硬链接：直接给源文件起了另外的（一个或多个）名字（文件内存地址多个名字），删除其中一个硬链接（名字）不会对文件造成影响，文件名字全部删除则文件删除，通过硬链接可以更改源文件内容</p>
+<p>图解</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104142436.png"  alt="image-20211010104142436">
+      </p>
+<p>二：创建软链接指令 —— ln -s （文件快捷方式）</p>
+<p>功能：为文件创建快捷方式（软链接），软链接删除不会对源文件造成影响</p>
+<p>语法： ln -s  源文件 软链接文件</p>
+<p>快速代码体验</p>
+<p>注意事项：之所以软链接文件内容和源文件内容是一样的，是因为软链接（快捷方式）直接指向源文件</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104202776.png"  alt="image-20211010104202776">
+      </p>
+<p>三 ：创建硬链接文件</p>
+<p>功能：为源文件起多个名字，点击其中一个名字就会打开这个文件，删除其中一个名字不会对文件产生影响，除非全部删除掉</p>
+<p>语法：ln 源文件名称 硬链接文件名称</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104230013.png"  alt="image-20211010104230013">
+      </p>
+
+        <h2 id="文件软链接与文件硬链接区别"   >
+          <a href="#文件软链接与文件硬链接区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件软链接与文件硬链接区别" class="headerlink" title="文件软链接与文件硬链接区别"></a>文件软链接与文件硬链接区别</h2>
+      <p>一：文件软链接</p>
+<p>删除文件软链接对源文件的影响：不会产生影响</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104244612.png"  alt="image-20211010104244612">
+      </p>
+<p>删除源文件对软链接文件（快捷方式）产生的影响：软链接文件失效</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104308997.png"  alt="image-20211010104308997">
+      </p>
+<p>二：硬链接文件</p>
+<p>删除文件硬链接对源文件的影响：不产生影响</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104318242.png"  alt="image-20211010104318242">
+      </p>
+<p>删除源文件对源文件的硬链接文件影响：不产生影响（因为只删除掉源文件其中一个名字，还有其他名字）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104330892.png"  alt="image-20211010104330892">
+      </p>
+<p>软链接与硬链接的区别：</p>
+<p>1：软链接可以对不存在的文件创建软链接文件，而硬链接不可以<br>2：软链接可以对文件夹（目录）创建软链接文件，硬链接不可以</p>
+
+        <h2 id="linux常用命令——文件搜索"   >
+          <a href="#linux常用命令——文件搜索" class="heading-link"><i class="fas fa-link"></i></a><a href="#linux常用命令——文件搜索" class="headerlink" title="linux常用命令——文件搜索"></a>linux常用命令——文件搜索</h2>
+      <p>目标：<br>1：掌握 grep 指令搜索文本文件内部的数据<br>2：初步掌握grep指令的正则表达式<br>3：掌握 find 指令在Ubuntu内搜索文件</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104355405.png"  alt="image-20211010104355405">
+      </p>
+<p>一：文本文件内部数据查找指令 —— grep </p>
+<p>功能：grep 是强大的文本搜索指令，即 grep 指令可以对文本文件内特定数据进行查找，将查找的文本这一行的数据全都打印出来</p>
+<p>语法：grep  [-options]  “查找的文本”  文件名</p>
+<p>注意事项：利用 grep 指令搜索文本数据的时候，查找的文本最好用双引号或者单引号括起来</p>
+<p>指令选项：</p>
+<p>-i ：功能是不区分查找的文本大小写，大小写的文本内容全部都查找出来<br>-n：功能是显示查找的文本数据在文件内的行号（第几行）<br>-v：功能是取反，即打印文件中不包含这个文本数据（引号内的文本）的内容</p>
+<p>grep指令的正则表达式图示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104417091.png"  alt="image-20211010104417091">
+      </p>
+<p>快速代码体验（grep指令无选项）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104424560.png"  alt="image-20211010104424560">
+      </p>
+<p>快速代码体验（grep有选项）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104433434.png"  alt="image-20211010104433434">
+      </p>
+<p>快速代码体验（grep指令正则表达式初体验）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104441903.png"  alt="image-20211010104441903">
+      </p>
+<p>二： 查找文件指令 —— find</p>
+<p>功能：在Linux操作系统的目录下查找符合条件的文件</p>
+<p>语法：</p>
+<p>1：find  文件目录 -name  文件名要求<br>2： find  文件目录  -size  文件大小要求</p>
+<p>指令选项：</p>
+<p>-name：查找符合文件名的文件<br>-size：查找符合文件大小的文件</p>
+<p>注意事项：文件大小 M 必须是大写</p>
+<p>快速代码体验（利用 -name 查找文件）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104515493.png"  alt="image-20211010104515493">
+      </p>
+<p>快速代码体验（-size 文件大小查找文件）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104527177.png"  alt="image-20211010104527177">
+      </p>
+
+        <h2 id="Linux命令——归档、压缩文件"   >
+          <a href="#Linux命令——归档、压缩文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——归档、压缩文件" class="headerlink" title="Linux命令——归档、压缩文件"></a>Linux命令——归档、压缩文件</h2>
+      <p>目标：<br>1：掌握归档和压缩的概念<br>2：能够使用 tar 指令对文件进行归档压缩<br>3：能够使用 tar 指令对文件进行解档、解压</p>
+<p>一：归档和压缩的概念</p>
+<p>压缩：压缩原理是将文件内相同的信息用一个字符代替，压缩对于文本类或数据类的文件有明显效果</p>
+<p>归档：归档是将一些文件存放在一起，形成一个包，便于保存和传输</p>
+<p>二：文件归档压缩、指令 —— tar</p>
+<p>功能：</p>
+<p>1：tar指令配上相应选项对文件归档且压缩一气呵成<br>2：tar指令配上相应选项对文件解档且解压一气呵成</p>
+<p>语法（最常用）：</p>
+<p>文件归档压缩：tar [-options] 归档压缩文件名（后缀为.tar.gz） 需要归档的文件1  需要归档的文2<br>文件解档解压：tar [-options] 归档文件<br>文件解档解压到指定目录： tar [-options] 归档文件名 -C 指定目录</p>
+<p>指令选项：</p>
+<p>-c ：生成归档文件，因此在归档的过程中 -c 选项必须有<br>-v：显示文件归档解档过程，显示进度<br>-f：指定档案文件名，因此选项 -f 在对文件归档与文件解档处理时必须有，告诉电脑处理哪个文件<br>-x：对归档的文件进行解档<br>-z：对归档文件进行压缩、对解档文件进行解压</p>
+<p>注意事项：</p>
+<p>1：对一些文件归档处理时，必须要有选项 -c -f    -c是生成归档文件，-f 是指定生成哪个归档文件名<br>2：-f 选项一定要在选项最后，即在档案文件名前面的第一个选项，<br>3：无论文件归档还是解档都要有 -f 选项<br>4：Linux系统的归档文件是以 .tar 为后缀，归档压缩文件是以.tar.gz为后缀<br>5：-z选项 可对归档文件进行压缩也可对解档文件进行解压</p>
+<p>快速代码体验（解档解压到当前目录下）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104557635.png"  alt="image-20211010104557635">
+      </p>
+<p>快速代码体验（解压解档到别的目录下）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104610634.png"  alt="image-20211010104610634">
+      </p>
+
+        <h2 id="Linux常用命令——目录、文件压缩解压"   >
+          <a href="#Linux常用命令——目录、文件压缩解压" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux常用命令——目录、文件压缩解压" class="headerlink" title="Linux常用命令——目录、文件压缩解压"></a>Linux常用命令——目录、文件压缩解压</h2>
+      <p>目录、文件压缩解压指令 —— zip/unzip</p>
+<p>功能：对目录或文件进行压缩解压</p>
+<p>语法：</p>
+<p>压缩（目录）：zip -r 压缩后文件名（后缀为.zip） 待压缩目录名</p>
+<p>压缩（文件）：zip 压缩文件名 待压缩文件名</p>
+<p>解压：unzip 待解压文件或目录名</p>
+<p>注意事项：.tar.gz压缩文件比.zip压缩文件更小，因此在Linux中.tar.gz压缩文件更常用</p>
+<p>快速代码体验（压缩解压目录）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104635535.png"  alt="image-20211010104635535">
+      </p>
+
+        <h2 id="Linux命令——文件权限"   >
+          <a href="#Linux命令——文件权限" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——文件权限" class="headerlink" title="Linux命令——文件权限"></a>Linux命令——文件权限</h2>
+      <p>一：文件权限的含义</p>
+<p>详解：在Linux中文件权限由四种字符组成的9个字母构成，每三个字符一组，其中这四种字符有 r、w、x、- 这四种，r代表可读权限、w代表可写权限、x代表可执行权限（文件：直接运行 绿色 目录：可以打开）- 代表没有权限</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104652373.png"  alt="image-20211010104652373">
+      </p>
+<p>二：字母 u、g、o 、a所代表的的含义</p>
+<p>字母u（user）：代表文件拥有者即文件用户权限</p>
+<p>字母g(group)：代表文件所属同组用户（与文件拥有者同组的用户）权限</p>
+<p>字母o(other)：代表其他用户权限</p>
+<p>字母a（all）：代表所有用户权限</p>
+
+        <h2 id="Linux常用命令——权限修改"   >
+          <a href="#Linux常用命令——权限修改" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux常用命令——权限修改" class="headerlink" title="Linux常用命令——权限修改"></a>Linux常用命令——权限修改</h2>
+      <p>目标：学会 chmod 指令的两种方法（字母法、数字法）修改文件权限</p>
+<p>一：chmod指令字母法修改文件权限</p>
+<p>功能：可以修改文件的权限</p>
+<p>文件权限用户：</p>
+<p>u：文件拥有者权限</p>
+<p>g：文件所属组的权限</p>
+<p>o：其他用户权限</p>
+<p>a：文件的所有用户权限</p>
+<p>文件权限设置：</p>
+<p>+：代表增加权限</p>
+<p>-：代表撤销权限</p>
+<p>=：代表设置权限</p>
+<p>文件权限：</p>
+<p>r：可读</p>
+<p>w：可写</p>
+<p>x：可执行（文件：可以运行 目录：可以打开）</p>
+<p>-：没有权限</p>
+<p>chmod指令语法：chmod 文件权限用户 文件权限设置 文件权限 待设置文件名</p>
+<p>语法示例： chmod u + x  1.txt （代表将1.txt文件的所属用户权限增加可执行权限）</p>
+<p>快速代码体验（增加权限）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104730198.png"  alt="image-20211010104730198">
+      </p>
+<p>快速代码体验（设置权限）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104739332.png"  alt="image-20211010104739332">
+      </p>
+<p>二：chmod数字法更改文件权限</p>
+<p>功能：chmod指令通过一系列数字即可改变文件权限</p>
+<p>数字所代表的文件权限：</p>
+<p>4：代表可读 r 权限</p>
+<p>2：代表可写 w 权限</p>
+<p>1：代表可执行 x 权限</p>
+<p>0：代表无权限 - 权限</p>
+<p>​                </p>
+<p>指令语法：chmod  数字1数字2数字3  文件名 （其中数字1代表文件所属用户的权限数字累加和，一样道理数字2代表所属组用户，数字3代表其他用户权限数字累加和）</p>
+<p>快速代码体验（字母法与数字法对比）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104800173.png"  alt="image-20211010104800173">
+      </p>
+
+        <h2 id="Linux常用命令——用户管理"   >
+          <a href="#Linux常用命令——用户管理" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux常用命令——用户管理" class="headerlink" title="Linux常用命令——用户管理"></a>Linux常用命令——用户管理</h2>
+      <p>一：临时增加用户权限、切换超级管理员用户 —— sudo</p>
+<p>sudo用法：</p>
+<p>1：sudo 其他指令 （在其他指令前加上sudo即可临时提升我们的权限）</p>
+<p>2：sudo -s （即可默认切换超级管理员用户）</p>
+<p>快速代码体验</p>
+<p>注意事项：$符号代表普通用户，#符号代表超级管理员用户（root）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104838338.png"  alt="image-20211010104838338">
+      </p>
+<p>二：切换用户指令—— su</p>
+<p>功能：切换用户从而获得更多权限<br>语法：su 用户名</p>
+<p>注意事项：</p>
+<p>1：利用sudo -s 默认切换到 root 用户，需要输入普通用户的密码<br>2：利用 su root 可切换到 root 用户，需要输入 root 用户密码</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104856352.png"  alt="image-20211010104856352">
+      </p>
+<p>三：更改用户密码指令 —— passwd</p>
+<p>功能：利用 passwd 指令可更改用户（普通用户与root）的密码</p>
+<p>语法：</p>
+<p>passwd ：功能是更改当前用户密码</p>
+<p>passwd 普通用户名：这种用法是当你作为root用户时更改其他用户密码的时候</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104909879.png"  alt="image-20211010104909879">
+      </p>
+<p>三：退出登录用户指令 —— exit </p>
+<p>功能：在Ubuntu终端中 exit 指令可退出登录用户，从而退出终端界面</p>
+<p>语法：exit</p>
+<p>注意事项：</p>
+<p>1：在Linux底层，对终端用户的保存方式为内存栈（井方式），即只能在一端存放或取走东西</p>
+<p>2：在终端运行中总共切换了几个用户就有几个用户保存进了内存栈，因此exit要执行几次才能退出终端</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104927083.png"  alt="image-20211010104927083">
+      </p>
+<p>四：查看用户登录指令 —— who</p>
+<p>功能：查看Ubuntu系统终端中登录了哪几个用户</p>
+<p>语法：who</p>
+<p>指令选项：-q：功能是显示Ubuntu系统中登录了几个用户以及用户名</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010104941424.png"  alt="image-20211010104941424">
+      </p>
+
+        <h2 id="Linux命令-——-关机、重启"   >
+          <a href="#Linux命令-——-关机、重启" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令-——-关机、重启" class="headerlink" title="Linux命令 —— 关机、重启"></a>Linux命令 —— 关机、重启</h2>
+      <p>目标：<br>1：掌握 shutdown 指令关闭计算机<br>2：掌握 reboot 指令重新启动计算机</p>
+<p>一：关机指令 —— shutdown </p>
+<p>功能：按照一定条件关闭计算机</p>
+<p>语法：shutdown</p>
+<p>指令选项：</p>
+<p>-r ：配合相应参数可重新启动计算机，并通知其他在Ubuntu系统上登录的用户计算机即将重启</p>
+<p>-h：配合参数使用告诉计算机什么时候关机</p>
+<p>-c：取消关机</p>
+<p>指令参数：</p>
+<p>10：50       配合选项 -h 使用功能是告诉计算机在 10：50 进行关机，当然 -h 也可省略</p>
+<p>+10 ：配合选项 -h 使用功能是计算机在十分钟后关机，当然 -h 也可省略</p>
+<p>now：配合选项 -h 使用 功能是现在、立刻马上进行关机，当然 -h 也可省略</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105015484.png"  alt="image-20211010105015484">
+      </p>
+<p>二：重启指令 —— reboot</p>
+<p>功能：重启计算机（服务器）</p>
+<p>语法：reboot</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105024894.png"  alt="image-20211010105024894">
+      </p>
+
+        <h2 id="Linux命令——软件安装与卸载"   >
+          <a href="#Linux命令——软件安装与卸载" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——软件安装与卸载" class="headerlink" title="Linux命令——软件安装与卸载"></a>Linux命令——软件安装与卸载</h2>
+      <p>目标：</p>
+<p>1：了解Linux系统安装软件的三种方式<br>2：掌握 sudo apt-get install 指令安装软件<br>3：掌握 sudo apt-get remove 指令卸载软件</p>
+<p>一：Linux系统安装软件的三种方式</p>
+<p>Make install：安装源码包方式</p>
+<p>deb包：相当于windows中的exe文件（但是与要下载很多依赖文件）、</p>
+<p>apt-get install：简单粗暴安装（重点掌握）</p>
+<p>二：软件安装指令 —— apt-get install</p>
+<p>功能：简单粗暴安装软件，联网即可下载软件所需的所有包</p>
+<p>语法格式： sudo apt-get install  xxx</p>
+<p>注意事项：使用 apt-get 下载软件前要配置软件源（下载软件的网址）</p>
+<p>【重要】：怎么配置ubuntu中国软件源（软件下载速度快）与下载软件</p>
+<p>第一步：打开清华大学镜像软件站<br>网址链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/" >https://mirrors.tuna.tsinghua.edu.cn/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105135874.png"  alt="image-20211010105135874">
+      </p>
+<p>第二步：滑到最下找到 ubuntu 点击问号进去</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105147104.png"  alt="image-20211010105147104">
+      </p>
+<p>第三步：根据教程修改ubuntu软件镜像源</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105155010.png"  alt="image-20211010105155010">
+      </p>
+<p>第四步：在ubuntu中配置成功后输入 sudo apt-get update 进行更新软件源</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105204699.png"  alt="image-20211010105204699">
+      </p>
+<p>第五步：即可利用 sudo apt-get install 安装你想要的软件啦</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105213641.png"  alt="image-20211010105213641">
+      </p>
+<p>三：软件卸载指令—— apt -get remove</p>
+<p>功能：卸载相应软件</p>
+<p>语法格式 sudo apt-get remove vim （卸载 vim 软件）</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105229913.png"  alt="image-20211010105229913">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105240135.png"  alt="image-20211010105240135">
+      </p>
+
+        <h2 id="Linux命令——远程登录服务器-ssh"   >
+          <a href="#Linux命令——远程登录服务器-ssh" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——远程登录服务器-ssh" class="headerlink" title="Linux命令——远程登录服务器 ssh"></a>Linux命令——远程登录服务器 ssh</h2>
+      <p>目标：掌握 ssh 指令远程登录服务器</p>
+<p>一：服务器远程登录指令 —— ssh</p>
+<p>使用背景：我家在东北，然而我的服务器在海南，这时我们要远程操控服务器就要在自己的计算机利用ssh指令来远程登录服务器<br>注意事项：在自己的计算机利用 ssh 指令登录服务器，需要在服务器上安装 ssh server 软件<br>服务器安装 ssh server 软件指令：服务器终端输入 sudo apt-get install openssh-server 即可安装 ssh server 软件</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105259391.png"  alt="image-20211010105259391">
+      </p>
+<p>远程登录服务器指令语法：在自己计算机中输入 ssh 服务器用户名@服务器IP地址（服务器IP地址一般都是IPV4的地址）即可远程登录服务器</p>
+<p>快速代码体验（windows计算机远程登录服务器）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105309767.png"  alt="image-20211010105309767">
+      </p>
+
+        <h2 id="Linux命令——-scp远程拷贝（文件下载上传）"   >
+          <a href="#Linux命令——-scp远程拷贝（文件下载上传）" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux命令——-scp远程拷贝（文件下载上传）" class="headerlink" title="Linux命令—— scp远程拷贝（文件下载上传）"></a>Linux命令—— scp远程拷贝（文件下载上传）</h2>
+      <p>目标：掌握 scp 指令进行文件的远程拷贝（上传与下载）</p>
+<p>一：远程文件拷贝（上传与下载）指令 —— scp</p>
+<p>使用背景</p>
+<p>1：将 windows 电脑中的文件上传至远程服务器<br>2：将远程服务器上的文件下载到 windows 电脑上</p>
+<p>指令语法：</p>
+<p>windows文件上传到服务器：scp 计算机中文件路径 服务器用户名@服务器IP地址：服务器保存这个文件的地址（例如 scp  E：\yule\2.jpg <span class="exturl"><a class="exturl__link"   href="mailto:&#108;&#97;&#x6d;&#98;&#x40;&#49;&#57;&#x32;&#x2e;&#x31;&#54;&#x38;&#x2e;&#x31;&#x2e;&#52;&#50;" >&#108;&#97;&#x6d;&#98;&#x40;&#49;&#57;&#x32;&#x2e;&#x31;&#54;&#x38;&#x2e;&#x31;&#x2e;&#52;&#50;</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>：/home/lamb/ceshi/2.jpg）</p>
+<p>服务器文件下载到windows计算机：scp 服务器用户名@服务器IP地址：服务器文件目录 自己计算机保存这个文件的目录</p>
+<p>注意事项：</p>
+<p>1：使用scp远程拷贝文件需要在服务器上下载 ssh server 软件，可利用 sudo apt-get install openssh-server 下载</p>
+<p>2：无论是远程上传文件还是远程下载文件，注意 windows下的路径都不能带中文！</p>
+<p>3：远程拷贝文件夹需要在指令后面加上 -r 选项</p>
+<p>4：如果相对路径远程传输文件显示没有找到文件，一定要试试绝对路径传输文件！！！</p>
+<p>快速代码体验（远程上传文件）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105347913.png"  alt="image-20211010105347913">
+      </p>
+<p>快速代码体验（远程下载服务器文件）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211010105358011.png"  alt="image-20211010105358011">
+      </p>
+<p>未完待续……</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/10/Linux%E5%AE%9E%E6%93%8D%E2%80%94%E2%80%94%E7%BB%88%E7%AB%AF%E6%8C%87%E4%BB%A4/">http://pythonlamb.github.io/2021/10/10/Linux%E5%AE%9E%E6%93%8D%E2%80%94%E2%80%94%E7%BB%88%E7%AB%AF%E6%8C%87%E4%BB%A4/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/Linux%E5%AE%9E%E6%93%8D/">Linux实操</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/10/Linux%E5%AE%9E%E6%93%8D%E2%80%94%E2%80%94Vim%E7%BC%96%E8%BE%91%E5%99%A8/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Linux实操——Vim编辑器</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/10/Linux%E5%AE%9E%E6%93%8D%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"><span class="paginator-prev__text">Linux实操——基础知识</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E6%98%BE%E7%A4%BA%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95%EF%BC%88%E8%B7%AF%E5%BE%84%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">
+          Linux命令——显示文件和目录（路径）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E6%98%BE%E7%A4%BA%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="toc-number">2.</span> <span class="toc-text">
+          Linux命令——显示详细信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E5%88%87%E6%8D%A2%E7%9B%AE%E5%BD%95"><span class="toc-number">3.</span> <span class="toc-text">
+          Linux命令——切换目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E5%92%8C%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">4.</span> <span class="toc-text">
+          Linux命令——创建文件和文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">5.</span> <span class="toc-text">
+          Linux命令——删除文件与文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6%E6%88%96%E7%9B%AE%E5%BD%95"><span class="toc-number">6.</span> <span class="toc-text">
+          Linux命令——拷贝文件或目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E7%A7%BB%E5%8A%A8%EF%BC%88%E5%89%AA%E5%88%87%EF%BC%89%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95"><span class="toc-number">7.</span> <span class="toc-text">
+          Linux命令——移动（剪切）文件和目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E5%85%B6%E4%BB%96"><span class="toc-number">8.</span> <span class="toc-text">
+          Linux命令——其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E6%97%A5%E5%8E%86%E3%80%81%E6%97%A5%E6%9C%9F"><span class="toc-number">9.</span> <span class="toc-text">
+          Linux命令——日历、日期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E5%8E%86%E5%8F%B2%E6%8C%87%E4%BB%A4"><span class="toc-number">10.</span> <span class="toc-text">
+          Linux命令——历史指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E6%9F%A5%E7%9C%8B%E4%B8%8E%E5%90%88%E5%B9%B6%E6%96%87%E4%BB%B6"><span class="toc-number">11.</span> <span class="toc-text">
+          Linux命令——查看与合并文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94%E5%88%86%E9%A1%B5%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="toc-number">12.</span> <span class="toc-text">
+          Linux指令——分页查看文件内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E6%B5%81%E3%80%81%E7%AE%A1%E9%81%93"><span class="toc-number">13.</span> <span class="toc-text">
+          Linux常用命令——数据流、管道</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B"><span class="toc-number">14.</span> <span class="toc-text">
+          Linux指令——查看进程以及杀死进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E6%8C%87%E4%BB%A4-%E2%80%94%E2%80%94-IP%E5%9C%B0%E5%9D%80"><span class="toc-number">15.</span> <span class="toc-text">
+          Linux指令 —— IP地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E5%BB%BA%E7%AB%8B%E9%93%BE%E6%8E%A5%E6%96%87%E4%BB%B6"><span class="toc-number">16.</span> <span class="toc-text">
+          Linux命令——建立链接文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%BD%AF%E9%93%BE%E6%8E%A5%E4%B8%8E%E6%96%87%E4%BB%B6%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%8C%BA%E5%88%AB"><span class="toc-number">17.</span> <span class="toc-text">
+          文件软链接与文件硬链接区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2"><span class="toc-number">18.</span> <span class="toc-text">
+          linux常用命令——文件搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E5%BD%92%E6%A1%A3%E3%80%81%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6"><span class="toc-number">19.</span> <span class="toc-text">
+          Linux命令——归档、压缩文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E7%9B%AE%E5%BD%95%E3%80%81%E6%96%87%E4%BB%B6%E5%8E%8B%E7%BC%A9%E8%A7%A3%E5%8E%8B"><span class="toc-number">20.</span> <span class="toc-text">
+          Linux常用命令——目录、文件压缩解压</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-number">21.</span> <span class="toc-text">
+          Linux命令——文件权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E6%9D%83%E9%99%90%E4%BF%AE%E6%94%B9"><span class="toc-number">22.</span> <span class="toc-text">
+          Linux常用命令——权限修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="toc-number">23.</span> <span class="toc-text">
+          Linux常用命令——用户管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4-%E2%80%94%E2%80%94-%E5%85%B3%E6%9C%BA%E3%80%81%E9%87%8D%E5%90%AF"><span class="toc-number">24.</span> <span class="toc-text">
+          Linux命令 —— 关机、重启</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD"><span class="toc-number">25.</span> <span class="toc-text">
+          Linux命令——软件安装与卸载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95%E6%9C%8D%E5%8A%A1%E5%99%A8-ssh"><span class="toc-number">26.</span> <span class="toc-text">
+          Linux命令——远程登录服务器 ssh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94-scp%E8%BF%9C%E7%A8%8B%E6%8B%B7%E8%B4%9D%EF%BC%88%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E4%B8%8A%E4%BC%A0%EF%BC%89"><span class="toc-number">27.</span> <span class="toc-text">
+          Linux命令—— scp远程拷贝（文件下载上传）</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

@@ -1,0 +1,714 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：文件与文件夹操作等…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="黑马程序员学Python——文件操作">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：文件与文件夹操作等…">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009155952519.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160046145.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160055210.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160108678.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160120872.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160134648.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160155115.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160207632.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160218323.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160228793.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160250595.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160310988.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160336824.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160410922.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160418735.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160458432.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160524376.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160534597.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160544749.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160601095.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160611500.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160621339.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160636966.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160650334.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160704984.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160714167.png">
+<meta property="article:published_time" content="2021-10-09T07:46:34.000Z">
+<meta property="article:modified_time" content="2021-10-09T08:07:23.251Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="Python基础语法篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009155952519.png"><title>黑马程序员学Python——文件操作 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">黑马程序员学Python——文件操作</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-09</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-09</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">17分</span></span></div></header><div class="post-body"><p>本文主讲：文件与文件夹操作等…</p>
+<span id="more"></span>
+
+
+
+
+
+
+        <h2 id="了解文件操作"   >
+          <a href="#了解文件操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#了解文件操作" class="headerlink" title="了解文件操作"></a>了解文件操作</h2>
+      <p>什么是文件操作呢？</p>
+<p>答：文件操作就是将数据存储起来，等到再次利用这些数据的时候，直接使用即可，不需要再次制作一份数据，省时省力。</p>
+
+        <h2 id="文件的基本操作"   >
+          <a href="#文件的基本操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件的基本操作" class="headerlink" title="文件的基本操作"></a>文件的基本操作</h2>
+      <p>文件操作步骤：</p>
+<p>1：打开文件<br>2：读写文件内容操作<br>3：关闭文件</p>
+<p>注意事项：文件操作步骤可以省略第二步，即文件只打开不作操作关闭</p>
+<p>一：打开文件（open（）函数）</p>
+<p>功能：在计算机中打开一个文件</p>
+<p>语法：<code>文件变量名 = open（“文件名”，“访问模式”）</code>以后代码中，文件变量名就代表这个文件了</p>
+<p>注意事项：</p>
+<p>1：文件名可以是相对路径也可以是绝对路径<br>2：文件访问模式包括只读“r”，只写“w”，追加“a”等</p>
+<p>二：文件的基本操作（读取数据、写入数据、没有追加数据）</p>
+<p>功能：对文件进行读写等操作</p>
+<p>语法：<code>文件变量名 . write（“内容”）</code>     <code>文件变量名 . read（num）</code>等</p>
+<p>注意事项：文件变量名是利用open函数打开或创建的文件</p>
+<p>三：关闭文件（close（））<br>功能：关闭打开的文件，释放计算机的内存空间<br>语法：<code>文件变量名 . close（）</code></p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009155952519.png"  alt="image-20211009155952519">
+      </p>
+<p>注意事项：打开的文件有两种路径，一种是绝对路径，一种是相对路径</p>
+
+        <h2 id="文件基本访问模式（r、w、a）"   >
+          <a href="#文件基本访问模式（r、w、a）" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件基本访问模式（r、w、a）" class="headerlink" title="文件基本访问模式（r、w、a）"></a>文件基本访问模式（r、w、a）</h2>
+      
+        <h3 id="文件访问模式——“r”（只读）"   >
+          <a href="#文件访问模式——“r”（只读）" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件访问模式——“r”（只读）" class="headerlink" title="文件访问模式——“r”（只读）"></a>文件访问模式——“r”（只读）</h3>
+      <p>功能：读取目标文件中的内容</p>
+<p>语法：<code>文件名 = open（“目标文件名”，“r”）</code></p>
+<p>注意事项：</p>
+<p>1：如果利用open打开的目标文件不存在且访问模式为“r”只读，则程序报错<br>2：访问模式为只读时，执行write（）命令，程序会报错，因为只读不支持数据的写入操作</p>
+<p>快速代码体验：</p>
+<p>一：访问模式为只读，目标文件不存在时</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160046145.png"  alt="image-20211009160046145">
+      </p>
+<p>二：访问模式为只读，对目标文件进行写入数据操作时</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160055210.png"  alt="image-20211009160055210">
+      </p>
+
+        <h3 id="文件访问模式——“w”（只写）"   >
+          <a href="#文件访问模式——“w”（只写）" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件访问模式——“w”（只写）" class="headerlink" title="文件访问模式——“w”（只写）"></a>文件访问模式——“w”（只写）</h3>
+      <p>功能：将数据写入到目标文件中，并且覆盖掉目标文件中的原时数据</p>
+<p>语法：<code>文件变量名 = open（“目标文件名”，“w”）</code></p>
+<p>注意事项：</p>
+<p>1：当利用open打开的目标文件不存在时，且文件访问模式为“w”（只写）时程序不报错，并新建这个目标文件<br>2：当文件访问模式为“w”（只写）时，执行write（）命令，会覆盖目标文件中原始的数据</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160108678.png"  alt="image-20211009160108678">
+      </p>
+
+        <h3 id="文件访问模式——“a”（追加）"   >
+          <a href="#文件访问模式——“a”（追加）" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件访问模式——“a”（追加）" class="headerlink" title="文件访问模式——“a”（追加）"></a>文件访问模式——“a”（追加）</h3>
+      <p>功能：将数据追加到目标文件中，注意是追加，不会覆盖掉目标文件中的原始数据</p>
+<p>语法：<code>文件变量名 = open（“目标文件名”，“a”）</code></p>
+<p>注意事项：</p>
+<p>1：当打开的目标文件不存在时，程序不会报错，会新建一个同名的文件<br>2：当访问模式为“a”（追加）时，执行write（）命令，将数据写入目标文件中，且不会覆盖掉文件内的原始数据</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160120872.png"  alt="image-20211009160120872">
+      </p>
+
+        <h3 id="文件访问模式是否可以省略的问题？"   >
+          <a href="#文件访问模式是否可以省略的问题？" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件访问模式是否可以省略的问题？" class="headerlink" title="文件访问模式是否可以省略的问题？"></a>文件访问模式是否可以省略的问题？</h3>
+      <p>答：文件访问模式是可以省略的，省略文件访问模式，文件的默认访问模式为“r”（只读）</p>
+
+        <h3 id="文件访问模式"   >
+          <a href="#文件访问模式" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件访问模式" class="headerlink" title="文件访问模式"></a>文件访问模式</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160134648.png"  alt="image-20211009160134648">
+      </p>
+<p>注意事项：</p>
+<p>1：访问模式带b的代表以二进制模式打开一个文件（二进制模式支持文件内的任何数据类型，如文字，数字等）<br>2：访问模式带+的代表这个文件支持读取和写入操作，注意同时支持读取和写入<br>3：访问模式带b+代表以二进制模式打开这个文件，且支持读取与写入<br>4：访问模式带r和w的文件光标会放在文件开头处，而带a（追加）的文件光标放在文件末尾<br>5：访问模式r+与w+有什么区别呢？却别就是，r+打开的目标文件不存在会报错，w+则不会<br>6：文件在写入数据的时候要求数据类型是字符串类型</p>
+
+        <h2 id="文件操作——读取文件"   >
+          <a href="#文件操作——读取文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件操作——读取文件" class="headerlink" title="文件操作——读取文件"></a>文件操作——读取文件</h2>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160155115.png"  alt="image-20211009160155115">
+      </p>
+<p>一：read（num）函数</p>
+<p>功能：读取目标文件中的数据，并且支持存储到变量中打印出来</p>
+<p>语法：<code>目标文件变量名 . read（num）</code>其中num代表读取文件中数据的字节数，可省略，省略即读取整个目标文件数据</p>
+<p>注意事项：假如一个文件内有20个字节的数据，第一次利用read（10）读取10个字节的数据后，文件的指针光标就会跑到10个字节的位置，再次调用read（10）就会读取文件内后10个字节的数据</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160207632.png"  alt="image-20211009160207632">
+      </p>
+<p>二：readlines（）函数</p>
+<p>功能：将目标文件中所有的数据按照行的样式打印出来并将数据存储到列表中，每一行数据就是一个列表元素</p>
+<p>语法：目标文件名 . readlines（）</p>
+<p>实例：利用readlines（）读取c–.txt这个文件内的数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160218323.png"  alt="image-20211009160218323">
+      </p>
+<p>三：readline（）函数</p>
+<p>功能：每调用一次readline（）函数，读取目标文件的一行内容，调用两次则读取文件中两行内容</p>
+<p>语法：<code>文件变量名 . readline（）</code></p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160228793.png"  alt="image-20211009160228793">
+      </p>
+<p>注意：上面的代码忘记关闭文件操作了，这样有可能会造成计算机内存不足</p>
+
+        <h2 id="文件扩展访问模式（r-w-a-）"   >
+          <a href="#文件扩展访问模式（r-w-a-）" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件扩展访问模式（r-w-a-）" class="headerlink" title="文件扩展访问模式（r+,w+,a+）"></a>文件扩展访问模式（r+,w+,a+）</h2>
+      
+        <h3 id="一：访问模式-r-（读取与写入）"   >
+          <a href="#一：访问模式-r-（读取与写入）" class="heading-link"><i class="fas fa-link"></i></a><a href="#一：访问模式-r-（读取与写入）" class="headerlink" title="一：访问模式 r+（读取与写入）"></a>一：访问模式 r+（读取与写入）</h3>
+      <p>功能：支持目标文件的读取与写入操作</p>
+<p>语法：<code>文件变量名 . open（“目标文件”，“r+”）</code></p>
+<p>注意事项：</p>
+<p>1：当访问的目标文件不存在时，程序会报错，因为 r+遵循访问模式为 r （只读）的要求<br>2：执行read（）文件操作时，会读取文件的数据，因为 r+ 的指针光标在文件开头处</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160250595.png"  alt="image-20211009160250595">
+      </p>
+
+        <h3 id="访问模式-w-（读取与写入）"   >
+          <a href="#访问模式-w-（读取与写入）" class="heading-link"><i class="fas fa-link"></i></a><a href="#访问模式-w-（读取与写入）" class="headerlink" title="访问模式 w+（读取与写入）"></a>访问模式 w+（读取与写入）</h3>
+      <p>功能：支持目标文件的读取与写入操作</p>
+<p>语法：<code>文件变量名 . open（“目标文件”，“w+”）</code></p>
+<p>注意事项：</p>
+<p>1：当访问的目标文件不存在时，程序不会报错，会新建这个文件，因为 w+遵循访问模式为 w（只写）的要求</p>
+<p>2：执行read（）文件操作时，不会读取文件的数据，因为访问模式为w+或者w（只读）时，会清空目标文件的数据，因此读取不到数据，w+访问模式指针光标也在文件开头处</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160310988.png"  alt="image-20211009160310988">
+      </p>
+
+        <h3 id="访问模式-a-（追加与写入）"   >
+          <a href="#访问模式-a-（追加与写入）" class="heading-link"><i class="fas fa-link"></i></a><a href="#访问模式-a-（追加与写入）" class="headerlink" title="访问模式 a+（追加与写入）"></a>访问模式 a+（追加与写入）</h3>
+      <p>功能：支持目标文件的追加与读取操作</p>
+<p>语法：<code>文件变量名 . open（“目标文件”，“a+”）</code></p>
+<p>注意事项：</p>
+<p>1：当访问的目标文件不存在时，程序不会报错，会新建这个文件，因为a+遵循访问模式为 a （追加）的要求</p>
+<p>2：执行read（）文件操作时，不会读取文件的数据，因为a+ 的指针光标在文件末尾处</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160336824.png"  alt="image-20211009160336824">
+      </p>
+<p>特别注意：以上有的代码在执行完文件操作时，没有将文件进行关闭，这样是万万不可以的。</p>
+
+        <h3 id="掌握文件访问模式rb以及ab的意思"   >
+          <a href="#掌握文件访问模式rb以及ab的意思" class="heading-link"><i class="fas fa-link"></i></a><a href="#掌握文件访问模式rb以及ab的意思" class="headerlink" title="掌握文件访问模式rb以及ab的意思"></a>掌握文件访问模式rb以及ab的意思</h3>
+      <p>文件访问模式rb是支持以二进制的格式读取数据，wb是支持以二进制格式写入数据，计算机中的所有数据都是以二进制形式存放的，因此以二进制格式处理数据就是可以处理计算机的任何数据，如图片、音乐、影片等</p>
+
+        <h2 id="seek（）函数"   >
+          <a href="#seek（）函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#seek（）函数" class="headerlink" title="seek（）函数"></a>seek（）函数</h2>
+      
+        <h3 id="一：理解seek（）函数"   >
+          <a href="#一：理解seek（）函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#一：理解seek（）函数" class="headerlink" title="一：理解seek（）函数"></a>一：理解seek（）函数</h3>
+      <p>seek（）函数功能：修改文件内的指针光标位置，从而改变数据的读取或者写入的位置</p>
+<p>语法：<code>文件对象名 . seek（指针偏移量，指针起始位置）</code></p>
+<p>注意事项：</p>
+<p>1：指针偏移量不能小于0，可以为0</p>
+<p>2：指针起始位置参数有三个，分别是0、1、2 （0代表光标在文件开头，1代表在当前位置，2代表在文件末尾）</p>
+<p>​            </p>
+
+        <h3 id="理解文件访问模式r-与a-的区别"   >
+          <a href="#理解文件访问模式r-与a-的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#理解文件访问模式r-与a-的区别" class="headerlink" title="理解文件访问模式r+与a+的区别"></a>理解文件访问模式r+与a+的区别</h3>
+      <p>区别：</p>
+<p>1：当打开的目标文件不存在时，r+会程序报错，a+不会报错，会新建这个文件</p>
+<p>2：当执行read（）命令时r+的指针光标在文件开头处，a+的指针光标在文件末尾处</p>
+<p>​    </p>
+
+        <h3 id="快速代码体验"   >
+          <a href="#快速代码体验" class="heading-link"><i class="fas fa-link"></i></a><a href="#快速代码体验" class="headerlink" title="快速代码体验"></a>快速代码体验</h3>
+      <p>利用seek（）函数让文件访问模式为r+时，读取不到文件数据的情况</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160410922.png"  alt="image-20211009160410922">
+      </p>
+<p>利用seek（）函数让文件访问模式为a+时，读取整个文件内的数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160418735.png"  alt="image-20211009160418735">
+      </p>
+
+        <h2 id="文件的备份数据（重要）"   >
+          <a href="#文件的备份数据（重要）" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件的备份数据（重要）" class="headerlink" title="文件的备份数据（重要）"></a>文件的备份数据（重要）</h2>
+      <p>一：文件数据备份的步骤：</p>
+<p>1：接收用户需要备份的文件名</p>
+<p>1.1：利用input（）接收用户需要备份的文件夹名字<br>1.2：文件名字要符合要求，带后缀且不能只有后缀例如 .txt</p>
+<p>​        </p>
+<p>2：规划备份文件名</p>
+<p>2.1：利用rfind（）函数查找后缀的小数点 . 从而将原始文件名进行拆分，拆成后缀名以及文件名<br>2.2：将拆分的两部分加入其他数据组合成新的备份文件名例如p++[备份].txt</p>
+<p>3：将源文件的数据写入到规划好的备份文件名内</p>
+<p>3.1：打开原始文件以及要备份的文件</p>
+<p>3.2：读取原文件夹内数据并写入到备份的文件夹内(利用rb文件访问模式读取数据，利用wb写入数据)</p>
+<p>3.3：关闭文件</p>
+<p>注意事项：</p>
+<p>1：规划文件备份名字的时候，要用到rfind（）函数查询小数点 . 将文件名的名字和后缀进行分离</p>
+<p>2：为什么要用rfind（）函数查找小数点 . 呢？，因为遇到这样的文件夹名字lala.txt.mp3  .mp3才是后缀名，所以要从右侧开始查找小数点</p>
+<p>3：读取文件数据和写入文件数据的时候要用rb以及wb这样计算机的任何数据都可以进行读取和写入操作了</p>
+<p>代码文件：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160458432.png"  alt="image-20211009160458432">
+      </p>
+
+        <h2 id="文件操作2（重命名、删除）"   >
+          <a href="#文件操作2（重命名、删除）" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件操作2（重命名、删除）" class="headerlink" title="文件操作2（重命名、删除）"></a>文件操作2（重命名、删除）</h2>
+      <p>注意事项：下面文件的操作，都要借助os模块完成，因此要先导入os模块</p>
+<p>在Python中，对文件以及文件夹进行操作（删除、重命名等）要借助os模块</p>
+
+        <h3 id="文件重命名操作-os-rename-函数"   >
+          <a href="#文件重命名操作-os-rename-函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件重命名操作-os-rename-函数" class="headerlink" title="文件重命名操作 os.rename( )函数"></a>文件重命名操作 os.rename( )函数</h3>
+      <p>功能：对文件进行重命名</p>
+<p>语法：<code>os . rename(目标文件名，新文件名) </code></p>
+<p>快速代码体验</p>
+<p>对文件进行重命名</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160524376.png"  alt="image-20211009160524376">
+      </p>
+
+        <h3 id="文件删除操作"   >
+          <a href="#文件删除操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件删除操作" class="headerlink" title="文件删除操作"></a>文件删除操作</h3>
+      <p>功能：删除文件</p>
+<p>语法：<code>os . remove(目标文件名)</code></p>
+<p>注意事项：remove（）函数只能删除文件，不能删除文件夹</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160534597.png"  alt="image-20211009160534597">
+      </p>
+
+        <h3 id="获取当前文件的路径-getcwd（）函数"   >
+          <a href="#获取当前文件的路径-getcwd（）函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#获取当前文件的路径-getcwd（）函数" class="headerlink" title="获取当前文件的路径  getcwd（）函数"></a>获取当前文件的路径  getcwd（）函数</h3>
+      <p>功能：获取当前文件的路径</p>
+<p>语法：<code>os . getcwd（）</code></p>
+<p>注意事项：getcwd（）只是用来获取当前文件路径的，不能获取其他文件路径</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160544749.png"  alt="image-20211009160544749">
+      </p>
+
+        <h2 id="文件夹操作"   >
+          <a href="#文件夹操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件夹操作" class="headerlink" title="文件夹操作"></a>文件夹操作</h2>
+      <p>注意事项：下面文件夹的操作，都要借助os模块完成，因此要先导入os模块</p>
+
+        <h3 id="文件夹的创建函数-mkdir（）"   >
+          <a href="#文件夹的创建函数-mkdir（）" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件夹的创建函数-mkdir（）" class="headerlink" title="文件夹的创建函数  mkdir（）"></a>文件夹的创建函数  mkdir（）</h3>
+      <p>功能：创建文件夹</p>
+<p>语法：<code>os . mkdir(文件名)</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160601095.png"  alt="image-20211009160601095">
+      </p>
+
+        <h3 id="文件夹的删除-rmdir（）函数"   >
+          <a href="#文件夹的删除-rmdir（）函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件夹的删除-rmdir（）函数" class="headerlink" title="文件夹的删除 rmdir（）函数"></a>文件夹的删除 rmdir（）函数</h3>
+      <p>功能：删除目标文件夹</p>
+<p>语法：<code>os . rmdir（目标文件名）</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160611500.png"  alt="image-20211009160611500">
+      </p>
+
+        <h3 id="文件夹重命名-rename（）函数"   >
+          <a href="#文件夹重命名-rename（）函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件夹重命名-rename（）函数" class="headerlink" title="文件夹重命名 rename（）函数"></a>文件夹重命名 rename（）函数</h3>
+      <p>功能：对目标文件夹进行重命名</p>
+<p>语法：<code>os . rename(&quot;目标文件夹名字&quot;，“新文件夹名字”)</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160621339.png"  alt="image-20211009160621339">
+      </p>
+
+        <h3 id="更改默认路径-chdir（）函数（很重要）教程p261"   >
+          <a href="#更改默认路径-chdir（）函数（很重要）教程p261" class="heading-link"><i class="fas fa-link"></i></a><a href="#更改默认路径-chdir（）函数（很重要）教程p261" class="headerlink" title="更改默认路径 chdir（）函数（很重要）教程p261"></a>更改默认路径 chdir（）函数（很重要）教程p261</h3>
+      <p>功能：修改默认路径，从而可以修改计算机中其他文件夹内的文件以及文件夹</p>
+<p>语法：<code>os . chdir（“目标文件夹的路径”）</code></p>
+<p>注意事项：</p>
+<p>1：文件处理默认是在相对路径中，利用chdir（）可更改为其他路径</p>
+<p>2：通过chdir（）函数可以修改默认路径，从而可以修改计算机中其他文件或者文件夹</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160636966.png"  alt="image-20211009160636966">
+      </p>
+
+        <h3 id="获取文件夹内所有文件夹以及文件，并存储到一个列表中-listdir（）函数"   >
+          <a href="#获取文件夹内所有文件夹以及文件，并存储到一个列表中-listdir（）函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#获取文件夹内所有文件夹以及文件，并存储到一个列表中-listdir（）函数" class="headerlink" title="获取文件夹内所有文件夹以及文件，并存储到一个列表中  listdir（）函数"></a>获取文件夹内所有文件夹以及文件，并存储到一个列表中  listdir（）函数</h3>
+      <p>功能：获取一个文件夹内的所有文件夹以及文件，存储到一个列表中，一个文件或文件夹是一个列表元素</p>
+<p>语法：<code>列表变量名 = os . listdir（“目标文件名”）</code> ，其中目标文件名可以省略，及获取当前文件夹内所有文件</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160650334.png"  alt="image-20211009160650334">
+      </p>
+
+        <h3 id="判断一个路径是否存在！！！"   >
+          <a href="#判断一个路径是否存在！！！" class="heading-link"><i class="fas fa-link"></i></a><a href="#判断一个路径是否存在！！！" class="headerlink" title="判断一个路径是否存在！！！"></a>判断一个路径是否存在！！！</h3>
+      <p>方法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.path.exists（文件或者文件夹路径）</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+
+
+
+        <h2 id="文件夹操作实例"   >
+          <a href="#文件夹操作实例" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件夹操作实例" class="headerlink" title="文件夹操作实例"></a>文件夹操作实例</h2>
+      <p>实例一：对表情包缩略图这个文件夹内的所有文件进行重命名，要求在文件名前面加上python</p>
+<p>表情包缩略图文件夹路径如下</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160704984.png"  alt="image-20211009160704984">
+      </p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009160714167.png"  alt="image-20211009160714167">
+      </p>
+<p>未完待续……</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">http://pythonlamb.github.io/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/Python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E7%AF%87/">Python基础语法篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">黑马程序员学Python——类和对象</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E5%87%BD%E6%95%B0/"><span class="paginator-prev__text">黑马程序员学Python——函数</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">
+          了解文件操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">
+          文件的基本操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%9F%BA%E6%9C%AC%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F%EF%BC%88r%E3%80%81w%E3%80%81a%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">
+          文件基本访问模式（r、w、a）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E2%80%9Cr%E2%80%9D%EF%BC%88%E5%8F%AA%E8%AF%BB%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">
+          文件访问模式——“r”（只读）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E2%80%9Cw%E2%80%9D%EF%BC%88%E5%8F%AA%E5%86%99%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">
+          文件访问模式——“w”（只写）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E2%80%9Ca%E2%80%9D%EF%BC%88%E8%BF%BD%E5%8A%A0%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">
+          文件访问模式——“a”（追加）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E7%9C%81%E7%95%A5%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">3.4.</span> <span class="toc-text">
+          文件访问模式是否可以省略的问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.5.</span> <span class="toc-text">
+          文件访问模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">
+          文件操作——读取文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%89%A9%E5%B1%95%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F%EF%BC%88r-w-a-%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">
+          文件扩展访问模式（r+,w+,a+）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%EF%BC%9A%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F-r-%EF%BC%88%E8%AF%BB%E5%8F%96%E4%B8%8E%E5%86%99%E5%85%A5%EF%BC%89"><span class="toc-number">5.1.</span> <span class="toc-text">
+          一：访问模式 r+（读取与写入）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F-w-%EF%BC%88%E8%AF%BB%E5%8F%96%E4%B8%8E%E5%86%99%E5%85%A5%EF%BC%89"><span class="toc-number">5.2.</span> <span class="toc-text">
+          访问模式 w+（读取与写入）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8F-a-%EF%BC%88%E8%BF%BD%E5%8A%A0%E4%B8%8E%E5%86%99%E5%85%A5%EF%BC%89"><span class="toc-number">5.3.</span> <span class="toc-text">
+          访问模式 a+（追加与写入）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%8C%E6%8F%A1%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8Frb%E4%BB%A5%E5%8F%8Aab%E7%9A%84%E6%84%8F%E6%80%9D"><span class="toc-number">5.4.</span> <span class="toc-text">
+          掌握文件访问模式rb以及ab的意思</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#seek%EF%BC%88%EF%BC%89%E5%87%BD%E6%95%B0"><span class="toc-number">6.</span> <span class="toc-text">
+          seek（）函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%EF%BC%9A%E7%90%86%E8%A7%A3seek%EF%BC%88%EF%BC%89%E5%87%BD%E6%95%B0"><span class="toc-number">6.1.</span> <span class="toc-text">
+          一：理解seek（）函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%A7%A3%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE%E6%A8%A1%E5%BC%8Fr-%E4%B8%8Ea-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">6.2.</span> <span class="toc-text">
+          理解文件访问模式r+与a+的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E4%BB%A3%E7%A0%81%E4%BD%93%E9%AA%8C"><span class="toc-number">6.3.</span> <span class="toc-text">
+          快速代码体验</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">
+          文件的备份数据（重要）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C2%EF%BC%88%E9%87%8D%E5%91%BD%E5%90%8D%E3%80%81%E5%88%A0%E9%99%A4%EF%BC%89"><span class="toc-number">8.</span> <span class="toc-text">
+          文件操作2（重命名、删除）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E9%87%8D%E5%91%BD%E5%90%8D%E6%93%8D%E4%BD%9C-os-rename-%E5%87%BD%E6%95%B0"><span class="toc-number">8.1.</span> <span class="toc-text">
+          文件重命名操作 os.rename( )函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C"><span class="toc-number">8.2.</span> <span class="toc-text">
+          文件删除操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%96%87%E4%BB%B6%E7%9A%84%E8%B7%AF%E5%BE%84-getcwd%EF%BC%88%EF%BC%89%E5%87%BD%E6%95%B0"><span class="toc-number">8.3.</span> <span class="toc-text">
+          获取当前文件的路径  getcwd（）函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B9%E6%93%8D%E4%BD%9C"><span class="toc-number">9.</span> <span class="toc-text">
+          文件夹操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E5%88%9B%E5%BB%BA%E5%87%BD%E6%95%B0-mkdir%EF%BC%88%EF%BC%89"><span class="toc-number">9.1.</span> <span class="toc-text">
+          文件夹的创建函数  mkdir（）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E5%88%A0%E9%99%A4-rmdir%EF%BC%88%EF%BC%89%E5%87%BD%E6%95%B0"><span class="toc-number">9.2.</span> <span class="toc-text">
+          文件夹的删除 rmdir（）函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B9%E9%87%8D%E5%91%BD%E5%90%8D-rename%EF%BC%88%EF%BC%89%E5%87%BD%E6%95%B0"><span class="toc-number">9.3.</span> <span class="toc-text">
+          文件夹重命名 rename（）函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E8%B7%AF%E5%BE%84-chdir%EF%BC%88%EF%BC%89%E5%87%BD%E6%95%B0%EF%BC%88%E5%BE%88%E9%87%8D%E8%A6%81%EF%BC%89%E6%95%99%E7%A8%8Bp261"><span class="toc-number">9.4.</span> <span class="toc-text">
+          更改默认路径 chdir（）函数（很重要）教程p261</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%96%87%E4%BB%B6%E5%A4%B9%E5%86%85%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%A4%B9%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B9%B6%E5%AD%98%E5%82%A8%E5%88%B0%E4%B8%80%E4%B8%AA%E5%88%97%E8%A1%A8%E4%B8%AD-listdir%EF%BC%88%EF%BC%89%E5%87%BD%E6%95%B0"><span class="toc-number">9.5.</span> <span class="toc-text">
+          获取文件夹内所有文件夹以及文件，并存储到一个列表中  listdir（）函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E8%B7%AF%E5%BE%84%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%EF%BC%81%EF%BC%81%EF%BC%81"><span class="toc-number">9.6.</span> <span class="toc-text">
+          判断一个路径是否存在！！！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B9%E6%93%8D%E4%BD%9C%E5%AE%9E%E4%BE%8B"><span class="toc-number">10.</span> <span class="toc-text">
+          文件夹操作实例</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

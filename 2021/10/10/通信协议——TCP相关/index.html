@@ -1,0 +1,578 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：网络通信协议中的TCP连接的一些知识【重点】">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通信协议--TCP相关">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/10/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E2%80%94%E2%80%94TCP%E7%9B%B8%E5%85%B3/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：网络通信协议中的TCP连接的一些知识【重点】">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153453462.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153616079.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153705188.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153714304.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153722875.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153730437.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153803628.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153810381.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153833315.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153852033.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153915572.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153924525.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153931430.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153959342.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011154010951.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011154020134.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011154111861.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011154130703.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011154149179.png">
+<meta property="article:published_time" content="2021-10-10T09:19:55.000Z">
+<meta property="article:modified_time" content="2021-10-11T07:42:00.764Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="通信协议篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153453462.png"><title>通信协议--TCP相关 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/10/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E2%80%94%E2%80%94TCP%E7%9B%B8%E5%85%B3/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">通信协议--TCP相关</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-10</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.1k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">16分</span></span></div></header><div class="post-body"><p>本文主讲：网络通信协议中的TCP连接的一些知识【重点】</p>
+<span id="more"></span>
+
+
+
+        <h2 id="TCP简介【高频面试】"   >
+          <a href="#TCP简介【高频面试】" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP简介【高频面试】" class="headerlink" title="TCP简介【高频面试】"></a>TCP简介【高频面试】</h2>
+      <p>目标：<br>1：掌握什么是 TCP 数据传输方式<br>2：理解 TCP 通信的模型<br>3：说出 TCP 数据传输方式是可靠传输的原因（高概率面试题）<br>4：说出 TCP 与 UDP 数据传输的区别（百分之百面试题）<br>5：知道 TCP 传输方式的客户端以及用户端的数据传输流程</p>
+
+        <h3 id="一：什么是-TCP-数据传输类型？"   >
+          <a href="#一：什么是-TCP-数据传输类型？" class="heading-link"><i class="fas fa-link"></i></a><a href="#一：什么是-TCP-数据传输类型？" class="headerlink" title="一：什么是 TCP 数据传输类型？"></a>一：什么是 TCP 数据传输类型？</h3>
+      <p>答：TCP 数据传输是传输控制协议，它是面向连接的、可靠的、基于字节流的传输层通信协议，TCP通信模型中，通信之前一定要先建立连接才能发送数据，类似于今天的打电话！</p>
+<p>总结一句话：TCP 就是面向有连接可靠的，基于字节流的传输层通信协议</p>
+<p>注意事项：TCP 数据传输方式是一对一进行数据传输的，这种传输方式不适用于广播信息传递！！</p>
+
+        <h3 id="二：-TCP-数据传输方式的通信模型"   >
+          <a href="#二：-TCP-数据传输方式的通信模型" class="heading-link"><i class="fas fa-link"></i></a><a href="#二：-TCP-数据传输方式的通信模型" class="headerlink" title="二： TCP 数据传输方式的通信模型"></a>二： TCP 数据传输方式的通信模型</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153453462.png"  alt="image-20211011153453462">
+      </p>
+
+        <h3 id="TCP-数据传输方式可靠的原因"   >
+          <a href="#TCP-数据传输方式可靠的原因" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP-数据传输方式可靠的原因" class="headerlink" title="TCP 数据传输方式可靠的原因"></a>TCP 数据传输方式可靠的原因</h3>
+      <p>1：采用应答机制，TCP 发送的每个报文段必须要接收到接收数据方的应答才认为这个报文段发送成功</p>
+<p>2：超时重传机制，发送数据方给接收数据方发送数据后会启动计时器，如果超出规定时间后，没有接收到接收数据方的应答，那么传输数据方会重新发送这条数据</p>
+<p>3：错误校核机制，发送数据方发送数据时因为一些不可避免的因素造成数据包顺序错乱，TCP 会进行顺序校核，如果在发送数据的时候，出现了数据包发送重复的现象，TCP会进行去重数据包校核！（TCP底层封装好）</p>
+<p>4：流量控制和阻塞管理机制，流量控制用来避免主机发送数据过快而使接收方来不及完全收下数据的现象</p>
+
+        <h3 id="TCP-与-UDP-数据传输方式的不同点"   >
+          <a href="#TCP-与-UDP-数据传输方式的不同点" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP-与-UDP-数据传输方式的不同点" class="headerlink" title="TCP 与 UDP 数据传输方式的不同点"></a>TCP 与 UDP 数据传输方式的不同点</h3>
+      <p>1：TCP 面向连接 UDP 面向无连接，因为连接会占用系统资源，故 TCP 比 UDP 更占用系统资源</p>
+<p>2：TCP 相较于 UDP 传输是可靠的，因为TCP具有下面几点（UDP没有）：</p>
+<p>1：采用应答机制</p>
+<p>2：超时重传（重新传输丢失的数据包）</p>
+<p>3：错误校核（调整数据包的顺序，删除重复的数据包）</p>
+<p>4：流量控制管理</p>
+
+        <h3 id="TCP-数据传输方式客户端以及服务端的流程"   >
+          <a href="#TCP-数据传输方式客户端以及服务端的流程" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP-数据传输方式客户端以及服务端的流程" class="headerlink" title="TCP 数据传输方式客户端以及服务端的流程"></a>TCP 数据传输方式客户端以及服务端的流程</h3>
+      <p>数据传输客户端流程：socket（套接字） → connect（与服务端建立连接）→ send【recv】（发送接受数据） → close（关闭套接字）</p>
+<p>数据传输客户端流程：socket（套接字）→ bind（绑定端口）→ listen （监听客户端发来的连接请求）→ accept（接受连接）→ recv【send】（接收发送数据）→ close（关闭套接字）</p>
+
+        <h2 id="TCP网络程序——客户端【重点】"   >
+          <a href="#TCP网络程序——客户端【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP网络程序——客户端【重点】" class="headerlink" title="TCP网络程序——客户端【重点】"></a>TCP网络程序——客户端【重点】</h2>
+      <p>目标：利用 TCP 编写网络客户端，与服务端进行网络通信</p>
+
+        <h3 id="TCP-编写的网络客户端与服务端（网络调试助手）进行通信"   >
+          <a href="#TCP-编写的网络客户端与服务端（网络调试助手）进行通信" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP-编写的网络客户端与服务端（网络调试助手）进行通信" class="headerlink" title="TCP 编写的网络客户端与服务端（网络调试助手）进行通信"></a>TCP 编写的网络客户端与服务端（网络调试助手）进行通信</h3>
+      <p>代码流程： </p>
+<p>导入模块  import socket<br>创建 TCP 的套接字  socket_info  = socket.socket(socket.AF_INET , socket.SOCK_STREAM)<br>与服务端进行连接  socket_info.connect((address))<br>收发数据 socket_info.send(编码后的数据)<br>关闭套接字 socket_info.close( )</p>
+<p>注意事项：</p>
+<p>1：创建 TCP 套接字时，第二个参数要选择  socket . SOCK_STREAM 代表 TCP 的套接字</p>
+<p>2：与服务端创建连接用到的是套接字的 connect 方法，其中connect括号里面的是服务端的 IP 以及端口号</p>
+<p>3：TCP 收发数据用到的是 send（）方法与 recv（）方法，括号里面直接填写数据即可！</p>
+<p>4：客户端收到服务端（调试助手）发来的数据不再是元组类型，而是字符串类型！！</p>
+<p>快速代码体验（客户端向服务端发送数据）</p>
+<p>服务端（网络调试助手）截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153616079.png"  alt="image-20211011153616079">
+      </p>
+<p>TCP 编写的客户端代码截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153705188.png"  alt="image-20211011153705188">
+      </p>
+<p>服务端接收到数据截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153714304.png"  alt="image-20211011153714304">
+      </p>
+<p>TCP 客户端（编写代码端）接收来自服务端（网络调试助手）的数据</p>
+<p>网络调试助手（服务端）发送数据截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153722875.png"  alt="image-20211011153722875">
+      </p>
+<p>TCP 客户端接收数据代码截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153730437.png"  alt="image-20211011153730437">
+      </p>
+
+        <h2 id="TCP网络通信——服务端【重中之重】"   >
+          <a href="#TCP网络通信——服务端【重中之重】" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP网络通信——服务端【重中之重】" class="headerlink" title="TCP网络通信——服务端【重中之重】"></a>TCP网络通信——服务端【重中之重】</h2>
+      <p>目标：学会编写 TCP 服务端网络程序（LINUX主机内），从而与客户端（网络调试助手）进行网络通信</p>
+
+        <h3 id="编写-TCP-服务端网络程序，其中调试助手充当客户端向服务端进行通信"   >
+          <a href="#编写-TCP-服务端网络程序，其中调试助手充当客户端向服务端进行通信" class="heading-link"><i class="fas fa-link"></i></a><a href="#编写-TCP-服务端网络程序，其中调试助手充当客户端向服务端进行通信" class="headerlink" title="编写 TCP 服务端网络程序，其中调试助手充当客户端向服务端进行通信"></a>编写 TCP 服务端网络程序，其中调试助手充当客户端向服务端进行通信</h3>
+      <p>功能：实现服务端（LINUX主机）与客户端（网络调试助手）的网络通信</p>
+<p>代码实现流程（服务端）：导入模块→创建TCP套接字→绑定服务端ip以及端口→监听客户端的连接（被动监听）→等待接受客户端连接→收发数据→关闭两个套接字</p>
+<p>注意事项：</p>
+<p>1：因为服务端是等待客户端的连接（被动连接），所以要向客户端提供 ip 与端口号，故服务端必须要利用 bind（）方法绑定 ip 与端口号</p>
+<p>2：监听客户端的连接是利用套接字的 listen（num）方法，其中括号里面的 num 代表允许连接的最大客户端数，开启监听连接后此套接字将不再能接收发送数据（被动模式）！且 num 对 windows 系统有效，对 linux 系统无效！</p>
+<p>3：接受客户端的连接是利用套接字的 accept（）方法，建立连接成功后，即可进行通信</p>
+<p>4：套接字的 accept（）方法是接受客户端的连接，如果没有客户端进行连接，程序会造成阻塞，直到有客户端的连接，客户端连接成功后将返回一个元组，第一个数据是新的套接字，第二个是客户端的ip以及端口号</p>
+<p>5：刚开始创建的套接字在 listen（num）方法下变为被动模式，不能接收与发送数据，这个套接字只负责与客户端的连接问题，因此在利用套接字的 accept（）方法接收一个客户端的连接后，会产生一个新的套接字用于和客户端进行通信！并且有一个额外的客户端与服务器连接，就会产生一个新的套接字</p>
+<p>快速代码体验（客户端网络调试助手截图）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153803628.png"  alt="image-20211011153803628">
+      </p>
+<p>服务端代码截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153810381.png"  alt="image-20211011153810381">
+      </p>
+
+        <h2 id="TCP网络通信——服务器增强【重点】"   >
+          <a href="#TCP网络通信——服务器增强【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP网络通信——服务器增强【重点】" class="headerlink" title="TCP网络通信——服务器增强【重点】"></a>TCP网络通信——服务器增强【重点】</h2>
+      <p>目标：<br>1：掌握编写的服务端如何接收客户端发来的多条消息<br>2：掌握如何接受多个客户端的连接</p>
+
+        <h3 id="编写的服务端接收多条客户端发来的消息代码实现"   >
+          <a href="#编写的服务端接收多条客户端发来的消息代码实现" class="heading-link"><i class="fas fa-link"></i></a><a href="#编写的服务端接收多条客户端发来的消息代码实现" class="headerlink" title="编写的服务端接收多条客户端发来的消息代码实现"></a>编写的服务端接收多条客户端发来的消息代码实现</h3>
+      <p>功能：实现编写的服务端可以接收多条客户端发来的数据</p>
+<p>理论实现：在服务端接收数据语法前面 recv 加上一个死循环即可接收多条客户端发来的消息</p>
+<p>注意事项：<br>1：如果客户端与服务端断开连接，那么服务端接收客户端发来的数据为空！！<br>2：在 python 中的 while 循环的判断条件只要是非空就为真，例如 while “xxx“： 这个循环判断为真，因为”xxx“不为空</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153833315.png"  alt="image-20211011153833315">
+      </p>
+
+        <h3 id="服务器如何连接多个客户端"   >
+          <a href="#服务器如何连接多个客户端" class="heading-link"><i class="fas fa-link"></i></a><a href="#服务器如何连接多个客户端" class="headerlink" title="服务器如何连接多个客户端"></a>服务器如何连接多个客户端</h3>
+      <p>功能：让服务器连接多个客户端</p>
+<p>代码思想：在套接字的 accept（）方法上面加上一个死循环，即可接受多个服务器的连接！</p>
+<p>注意事项：现在这个阶段，必须要等第一个连接的客户端断开连接，第二个客户端才可以正常连接，后面多线程可以解决这个问题</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153852033.png"  alt="image-20211011153852033">
+      </p>
+
+        <h2 id="（案例）TCP文件下载器【服务端、客户端】"   >
+          <a href="#（案例）TCP文件下载器【服务端、客户端】" class="heading-link"><i class="fas fa-link"></i></a><a href="#（案例）TCP文件下载器【服务端、客户端】" class="headerlink" title="（案例）TCP文件下载器【服务端、客户端】"></a>（案例）TCP文件下载器【服务端、客户端】</h2>
+      <p>目标：<br>1：掌握 with open（）方法打开一个文件与直接用 open（）方法打开文件有什么区别<br>2：编写TCP服务端与客户端，从而可以实现客户端从服务端上下载文件</p>
+
+        <h3 id="with-open（）as-xxx-打开文件与-直接用-open（）打开文件有什么区别"   >
+          <a href="#with-open（）as-xxx-打开文件与-直接用-open（）打开文件有什么区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#with-open（）as-xxx-打开文件与-直接用-open（）打开文件有什么区别" class="headerlink" title="with open（）as xxx 打开文件与 直接用 open（）打开文件有什么区别"></a>with open（）as xxx 打开文件与 直接用 open（）打开文件有什么区别</h3>
+      <p>答：with open（”文件名“，”文件打开方式“）as  file 打开一个文件，内置了 close（）方法，即不需要关闭文件了！</p>
+<p>注意事项：</p>
+<p>with open（”文件名“，”文件打开方式“）as  file 相当于下面这两行代码 </p>
+<p>file = open（”文件名“，”文件打开方式“） </p>
+<p>file.close（）</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153915572.png"  alt="image-20211011153915572">
+      </p>
+
+        <h3 id="TCP-编写的文件下载器（客户端下载服务端上的文件）"   >
+          <a href="#TCP-编写的文件下载器（客户端下载服务端上的文件）" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP-编写的文件下载器（客户端下载服务端上的文件）" class="headerlink" title="TCP 编写的文件下载器（客户端下载服务端上的文件）"></a>TCP 编写的文件下载器（客户端下载服务端上的文件）</h3>
+      <p>代码文件</p>
+<p>客户端代码文件</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153924525.png"  alt="image-20211011153924525">
+      </p>
+<p>服务端代码文件</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153931430.png"  alt="image-20211011153931430">
+      </p>
+
+        <h2 id="TCP的三次握手【面试】"   >
+          <a href="#TCP的三次握手【面试】" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP的三次握手【面试】" class="headerlink" title="TCP的三次握手【面试】"></a>TCP的三次握手【面试】</h2>
+      <p>目标：<br>1：掌握 TCP 的三次握手是用于连接<br>2：面试题：为什么要 TCP 的三次握手，两次不可以吗？四次，五次呢？</p>
+
+        <h3 id="什么是-TCP-的三次握手"   >
+          <a href="#什么是-TCP-的三次握手" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是-TCP-的三次握手" class="headerlink" title="什么是 TCP 的三次握手"></a>什么是 TCP 的三次握手</h3>
+      <p>答：TCP 的三次握手是指，客户端与服务端建立的 TCP 连接时，客户端与服务端总共发送的三个数据包，在 socket 编程中，这一过程是由客户端发起的 connect 方法所触发的！</p>
+<p>注意事项：</p>
+<p>1：TCP 的客户端与服务端建立连接时，必须要经过 TCP 的三次握手才可以成功建立通信</p>
+<p>2：如果 tcp 的第三次握手丢失（即客户端没有应答服务端的包），那么服务端会一直向客户端发送第二个包（第二次握手），并且客户端也会向服务端重新发送 SYN 请求（第一次握手），这就叫 SYN 洪水攻击！这样会使服务器的资源大量浪费！</p>
+<p>图示（示意图：打电话）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011153959342.png"  alt="image-20211011153959342">
+      </p>
+<p>协议底层图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011154010951.png"  alt="image-20211011154010951">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011154020134.png"  alt="image-20211011154020134">
+      </p>
+
+        <h3 id="面试题：为什么服务端客户端建立-TCP-连接三次握手，两次不可以吗？四次，五次呢？"   >
+          <a href="#面试题：为什么服务端客户端建立-TCP-连接三次握手，两次不可以吗？四次，五次呢？" class="heading-link"><i class="fas fa-link"></i></a><a href="#面试题：为什么服务端客户端建立-TCP-连接三次握手，两次不可以吗？四次，五次呢？" class="headerlink" title="面试题：为什么服务端客户端建立 TCP 连接三次握手，两次不可以吗？四次，五次呢？"></a>面试题：为什么服务端客户端建立 TCP 连接三次握手，两次不可以吗？四次，五次呢？</h3>
+      <p>答：不可以，丢失第三次握手（第三个包）的话，服务端就不会接收到客户端的应答，服务端就会一直向客户端发送第二次握手（第二个包），又因为建立 TCP 连接不成功，客户端可能会向服务端重新发送第一次握手（第一个包，连接 SYN 请求），这样会大量浪费服务器的资源，占用服务器的内存，造成服务器的性能下降，这就叫 SYN 洪水攻击，而四次握手、五次握手也会造成资源的浪费，明明三次就可以完成的！</p>
+
+        <h2 id="TCP的四次挥手【面试】"   >
+          <a href="#TCP的四次挥手【面试】" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP的四次挥手【面试】" class="headerlink" title="TCP的四次挥手【面试】"></a>TCP的四次挥手【面试】</h2>
+      <p>目标：<br>1：掌握什么是 TCP 的四次挥手<br>2：疑难问题解决（解决地址重用问题）</p>
+
+        <h3 id="TCP-的四次挥手"   >
+          <a href="#TCP-的四次挥手" class="heading-link"><i class="fas fa-link"></i></a><a href="#TCP-的四次挥手" class="headerlink" title="TCP 的四次挥手"></a>TCP 的四次挥手</h3>
+      <p>概念：在 TCP 的客户端与服务端断开连接时，客户端与服务端总共发送四个包后从而确认断开连接，这就叫 TCP 的四次挥手，TCP的四次挥手用于断开TCP连接</p>
+<p>内部流程图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011154111861.png"  alt="image-20211011154111861">
+      </p>
+<p>面试题：</p>
+<p>为什么主动发起断开连接的一方要等待 2MLS 时间才能断开连接，因为有一些原因造成第四个包丢失，主动发起断开连接的一方要等待另一方发送上一个包（TCP的应答机制和超时重传）的最大时间就是 2MLS</p>
+
+        <h3 id="当服务端主动断开连接时，再次运行这个服务端的话会报这样的错误-Address-already-in-use-，这是怎么回事，该怎么解决？"   >
+          <a href="#当服务端主动断开连接时，再次运行这个服务端的话会报这样的错误-Address-already-in-use-，这是怎么回事，该怎么解决？" class="heading-link"><i class="fas fa-link"></i></a><a href="#当服务端主动断开连接时，再次运行这个服务端的话会报这样的错误-Address-already-in-use-，这是怎么回事，该怎么解决？" class="headerlink" title="当服务端主动断开连接时，再次运行这个服务端的话会报这样的错误 Address already in use ，这是怎么回事，该怎么解决？"></a>当服务端主动断开连接时，再次运行这个服务端的话会报这样的错误 Address already in use ，这是怎么回事，该怎么解决？</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011154130703.png"  alt="image-20211011154130703">
+      </p>
+<p>答：Address already in use 翻译是该地址已经被使用，这是因为，主动发起断开tcp连接的一方会等待 2MLS时间才能真正断开连接，所以在 2MLS时间内重启这个服务端就会报这样的错误，下面是解决办法</p>
+<p>解决办法：设置负责客户端连接的套接字地址属性即可解决此问题</p>
+<p>代码：<code>套接字 . setsockopt（socket.SOL_SOCKET , socket . SO_REUSEADDR , True）</code></p>
+<p>上面这段代码的意思是，设置套接字的地址可以重用即可解决此问题</p>
+<p>截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011154149179.png"  alt="image-20211011154149179">
+      </p>
+<p>未完待续…..</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/10/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E2%80%94%E2%80%94TCP%E7%9B%B8%E5%85%B3/">http://pythonlamb.github.io/2021/10/10/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E2%80%94%E2%80%94TCP%E7%9B%B8%E5%85%B3/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E7%AF%87/">通信协议篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/11/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E2%80%94%E2%80%94IP%E5%9C%B0%E5%9D%80%E4%B8%8EDNS/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">通信协议——IP地址与DNS</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/10/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E2%80%94%E2%80%94UDP%E8%BF%9E%E6%8E%A5%E5%B9%BF%E6%92%AD/"><span class="paginator-prev__text">通信协议——UDP连接广播</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E7%AE%80%E4%BB%8B%E3%80%90%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E3%80%91"><span class="toc-number">1.</span> <span class="toc-text">
+          TCP简介【高频面试】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF-TCP-%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%B1%BB%E5%9E%8B%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">
+          一：什么是 TCP 数据传输类型？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%EF%BC%9A-TCP-%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F%E7%9A%84%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">
+          二： TCP 数据传输方式的通信模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F%E5%8F%AF%E9%9D%A0%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.3.</span> <span class="toc-text">
+          TCP 数据传输方式可靠的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-%E4%B8%8E-UDP-%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F%E7%9A%84%E4%B8%8D%E5%90%8C%E7%82%B9"><span class="toc-number">1.4.</span> <span class="toc-text">
+          TCP 与 UDP 数据传输方式的不同点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A5%E5%8F%8A%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text">
+          TCP 数据传输方式客户端以及服务端的流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E7%BD%91%E7%BB%9C%E7%A8%8B%E5%BA%8F%E2%80%94%E2%80%94%E5%AE%A2%E6%88%B7%E7%AB%AF%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">2.</span> <span class="toc-text">
+          TCP网络程序——客户端【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-%E7%BC%96%E5%86%99%E7%9A%84%E7%BD%91%E7%BB%9C%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8E%E6%9C%8D%E5%8A%A1%E7%AB%AF%EF%BC%88%E7%BD%91%E7%BB%9C%E8%B0%83%E8%AF%95%E5%8A%A9%E6%89%8B%EF%BC%89%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1"><span class="toc-number">2.1.</span> <span class="toc-text">
+          TCP 编写的网络客户端与服务端（网络调试助手）进行通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E2%80%94%E2%80%94%E6%9C%8D%E5%8A%A1%E7%AB%AF%E3%80%90%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          TCP网络通信——服务端【重中之重】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99-TCP-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%BD%91%E7%BB%9C%E7%A8%8B%E5%BA%8F%EF%BC%8C%E5%85%B6%E4%B8%AD%E8%B0%83%E8%AF%95%E5%8A%A9%E6%89%8B%E5%85%85%E5%BD%93%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%90%91%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1"><span class="toc-number">3.1.</span> <span class="toc-text">
+          编写 TCP 服务端网络程序，其中调试助手充当客户端向服务端进行通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E2%80%94%E2%80%94%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A2%9E%E5%BC%BA%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          TCP网络通信——服务器增强【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A5%E6%94%B6%E5%A4%9A%E6%9D%A1%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E6%9D%A5%E7%9A%84%E6%B6%88%E6%81%AF%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.1.</span> <span class="toc-text">
+          编写的服务端接收多条客户端发来的消息代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A6%82%E4%BD%95%E8%BF%9E%E6%8E%A5%E5%A4%9A%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">4.2.</span> <span class="toc-text">
+          服务器如何连接多个客户端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%88%E6%A1%88%E4%BE%8B%EF%BC%89TCP%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%99%A8%E3%80%90%E6%9C%8D%E5%8A%A1%E7%AB%AF%E3%80%81%E5%AE%A2%E6%88%B7%E7%AB%AF%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          （案例）TCP文件下载器【服务端、客户端】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#with-open%EF%BC%88%EF%BC%89as-xxx-%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E4%B8%8E-%E7%9B%B4%E6%8E%A5%E7%94%A8-open%EF%BC%88%EF%BC%89%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="toc-number">5.1.</span> <span class="toc-text">
+          with open（）as xxx 打开文件与 直接用 open（）打开文件有什么区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-%E7%BC%96%E5%86%99%E7%9A%84%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%99%A8%EF%BC%88%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8B%E8%BD%BD%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8A%E7%9A%84%E6%96%87%E4%BB%B6%EF%BC%89"><span class="toc-number">5.2.</span> <span class="toc-text">
+          TCP 编写的文件下载器（客户端下载服务端上的文件）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          TCP的三次握手【面试】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-TCP-%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="toc-number">6.1.</span> <span class="toc-text">
+          什么是 TCP 的三次握手</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BB%BA%E7%AB%8B-TCP-%E8%BF%9E%E6%8E%A5%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%EF%BC%8C%E4%B8%A4%E6%AC%A1%E4%B8%8D%E5%8F%AF%E4%BB%A5%E5%90%97%EF%BC%9F%E5%9B%9B%E6%AC%A1%EF%BC%8C%E4%BA%94%E6%AC%A1%E5%91%A2%EF%BC%9F"><span class="toc-number">6.2.</span> <span class="toc-text">
+          面试题：为什么服务端客户端建立 TCP 连接三次握手，两次不可以吗？四次，五次呢？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E7%9A%84%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91"><span class="toc-number">7.</span> <span class="toc-text">
+          TCP的四次挥手【面试】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-%E7%9A%84%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="toc-number">7.1.</span> <span class="toc-text">
+          TCP 的四次挥手</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%BB%E5%8A%A8%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5%E6%97%B6%EF%BC%8C%E5%86%8D%E6%AC%A1%E8%BF%90%E8%A1%8C%E8%BF%99%E4%B8%AA%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E8%AF%9D%E4%BC%9A%E6%8A%A5%E8%BF%99%E6%A0%B7%E7%9A%84%E9%94%99%E8%AF%AF-Address-already-in-use-%EF%BC%8C%E8%BF%99%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B%EF%BC%8C%E8%AF%A5%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3%EF%BC%9F"><span class="toc-number">7.2.</span> <span class="toc-text">
+          当服务端主动断开连接时，再次运行这个服务端的话会报这样的错误 Address already in use ，这是怎么回事，该怎么解决？</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

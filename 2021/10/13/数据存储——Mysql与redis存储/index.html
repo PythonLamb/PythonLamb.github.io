@@ -1,0 +1,510 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：如何将爬取下来的数据存储到Mysql数据库内及其redis数据库内…..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据存储——Mysql与redis存储">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94Mysql%E4%B8%8Eredis%E5%AD%98%E5%82%A8/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：如何将爬取下来的数据存储到Mysql数据库内及其redis数据库内…..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095105307.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/python%E4%BA%8C%E7%BA%A7%E7%88%AC%E8%99%AB%E5%A2%9E%E9%87%8F%E5%BC%8F%E6%A1%86%E6%9E%B6%E3%80%90%E7%BE%94%E7%BE%8A%E6%80%BB%E7%BB%93%E3%80%91.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095217759.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095228423.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095241914.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095257113.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095317287.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095329179.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095343346.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095357083.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095405396.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095424043.png">
+<meta property="article:published_time" content="2021-10-13T01:45:01.000Z">
+<meta property="article:modified_time" content="2021-10-13T01:54:36.730Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="数据存储篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095105307.png"><title>数据存储——Mysql与redis存储 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94Mysql%E4%B8%8Eredis%E5%AD%98%E5%82%A8/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">数据存储——Mysql与redis存储</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-13</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">1.8k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">10分</span></span></div></header><div class="post-body"><p>本文主讲：如何将爬取下来的数据存储到Mysql数据库内及其redis数据库内…..</p>
+<span id="more"></span>
+
+
+
+
+        <h2 id="MySQL实现增量式爬虫（md5加密）【重点】"   >
+          <a href="#MySQL实现增量式爬虫（md5加密）【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#MySQL实现增量式爬虫（md5加密）【重点】" class="headerlink" title="MySQL实现增量式爬虫（md5加密）【重点】"></a>MySQL实现增量式爬虫（md5加密）【重点】</h2>
+      
+        <h3 id="python-怎么对-url-字符串进行-MD5-加密"   >
+          <a href="#python-怎么对-url-字符串进行-MD5-加密" class="heading-link"><i class="fas fa-link"></i></a><a href="#python-怎么对-url-字符串进行-MD5-加密" class="headerlink" title="python 怎么对 url 字符串进行 MD5 加密"></a>python 怎么对 url 字符串进行 MD5 加密</h3>
+      <p>什么是MD5加密：就是将一串字符重新加密为定长32的唯一字符串（常常用作 url 加密）</p>
+<p>为什么要对 url 进行MD5加密：因为有的 url 长度太长在实现增量式爬虫时的mysql  url指纹库不好控制，所以进行MD5加密</p>
+<p>实现语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5               →  导入md5模块（标准库模块）</span><br><span class="line">s = md5（）                                →  创建一个md5对象</span><br><span class="line">s.update( url.edcode（）)                 → 对 url 进行md5加密</span><br><span class="line">加密结果 = s.hexdigest（）       → 获取加密后的十六进制url字符串</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>注意事项：一段字符经过md5加密之后结果是16进制字符串，那么相同的这段字符在经过md5加密，形成的16进制字符串是不变的</p>
+<p>代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095105307.png"  alt="image-20211013095105307">
+      </p>
+
+        <h3 id="MySQL-增量式爬虫的实现逻辑"   >
+          <a href="#MySQL-增量式爬虫的实现逻辑" class="heading-link"><i class="fas fa-link"></i></a><a href="#MySQL-增量式爬虫的实现逻辑" class="headerlink" title="MySQL 增量式爬虫的实现逻辑"></a>MySQL 增量式爬虫的实现逻辑</h3>
+      <p>增量式爬虫的背景：假设爬取新闻网站资源，今天把所有的新闻全部爬取下来了，第二天网站又更新了几条新闻，这时我们只需要爬取更新的新闻即可，这就是做增量式爬虫的目的</p>
+<p>增量式实现逻辑：创建一个 mysql 网站指纹数据表，将爬取过的 url（看情况确定是一级url 还是二级url） 经过 md5 加密之后保存进数据表，以后在爬取数据时先将待爬取的 url 与指纹数据表里面的加密url进行比对，如果url已经存在指纹数据表内，那么就停止爬取，没有则继续爬取</p>
+
+        <h3 id="MySQL-增量式爬虫的具体实现思路"   >
+          <a href="#MySQL-增量式爬虫的具体实现思路" class="heading-link"><i class="fas fa-link"></i></a><a href="#MySQL-增量式爬虫的具体实现思路" class="headerlink" title="MySQL 增量式爬虫的具体实现思路"></a>MySQL 增量式爬虫的具体实现思路</h3>
+      <p>第一步：创建 mysql 指纹数据表</p>
+<p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">create database 数据库名 charset=utf8；</span><br><span class="line">create table 数据表名（ 字段名 char（<span class="number">32</span>） <span class="keyword">not</span> null ）charset=utf8；</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>第二步：在向指定 url 服务器发送请求之前，先将url与mysql数据指纹库里面的url进行比对，没有一样的在发送请求</p>
+<p>部分语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">游标对象.execute（select * <span class="keyword">from</span> 指纹数据表名）</span><br><span class="line">url_tuple = 游标对象.fetchall（）</span><br><span class="line"><span class="keyword">if</span>  url <span class="keyword">in</span> url_tuple：</span><br><span class="line">	退出程序</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	继续爬取</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>注意事项：url_tuple = 游标对象.fetchall（）  语法获取的数据是元组嵌套，但是没关系，不管是元组还是元组的嵌套 in 关键字都可以判断指定数据是否在里面！！</p>
+<p>第三步：如果判断 url 不在 url数据指纹库内，则爬取数据完成后，将这个url经过md5加密后写入到数据指纹库里面！！</p>
+
+        <h2 id="MySQL增量式爬虫框架【重点】"   >
+          <a href="#MySQL增量式爬虫框架【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#MySQL增量式爬虫框架【重点】" class="headerlink" title="MySQL增量式爬虫框架【重点】"></a>MySQL增量式爬虫框架【重点】</h2>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/python%E4%BA%8C%E7%BA%A7%E7%88%AC%E8%99%AB%E5%A2%9E%E9%87%8F%E5%BC%8F%E6%A1%86%E6%9E%B6%E3%80%90%E7%BE%94%E7%BE%8A%E6%80%BB%E7%BB%93%E3%80%91.png" >
+      </p>
+
+        <h2 id="redis数据库基本操作【重点】"   >
+          <a href="#redis数据库基本操作【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis数据库基本操作【重点】" class="headerlink" title="redis数据库基本操作【重点】"></a>redis数据库基本操作【重点】</h2>
+      
+        <h3 id="什么是-redis-数据库"   >
+          <a href="#什么是-redis-数据库" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是-redis-数据库" class="headerlink" title="什么是 redis 数据库"></a>什么是 redis 数据库</h3>
+      <p>类型：非关系型数据库</p>
+<p>数据存储类型：字符串（键值对）、列表，集合（去重），zset（有序集合），哈希（2的32次方减1个键值对）</p>
+<p>数据存储位置：内存</p>
+<p>优点：读取大量数据速度快</p>
+<p>注意事项：redis的字符串其最基本的数据类型也是二进制类型的，你可以理解为redis内的字符串数据可以是任何类型的数据，比如说图片、音频等，其中redis的字符串类型最大可存储512mb的数据</p>
+
+        <h3 id="怎么安装-redis-数据库"   >
+          <a href="#怎么安装-redis-数据库" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么安装-redis-数据库" class="headerlink" title="怎么安装 redis 数据库"></a>怎么安装 redis 数据库</h3>
+      <p>ubuntu安装指令：<code>sudo apt-get install redis-server</code></p>
+<p>ubuntu终端启动redis指令：<code>redis-server</code></p>
+<p>终端查看是否启动redis指令（常用）：<code>redis-cli</code>      如果启动成功出现这串字符：redis 127.0.0.1:6379&gt;</p>
+<p>进入redis数据库指令：在 redis 127.0.0.1:6379&gt; 基础上输入 <code>ping</code> 即可</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095217759.png"  alt="image-20211013095217759">
+      </p>
+
+        <h3 id="redis-数据库的五大数据类型"   >
+          <a href="#redis-数据库的五大数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis-数据库的五大数据类型" class="headerlink" title="redis 数据库的五大数据类型"></a>redis 数据库的五大数据类型</h3>
+      <p>1.字符串（键值对）：redis 最基础的数据类型，其中字符串是二进制的，可以理解为redis的字符串可以存储任何数据，图片、音频等，但是redis的字符串（值）最大可存储512mb大小的数据</p>
+<p>插入数据：<code>SET 键名  值</code></p>
+<p>获取数据：<code>GET 键名</code></p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095228423.png"  alt="image-20211013095228423">
+      </p>
+<p>2.hash（哈希）：哈希数据类型可以理解为键值对的集合，一个哈希最多可以存储232 -1 键值对（40多亿）</p>
+<p>省略……..</p>
+<p>3.列表：列表是redis最简单的数据类型，数据元素按照插入顺序排序（先插在后）</p>
+<p>插入数据：<code>lpush 键名  值</code></p>
+<p>获取数据：<code>lrange 键名 数据在列表开始下标 数据在列表结束下标</code></p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095241914.png"  alt="image-20211013095241914">
+      </p>
+<p>4.集合：redis的集合是字符串无序集合，元素不能重复，通过哈希表实现，因此添加、查找、删除的复杂度都是O（1）</p>
+<p>插入数据：<code>sadd 键名 数据</code></p>
+<p>查询数据：<code>smembers 键名</code></p>
+<p>注意：添加一个数据到集合键里面，如果这个数据在集合存在则不能插入返回0，不在插入成功返回1</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095257113.png"  alt="image-20211013095257113">
+      </p>
+<p>zset（无序集合）：Redis zset 和 set 一样也是string类型元素的集合,且不允许重复的成员。不同的是每个元素都会关联一个double类型的分数。redis正是通过分数来为集合中的成员进行从小到大的排序。zset的成员是唯一的,但分数(score)却可以重复</p>
+<p>插入数据到集合内：<code>zadd key score member</code></p>
+<p>省略……</p>
+
+        <h2 id="redis数据库的常用指令【重点】"   >
+          <a href="#redis数据库的常用指令【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis数据库的常用指令【重点】" class="headerlink" title="redis数据库的常用指令【重点】"></a>redis数据库的常用指令【重点】</h2>
+      
+        <h3 id="怎么在redis数据库删除指定键"   >
+          <a href="#怎么在redis数据库删除指定键" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么在redis数据库删除指定键" class="headerlink" title="怎么在redis数据库删除指定键"></a>怎么在redis数据库删除指定键</h3>
+      <p>语法：<code>del 键名</code></p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095317287.png"  alt="image-20211013095317287">
+      </p>
+<p>全部键指令截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095329179.png"  alt="image-20211013095329179">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095343346.png"  alt="image-20211013095343346">
+      </p>
+
+        <h3 id="redis-数据库一些关于字符串的操作"   >
+          <a href="#redis-数据库一些关于字符串的操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis-数据库一些关于字符串的操作" class="headerlink" title="redis 数据库一些关于字符串的操作"></a>redis 数据库一些关于字符串的操作</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095357083.png"  alt="image-20211013095357083">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095405396.png"  alt="image-20211013095405396">
+      </p>
+
+        <h2 id="redis数据库与python交互【重点】"   >
+          <a href="#redis数据库与python交互【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis数据库与python交互【重点】" class="headerlink" title="redis数据库与python交互【重点】"></a>redis数据库与python交互【重点】</h2>
+      
+        <h3 id="怎么安装-redis-数据库与-python-交互的第三方库"   >
+          <a href="#怎么安装-redis-数据库与-python-交互的第三方库" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么安装-redis-数据库与-python-交互的第三方库" class="headerlink" title="怎么安装 redis 数据库与 python 交互的第三方库"></a>怎么安装 redis 数据库与 python 交互的第三方库</h3>
+      <p>安装指令：<code>pip3 install redis</code></p>
+
+        <h3 id="redis-数据库与-python-交互的步骤"   >
+          <a href="#redis-数据库与-python-交互的步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis-数据库与-python-交互的步骤" class="headerlink" title="redis 数据库与 python 交互的步骤"></a>redis 数据库与 python 交互的步骤</h3>
+      <p>第一步：导入 redis 第三方数据库             →       <code> import redis</code> </p>
+<p>第二步：创建 redis 连接数据库对象        →        <code>  red_obj = redis.Redis(host=主机，port=端口号，db=数据库号)</code><br>注意：redis默认有16个数据库，也就是数据库号可以是  0-15，一般选择0   redis的端口号是6379（整形）</p>
+<p>第三步：利用创建的 redis 数据库对象对数据库进行操作      → <code>result = red_obj.sadd(&quot;name：age&quot; , &quot;21&quot;)</code>  向外键名为name的集合内插入键为age值为“21”的一条数据</p>
+<p>注意：redis内的集合数据类型具有数据唯一性以及无序性的特征，如果上述插入的数据在集合内存在返回0，不存在返回数据1</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013095424043.png"  alt="image-20211013095424043">
+      </p>
+
+        <h2 id="redis实现增量爬虫【重点】"   >
+          <a href="#redis实现增量爬虫【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis实现增量爬虫【重点】" class="headerlink" title="redis实现增量爬虫【重点】"></a>redis实现增量爬虫【重点】</h2>
+      
+        <h3 id="怎么利用-redis-实现增量式爬虫"   >
+          <a href="#怎么利用-redis-实现增量式爬虫" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么利用-redis-实现增量式爬虫" class="headerlink" title="怎么利用 redis 实现增量式爬虫"></a>怎么利用 redis 实现增量式爬虫</h3>
+      <p>实现重要方法：</p>
+<p>第一步：在进行爬取指定url数据时，先将指定 url 写入到 redis 数据库集合内，获取返回值！<br>写入redis集合方法：连接数据库对象.sadd（键名，键名所对应的值）</p>
+<p>第二步：如果返回值是1，就说明这个url还未加入到url指纹数据库内（未爬取），可进一步爬取当前url数据，如果返回值为 0 说明当前经过md5加密后的url已经加入到url指纹数据库内，无需爬取，退出程序（只适用于电商新闻类网站！）</p>
+<p>实现原理：因为 redis 数据库的集合具有无序性以及数据唯一性！，当数据在redis集合内存在时，插入数据失败返回值为o</p>
+<p>未完待续…..</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94Mysql%E4%B8%8Eredis%E5%AD%98%E5%82%A8/">http://pythonlamb.github.io/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94Mysql%E4%B8%8Eredis%E5%AD%98%E5%82%A8/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%AF%87/">数据存储篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94requests%E6%A8%A1%E5%9D%97%E4%B8%8Expath%E8%AF%AD%E6%B3%95/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">爬虫基础——requests模块与xpath语法</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94CSV%E6%96%87%E4%BB%B6%E4%B8%8EmongoDB/"><span class="paginator-prev__text">数据存储——CSV文件与mongoDB</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E5%AE%9E%E7%8E%B0%E5%A2%9E%E9%87%8F%E5%BC%8F%E7%88%AC%E8%99%AB%EF%BC%88md5%E5%8A%A0%E5%AF%86%EF%BC%89%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">1.</span> <span class="toc-text">
+          MySQL实现增量式爬虫（md5加密）【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#python-%E6%80%8E%E4%B9%88%E5%AF%B9-url-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%9B%E8%A1%8C-MD5-%E5%8A%A0%E5%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text">
+          python 怎么对 url 字符串进行 MD5 加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL-%E5%A2%9E%E9%87%8F%E5%BC%8F%E7%88%AC%E8%99%AB%E7%9A%84%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91"><span class="toc-number">1.2.</span> <span class="toc-text">
+          MySQL 增量式爬虫的实现逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL-%E5%A2%9E%E9%87%8F%E5%BC%8F%E7%88%AC%E8%99%AB%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-number">1.3.</span> <span class="toc-text">
+          MySQL 增量式爬虫的具体实现思路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E5%A2%9E%E9%87%8F%E5%BC%8F%E7%88%AC%E8%99%AB%E6%A1%86%E6%9E%B6%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">2.</span> <span class="toc-text">
+          MySQL增量式爬虫框架【重点】</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          redis数据库基本操作【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-redis-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">3.1.</span> <span class="toc-text">
+          什么是 redis 数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%AE%89%E8%A3%85-redis-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">3.2.</span> <span class="toc-text">
+          怎么安装 redis 数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BA%94%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.3.</span> <span class="toc-text">
+          redis 数据库的五大数据类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          redis数据库的常用指令【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%9C%A8redis%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%A0%E9%99%A4%E6%8C%87%E5%AE%9A%E9%94%AE"><span class="toc-number">4.1.</span> <span class="toc-text">
+          怎么在redis数据库删除指定键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8E%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">4.2.</span> <span class="toc-text">
+          redis 数据库一些关于字符串的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8Epython%E4%BA%A4%E4%BA%92%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          redis数据库与python交互【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%AE%89%E8%A3%85-redis-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E-python-%E4%BA%A4%E4%BA%92%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93"><span class="toc-number">5.1.</span> <span class="toc-text">
+          怎么安装 redis 数据库与 python 交互的第三方库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E-python-%E4%BA%A4%E4%BA%92%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-number">5.2.</span> <span class="toc-text">
+          redis 数据库与 python 交互的步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E5%AE%9E%E7%8E%B0%E5%A2%9E%E9%87%8F%E7%88%AC%E8%99%AB%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          redis实现增量爬虫【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%A9%E7%94%A8-redis-%E5%AE%9E%E7%8E%B0%E5%A2%9E%E9%87%8F%E5%BC%8F%E7%88%AC%E8%99%AB"><span class="toc-number">6.1.</span> <span class="toc-text">
+          怎么利用 redis 实现增量式爬虫</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

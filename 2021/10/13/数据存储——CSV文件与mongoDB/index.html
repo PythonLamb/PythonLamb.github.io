@@ -1,0 +1,598 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：将爬取下来的数据持久化存储到CSV文件内或存到mongoDB数据库内、Mysql数据库内，简单的二级爬虫框架等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据存储——CSV文件与mongoDB">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94CSV%E6%96%87%E4%BB%B6%E4%B8%8EmongoDB/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：将爬取下来的数据持久化存储到CSV文件内或存到mongoDB数据库内、Mysql数据库内，简单的二级爬虫框架等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093811033.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093818574.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093837101.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093857877.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093910839.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093938395.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094020403.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094043171.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094055168.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094105537.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094118675.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094127336.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094138284.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094144723.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094153128.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094223862.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094245938.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094301571.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094313020.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/python%E4%BA%8C%E7%BA%A7%E7%88%AC%E8%99%AB%E6%A1%86%E6%9E%B6%E3%80%90%E7%BE%94%E7%BE%8A%E6%80%BB%E7%BB%93%E3%80%91.png">
+<meta property="article:published_time" content="2021-10-13T01:30:56.000Z">
+<meta property="article:modified_time" content="2021-10-13T01:43:56.392Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="数据存储篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093811033.png"><title>数据存储——CSV文件与mongoDB | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94CSV%E6%96%87%E4%BB%B6%E4%B8%8EmongoDB/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">数据存储——CSV文件与mongoDB</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-13</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">11分</span></span></div></header><div class="post-body"><p>本文主讲：将爬取下来的数据持久化存储到CSV文件内或存到mongoDB数据库内、Mysql数据库内，简单的二级爬虫框架等</p>
+<span id="more"></span>
+
+
+
+
+
+
+        <h2 id="爬取数据持久化存储（csv）【重点】"   >
+          <a href="#爬取数据持久化存储（csv）【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#爬取数据持久化存储（csv）【重点】" class="headerlink" title="爬取数据持久化存储（csv）【重点】"></a>爬取数据持久化存储（csv）【重点】</h2>
+      
+        <h3 id="python-标准库模块-csv-的使用方法及功能"   >
+          <a href="#python-标准库模块-csv-的使用方法及功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#python-标准库模块-csv-的使用方法及功能" class="headerlink" title="python 标准库模块 csv 的使用方法及功能"></a>python 标准库模块 csv 的使用方法及功能</h3>
+      <p>功能：将数据写入到 csv 文件的模块<br>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span> （“文件名.csv”，“打开方式”） <span class="keyword">as</span>  文件别名：</span><br><span class="line">		写作对象 = csv.writer（文件别名）</span><br><span class="line">		写作对象.writerow（列表）    →→→→→→→→→→ 单行数据写入 csv 文件</span><br><span class="line">		写作对象.writerows（列表内嵌套元组）   →→→→→→→→→→ 多行数据写入 csv 文件，其中一个元组代表一行数据！</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>两种写入方法：</p>
+<p>写作对象.writerow（列表）：这是将数据单行写入到 csv 文件内，一个列表元素是一个字段</p>
+<p>写作对象.writerows（列表内嵌套元组）：这是将数据多行写入到 csv 文件内，一个列表内元组是一行记录</p>
+<p>图示：</p>
+<p>单行数据写入</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093811033.png"  alt="image-20211013093811033">
+      </p>
+<p>多行数据写入</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093818574.png"  alt="image-20211013093818574">
+      </p>
+
+        <h3 id="将数据保存至-csv-文件的一些问题处理方法"   >
+          <a href="#将数据保存至-csv-文件的一些问题处理方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#将数据保存至-csv-文件的一些问题处理方法" class="headerlink" title="将数据保存至 csv 文件的一些问题处理方法"></a>将数据保存至 csv 文件的一些问题处理方法</h3>
+      <p>出现什么问题？ </p>
+<p>答：多行数据保存时，每行数据下面会多出一行空行（windows专属，linux没有这种问题），这该怎么解决呢</p>
+<p>怎么解决？</p>
+<p>答：打开文件时加上参数 newline = “” 即可解决！！！</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093837101.png"  alt="image-20211013093837101">
+      </p>
+
+        <h2 id="数据持久化存储（mysql）【重点】"   >
+          <a href="#数据持久化存储（mysql）【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据持久化存储（mysql）【重点】" class="headerlink" title="数据持久化存储（mysql）【重点】"></a>数据持久化存储（mysql）【重点】</h2>
+      
+        <h3 id="python-与-mysql-数据库交互的步骤"   >
+          <a href="#python-与-mysql-数据库交互的步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#python-与-mysql-数据库交互的步骤" class="headerlink" title="python 与 mysql 数据库交互的步骤"></a>python 与 mysql 数据库交互的步骤</h3>
+      <p>第一步：导入 pymysql 模块</p>
+<p>第二步：创建铁路对象 way_obj = pymysql.connect(host = 主机，user = 用户名，password = 数据库密码，database = 交互数据库名)</p>
+<p>第三步：在铁路对象上创建游标对象 cursor_obj = way_obj.cursor（）</p>
+<p>第四步：将数据插入到数据库内（两种方法）</p>
+<p>1（单行数据插入）： cursor_obj.execute（SQL语句，数据列表）</p>
+<p>2（多行数据插入）：cursor_obj.executemany(SQL语句，列表内嵌套元组数据)</p>
+<p>第五步：将更改提交到数据库 way_obj.commit( )   注意是铁道对象提交，针对mysql数据库的事务特性！</p>
+<p>第六步：关闭游标对象 cursor_obj.close（）</p>
+<p>第七步：关闭铁道对象 way_obj.close( )</p>
+<p>截图演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093857877.png"  alt="image-20211013093857877">
+      </p>
+
+        <h3 id="将数据存储到数据库的两种方法（单记录插入、多记录插入）"   >
+          <a href="#将数据存储到数据库的两种方法（单记录插入、多记录插入）" class="heading-link"><i class="fas fa-link"></i></a><a href="#将数据存储到数据库的两种方法（单记录插入、多记录插入）" class="headerlink" title="将数据存储到数据库的两种方法（单记录插入、多记录插入）"></a>将数据存储到数据库的两种方法（单记录插入、多记录插入）</h3>
+      <p>单行数据插入方法—— execute（）</p>
+<p>功能：将单行数据（列表）插入到数据库内！</p>
+<p>语法：游标对象.execute（参数1，参数2）</p>
+<p>参数1：SQL语句<br>参数2：列表数据，所有列表数据就是一行记录</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093910839.png"  alt="image-20211013093910839">
+      </p>
+<p>多行数据插入方法—— executemany（）</p>
+<p>功能：将多行数据（列表内嵌套元组）插入到数据库内</p>
+<p>语法：游标对象.executemany（参数1，参数2）</p>
+<p>参数1：SQL语句<br>参数2：列表内嵌套元组，一个元组内所有数据就是数据库内的一行数据！</p>
+<p>注意事项：列表内嵌套元组，其中一个元组内的数据就是一行记录</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013093938395.png"  alt="image-20211013093938395">
+      </p>
+<p>注意事项：多行数据插入方法（executemany）比单行数据插入方法（execute）效率要快的多，因为计算机 i/o次数减少很多！！！</p>
+
+        <h2 id="mongoDB数据库基本操作【重点】"   >
+          <a href="#mongoDB数据库基本操作【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#mongoDB数据库基本操作【重点】" class="headerlink" title="mongoDB数据库基本操作【重点】"></a>mongoDB数据库基本操作【重点】</h2>
+      
+        <h3 id="mysql、mongoDB、redis数据库的端口号"   >
+          <a href="#mysql、mongoDB、redis数据库的端口号" class="heading-link"><i class="fas fa-link"></i></a><a href="#mysql、mongoDB、redis数据库的端口号" class="headerlink" title="mysql、mongoDB、redis数据库的端口号"></a>mysql、mongoDB、redis数据库的端口号</h3>
+      <p>mysql：3306</p>
+<p>mongoDB：27017</p>
+<p>redis：6379</p>
+
+        <h3 id="mongoDB-数据库的详解"   >
+          <a href="#mongoDB-数据库的详解" class="heading-link"><i class="fas fa-link"></i></a><a href="#mongoDB-数据库的详解" class="headerlink" title="mongoDB 数据库的详解"></a>mongoDB 数据库的详解</h3>
+      <p>特征：mongoDB数据库是非关系型数据库（开源、免费），以键值对的形式存储数据，存放数据的数据类型为 json 文档，且mongoDB是基于磁盘存储数据（redis基于内存存储数据）</p>
+<p>mongoDB数据库与mysql数据库的对比分析：</p>
+<p>mysql数据库：</p>
+<p>定义：关系型数据库</p>
+<p>结构：数据库→数据表→数据表记录</p>
+<p>基于存储：不同引擎不同存储方式</p>
+<p>存储数据时是否需要提前建表：是</p>
+<p>存储模式：静态模式</p>
+<p>查询语言：SQL语言</p>
+<p>​            </p>
+<p>mongoDB数据库：</p>
+<p>定义：非关系型数据库</p>
+<p>结构：数据库→数据集合→json文档（字典）</p>
+<p>基于存储：基于磁盘存储（虚拟内存+持久化）</p>
+<p>存储数据时是否需要提前建集合：否</p>
+<p>存储模式：动态模式（不需要提前建数据集合以及字段什么的）</p>
+<p>查询语言：独特的mongoDB语言</p>
+<p>优势：分布式集群</p>
+<p>缺点：不支持事务！</p>
+<p>​                </p>
+<p>注意事项：</p>
+<p>1：mongoDB 数据库内的数据集合里面可以存放好多条 json文档（字典）</p>
+<p>2：每一个 json 文档就是一个字典！</p>
+
+        <h3 id="mongoDB数据库的基本操作（安装、查看数据库、删除数据库等等）"   >
+          <a href="#mongoDB数据库的基本操作（安装、查看数据库、删除数据库等等）" class="heading-link"><i class="fas fa-link"></i></a><a href="#mongoDB数据库的基本操作（安装、查看数据库、删除数据库等等）" class="headerlink" title="mongoDB数据库的基本操作（安装、查看数据库、删除数据库等等）"></a>mongoDB数据库的基本操作（安装、查看数据库、删除数据库等等）</h3>
+      <p>1.mongoDB数据库安装步骤（linux-ubuntu系统）：</p>
+<p>安装指令：sudo apt-get install mongdb</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094020403.png"  alt="image-20211013094020403">
+      </p>
+<p>2.查看mongoDB数据库内的所有数据表</p>
+<p>指令：show dbs</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094043171.png"  alt="image-20211013094043171">
+      </p>
+<p>3 . 进入（切换）数据库<br>指令：use 数据库名<br>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094055168.png"  alt="image-20211013094055168">
+      </p>
+<p>4 . 查看当前所在的数据库内所有集合<br>指令：show collections<br>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094105537.png"  alt="image-20211013094105537">
+      </p>
+<ol start="5">
+<li>查看当前数据库内的数据集合里面有哪些文档</li>
+</ol>
+<p>  语法：<br>  正常查询输出：db.集合名.find（）<br>  格式化查询输出：db.集合名.find（）.pretty（）</p>
+<p>  截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094118675.png"  alt="image-20211013094118675">
+      </p>
+<ol start="6">
+<li>查看当前数据库内的数据集合里面的文档数量<br>语法：db.数据集合名.count（）<br>截图：</li>
+</ol>
+<p>  
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094127336.png"  alt="image-20211013094127336">
+      </p>
+<p>7.删除数据库内的指定集合<br>语法：db.指定数据集合名.drop（）<br>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094138284.png"  alt="image-20211013094138284">
+      </p>
+<p>8.删除指定数据表<br>语法：db.dropDatabase( )<br>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094144723.png"  alt="image-20211013094144723">
+      </p>
+<p>9.查看当前所在数据库名<br>语法：db.getName（）<br>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094153128.png"  alt="image-20211013094153128">
+      </p>
+
+        <h3 id="python-怎么与mongoDB数据库进行交互？"   >
+          <a href="#python-怎么与mongoDB数据库进行交互？" class="heading-link"><i class="fas fa-link"></i></a><a href="#python-怎么与mongoDB数据库进行交互？" class="headerlink" title="python 怎么与mongoDB数据库进行交互？"></a>python 怎么与mongoDB数据库进行交互？</h3>
+      <p>交互步骤：</p>
+<p>第一步：导入模块 import pymongo </p>
+<p>注意：pymongo不是标准库需要安装</p>
+<p>linux终端安装指令：sudu pip3 install pymongo</p>
+<p>第二步：创建mongo数据库连接客户对象     con_obj = pymongo.MongoClient(host = 当前主机，port = 端口号)</p>
+<p>注意：</p>
+<p>1：主机一般都是 127.0.0.1</p>
+<p>2：mongoDB数据库的端口号是 27017</p>
+<p>3：参数MongoClient方法的port参数数据类型是数字，不是字符串</p>
+<p>第三步：创建数据库对象     db_obj = 连接对象[“数据库名”]</p>
+<p>注意：数据库名可以是在mongoDB数据库内存在的，也可以是不存在的，存在则直接进行操作，不存在则先创建这个数据库在操作</p>
+<p>第四步：创建数据集合对象  set_obj = 数据库对象[“数据集合名”]</p>
+<p>第五步：向数据集合内插入文档</p>
+<p>插入单条文档数据方法：数据库集合对象.insert_one(字典)</p>
+<p>插入多条文档数据方法：数据库集合对象.insert_many(列表内嵌套字典)</p>
+<p>注意事项：插入单条文档数据时一个字典就是一条文档数据，插入多条文档数据也是如此（一个字典是一个文档数据）</p>
+<p>总体注意：在利用 python 与 mongoDB 数据库进行交互时，不需要提前建好数据库以及数据集合，这是与mysql数据库交互的不同之处！</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094223862.png"  alt="image-20211013094223862">
+      </p>
+
+        <h2 id="数据持久化存储（mongodb）【重点】"   >
+          <a href="#数据持久化存储（mongodb）【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据持久化存储（mongodb）【重点】" class="headerlink" title="数据持久化存储（mongodb）【重点】"></a>数据持久化存储（mongodb）【重点】</h2>
+      
+        <h3 id="将数据持久化存储到mongoDB数据库的两种方法"   >
+          <a href="#将数据持久化存储到mongoDB数据库的两种方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#将数据持久化存储到mongoDB数据库的两种方法" class="headerlink" title="将数据持久化存储到mongoDB数据库的两种方法"></a>将数据持久化存储到mongoDB数据库的两种方法</h3>
+      <p>1.单条数据文档插入存储方法——数据集合对象.insert_one({})</p>
+<p>功能：将单条文档数据（字典）插入到建好的mongoDB数据库的数据集合内</p>
+<p>语法：数据集合对象.insert_one({})</p>
+<p>注意：insert_one（{}）方法里面的参数是字典，一个字典就代表一个文档数据</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094245938.png"  alt="image-20211013094245938">
+      </p>
+<p>2.多条数据文档插入存储方法——数据集合对象.insert_many( [ {}，{}，{}，{} ] )</p>
+<p>功能：将多条文档数据（列表内嵌套字典）插入到建好的mongoDB数据库的数据集合内</p>
+<p>语法：数据集合对象.insert_many( [ {}，{}，{}，{} ] )</p>
+<p>注意：insert_one（{}）方法里面的参数是列表内嵌套字典，一个字典就代表一个文档数据</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094301571.png"  alt="image-20211013094301571">
+      </p>
+
+        <h2 id="random模块的uniform方法【重点】"   >
+          <a href="#random模块的uniform方法【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#random模块的uniform方法【重点】" class="headerlink" title="random模块的uniform方法【重点】"></a>random模块的uniform方法【重点】</h2>
+      
+        <h3 id="random-模块的-uniform-方法的使用"   >
+          <a href="#random-模块的-uniform-方法的使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#random-模块的-uniform-方法的使用" class="headerlink" title="random 模块的 uniform 方法的使用"></a>random 模块的 uniform 方法的使用</h3>
+      <p>功能：随机生成指定区间的浮点数</p>
+<p>语法：random.uniform（1，6）    随机生成1到6的浮点数</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013094313020.png"  alt="image-20211013094313020">
+      </p>
+
+        <h2 id="简单的二级爬虫框架【重点】"   >
+          <a href="#简单的二级爬虫框架【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#简单的二级爬虫框架【重点】" class="headerlink" title="简单的二级爬虫框架【重点】"></a>简单的二级爬虫框架【重点】</h2>
+      <p>注意：字太小先保存到计算机内在方法观看‘</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/python%E4%BA%8C%E7%BA%A7%E7%88%AC%E8%99%AB%E6%A1%86%E6%9E%B6%E3%80%90%E7%BE%94%E7%BE%8A%E6%80%BB%E7%BB%93%E3%80%91.png" >
+      </p>
+<p>未完待续…..</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94CSV%E6%96%87%E4%BB%B6%E4%B8%8EmongoDB/">http://pythonlamb.github.io/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94CSV%E6%96%87%E4%BB%B6%E4%B8%8EmongoDB/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%AF%87/">数据存储篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94Mysql%E4%B8%8Eredis%E5%AD%98%E5%82%A8/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">数据存储——Mysql与redis存储</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94urllib%E5%BA%93%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"><span class="paginator-prev__text">爬虫基础——urllib库与正则表达式</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%EF%BC%88csv%EF%BC%89%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">1.</span> <span class="toc-text">
+          爬取数据持久化存储（csv）【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#python-%E6%A0%87%E5%87%86%E5%BA%93%E6%A8%A1%E5%9D%97-csv-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%8F%8A%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.</span> <span class="toc-text">
+          python 标准库模块 csv 的使用方法及功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BF%9D%E5%AD%98%E8%87%B3-csv-%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">
+          将数据保存至 csv 文件的一些问题处理方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%EF%BC%88mysql%EF%BC%89%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">2.</span> <span class="toc-text">
+          数据持久化存储（mysql）【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#python-%E4%B8%8E-mysql-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%A4%E4%BA%92%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.1.</span> <span class="toc-text">
+          python 与 mysql 数据库交互的步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%88%B0%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95%EF%BC%88%E5%8D%95%E8%AE%B0%E5%BD%95%E6%8F%92%E5%85%A5%E3%80%81%E5%A4%9A%E8%AE%B0%E5%BD%95%E6%8F%92%E5%85%A5%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">
+          将数据存储到数据库的两种方法（单记录插入、多记录插入）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mongoDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          mongoDB数据库基本操作【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql%E3%80%81mongoDB%E3%80%81redis%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="toc-number">3.1.</span> <span class="toc-text">
+          mysql、mongoDB、redis数据库的端口号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mongoDB-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%AF%A6%E8%A7%A3"><span class="toc-number">3.2.</span> <span class="toc-text">
+          mongoDB 数据库的详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mongoDB%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E5%AE%89%E8%A3%85%E3%80%81%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%81%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AD%89%E7%AD%89%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">
+          mongoDB数据库的基本操作（安装、查看数据库、删除数据库等等）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-%E6%80%8E%E4%B9%88%E4%B8%8EmongoDB%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92%EF%BC%9F"><span class="toc-number">3.4.</span> <span class="toc-text">
+          python 怎么与mongoDB数据库进行交互？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%EF%BC%88mongodb%EF%BC%89%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          数据持久化存储（mongodb）【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E5%88%B0mongoDB%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">
+          将数据持久化存储到mongoDB数据库的两种方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#random%E6%A8%A1%E5%9D%97%E7%9A%84uniform%E6%96%B9%E6%B3%95%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          random模块的uniform方法【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#random-%E6%A8%A1%E5%9D%97%E7%9A%84-uniform-%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">5.1.</span> <span class="toc-text">
+          random 模块的 uniform 方法的使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E4%BA%8C%E7%BA%A7%E7%88%AC%E8%99%AB%E6%A1%86%E6%9E%B6%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          简单的二级爬虫框架【重点】</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

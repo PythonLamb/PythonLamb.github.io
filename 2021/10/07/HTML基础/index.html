@@ -1,0 +1,937 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：认识 HTML、HTML文档格式、HTML文档格式、段落与标题字标签、常用的独目运算符、字体处理标签、预览格式标签、实体符号、HTML中的表格、浏览器界面设置背景色及背景图片、图片标签、超链接标签、herf与src属性的区别、无序列表与有序列表、Form表单、input输入域的type属性、下拉列表与文字域标签、实现简单的注册表单、文件控件、隐藏域、文本框的三种常用属性、HTML 标签中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTML基础">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/07/HTML%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：认识 HTML、HTML文档格式、HTML文档格式、段落与标题字标签、常用的独目运算符、字体处理标签、预览格式标签、实体符号、HTML中的表格、浏览器界面设置背景色及背景图片、图片标签、超链接标签、herf与src属性的区别、无序列表与有序列表、Form表单、input输入域的type属性、下拉列表与文字域标签、实现简单的注册表单、文件控件、隐藏域、文本框的三种常用属性、HTML 标签中">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007151830348.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007151846359.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007151940815.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152048352.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152106254.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152131031.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152141513.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152207483.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152224309.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152238412.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152258968.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152315665.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152330416.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152349462.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152406204.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152427027.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152458321.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152556340.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152622061.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152652994.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152716641.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152741062.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152804841.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152818903.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152845385.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152908195.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152919736.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152931868.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153002309.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153016955.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153042037.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153101341.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153123304.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153140603.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153207718.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153235324.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153248213.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153309804.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153327855.png">
+<meta property="article:published_time" content="2021-10-07T06:48:53.000Z">
+<meta property="article:modified_time" content="2021-10-07T07:34:48.678Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="HTML基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007151830348.png"><title>HTML基础 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/07/HTML%E5%9F%BA%E7%A1%80/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">HTML基础</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-07</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">4.8k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">28分</span></span></div></header><div class="post-body"><p><em>本文主讲：认识 HTML、HTML文档格式、HTML文档格式、段落与标题字标签、常用的独目运算符、字体处理标签、预览格式标签、实体符号、HTML中的表格、浏览器界面设置背景色及背景图片、图片标签、超链接标签、herf与src属性的区别、无序列表与有序列表、Form表单、input输入域的type属性、下拉列表与文字域标签、实现简单的注册表单、文件控件、隐藏域、文本框的三种常用属性、HTML 标签中的 id 属性、div与span图层标签</em></p>
+<p>  <em>基本包括了常用的HTML标签及其标签内的属性功能等…..</em></p>
+   <span id="more"></span>
+
+
+        <h2 id="认识-HTML"   >
+          <a href="#认识-HTML" class="heading-link"><i class="fas fa-link"></i></a><a href="#认识-HTML" class="headerlink" title="认识 HTML"></a>认识 HTML</h2>
+      
+        <h3 id="什么是-HTML"   >
+          <a href="#什么是-HTML" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是-HTML" class="headerlink" title="什么是 HTML"></a>什么是 HTML</h3>
+      <p>答：HTML（超文本标记语言），HTML运行在浏览器上面，超文本的意思就是，它可以展示超级文本流，例如图片流、声音流、视频流等，标记语言代表这门语言是用标签【开始标签与结束标签】进行编程的，严格来说 HTML 不算是一门编程语言，因为它没有控制语句、函数等，它是一套规范，浏览器语言规范.</p>
+<p>HTML开发：新建后缀的 .html 或者 .htm 的文件利用文本编辑器打开即可编程</p>
+
+        <h3 id="目前五大主流浏览器分别是什么以及-WEB-开发又是什么？"   >
+          <a href="#目前五大主流浏览器分别是什么以及-WEB-开发又是什么？" class="heading-link"><i class="fas fa-link"></i></a><a href="#目前五大主流浏览器分别是什么以及-WEB-开发又是什么？" class="headerlink" title="目前五大主流浏览器分别是什么以及 WEB 开发又是什么？"></a>目前五大主流浏览器分别是什么以及 WEB 开发又是什么？</h3>
+      <p>五大主流浏览器：</p>
+<p>Edge：微软新版浏览器<br>Firefox：Mozilla公司的产品<br>Chrome：谷歌公司的<br>Opera：欧朋公司产品<br>Safari：苹果笔记本专用浏览器</p>
+
+        <h3 id="WEB开发是什么？"   >
+          <a href="#WEB开发是什么？" class="heading-link"><i class="fas fa-link"></i></a><a href="#WEB开发是什么？" class="headerlink" title="WEB开发是什么？"></a>WEB开发是什么？</h3>
+      <p>WEB开发分为前端开发以及后端开发！</p>
+<p>前端开发：用户使用各种产品时看到的展示页面，前端程序员需要精通 HTML+CSS+JavaScript</p>
+<p>后端开发：前端程序员需要的各种动态数据都需要后端程序员提供，后端程序员就是需要为前端提供数据！</p>
+
+        <h3 id="W3C-是什么"   >
+          <a href="#W3C-是什么" class="heading-link"><i class="fas fa-link"></i></a><a href="#W3C-是什么" class="headerlink" title="W3C 是什么"></a>W3C 是什么</h3>
+      <p>W3C：万维网联盟，非盈利组织，制定了很多标准，例如 html、https、javascript等，万维网联盟创始人是 蒂姆伯纳斯 李   老牛批了这个人，因为这个人我们才可以上网！！</p>
+
+        <h2 id="HTML文档格式"   >
+          <a href="#HTML文档格式" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML文档格式" class="headerlink" title="HTML文档格式"></a>HTML文档格式</h2>
+      
+        <h3 id="文档格式"   >
+          <a href="#文档格式" class="heading-link"><i class="fas fa-link"></i></a><a href="#文档格式" class="headerlink" title="文档格式"></a>文档格式</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007151830348.png"  alt="image-20211007151830348">
+      </p>
+
+        <h3 id="HTML-文档有什么特点"   >
+          <a href="#HTML-文档有什么特点" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-文档有什么特点" class="headerlink" title="HTML 文档有什么特点"></a>HTML 文档有什么特点</h3>
+      <p>特点：</p>
+<p>1：HTML语法松散<br>2：HTML语法有的标签不成对出现也没有问题【不是所有标签都允许不成对出现的】<br>3：HTML语法标签不严格区分大小写</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007151846359.png"  alt="image-20211007151846359">
+      </p>
+
+        <h2 id="段落与标题字标签"   >
+          <a href="#段落与标题字标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#段落与标题字标签" class="headerlink" title="段落与标题字标签"></a>段落与标题字标签</h2>
+      
+        <h3 id="HTML-中段落与标题字标签分别是什么？"   >
+          <a href="#HTML-中段落与标题字标签分别是什么？" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中段落与标题字标签分别是什么？" class="headerlink" title="HTML 中段落与标题字标签分别是什么？"></a>HTML 中段落与标题字标签分别是什么？</h3>
+      <p>段落标签：<code>&lt;p&gt;待分段的内容&lt;/p&gt; </code></p>
+<p>标题字标签：</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>一号标题字数据<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>二号标题字数据<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span><span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span><span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h5</span>&gt;</span><span class="tag">&lt;/<span class="name">h5</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h6</span>&gt;</span><span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>注意：</p>
+<p>1：在HTML源代码内手动换行是不起作用的<br>2：标题字标签中 h1 标签的标题最大，h2 标签的标题最小<br>3：标题字标签独占行</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007151940815.png"  alt="image-20211007151940815">
+      </p>
+
+        <h2 id="常用的独目运算符"   >
+          <a href="#常用的独目运算符" class="heading-link"><i class="fas fa-link"></i></a><a href="#常用的独目运算符" class="headerlink" title="常用的独目运算符"></a>常用的独目运算符</h2>
+      
+        <h3 id="HTML-中常用的独目运算符及其用法"   >
+          <a href="#HTML-中常用的独目运算符及其用法" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中常用的独目运算符及其用法" class="headerlink" title="HTML 中常用的独目运算符及其用法"></a>HTML 中常用的独目运算符及其用法</h3>
+      <p><code>&lt;br&gt;</code>：换行标签</p>
+<p>注意：一个<code> &lt;br&gt;</code> 标签就代表换一行</p>
+<p><code>&lt;hr&gt;</code>：水平线标签</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152048352.png"  alt="image-20211007152048352">
+      </p>
+
+        <h2 id="字体处理标签"   >
+          <a href="#字体处理标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#字体处理标签" class="headerlink" title="字体处理标签"></a>字体处理标签</h2>
+      
+        <h3 id="HTML-内常用的字体处理标签"   >
+          <a href="#HTML-内常用的字体处理标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-内常用的字体处理标签" class="headerlink" title="HTML 内常用的字体处理标签"></a>HTML 内常用的字体处理标签</h3>
+      <p>字体加粗标签：<code>&lt;b&gt;待加粗的数据&lt;/b&gt;</code></p>
+<p>字体倾斜标签：<code>&lt;i&gt;待倾斜的数据&lt;/i&gt;</code></p>
+<p>插入字样式标签：<code>&lt;ins&gt;待插入字处理的数据&lt;/ins&gt;</code></p>
+<p>删除字样式标签：<code>&lt;del&gt;待删除字处理的数据&lt;/del&gt;</code></p>
+<p>字体右上方的插入数据标签：<code>100 &lt;sup&gt;向100右上方插入的数据&lt;/sup&gt;</code></p>
+<p>字体右下方的插入数据标签：<code>100&lt;sub&gt;向100右下方插入的数据&lt;/sub&gt;</code></p>
+<p>字体综合标签：<code>&lt;font&gt;字体综合数据……..&lt;/font&gt;</code></p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152106254.png"  alt="image-20211007152106254">
+      </p>
+
+        <h2 id="预览格式标签"   >
+          <a href="#预览格式标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#预览格式标签" class="headerlink" title="预览格式标签"></a>预览格式标签</h2>
+      
+        <h3 id="HTML-内预留格式标签怎么写及其功能"   >
+          <a href="#HTML-内预留格式标签怎么写及其功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-内预留格式标签怎么写及其功能" class="headerlink" title="HTML 内预留格式标签怎么写及其功能"></a>HTML 内预留格式标签怎么写及其功能</h3>
+      <p>语法：</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">pre</span>&gt;</span>预留格式的内容<span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>功能：因为 HTML 源代码内的手动空行【非<code>&lt;br&gt;</code>标签】被浏览器解释执行后就会消失【自动去除手动空白】，因此我们自己设置的空白格式就会消失，这是就可以利用<code>&lt;pre&gt;</code>标签将自己设置的空白格式保留下来</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152131031.png"  alt="image-20211007152131031">
+      </p>
+<p>使用 pre 标签</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152141513.png"  alt="image-20211007152141513">
+      </p>
+
+        <h2 id="实体符号"   >
+          <a href="#实体符号" class="heading-link"><i class="fas fa-link"></i></a><a href="#实体符号" class="headerlink" title="实体符号"></a>实体符号</h2>
+      
+        <h3 id="HTML-中实体符号的应用场景以及其格式"   >
+          <a href="#HTML-中实体符号的应用场景以及其格式" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中实体符号的应用场景以及其格式" class="headerlink" title="HTML 中实体符号的应用场景以及其格式"></a>HTML 中实体符号的应用场景以及其格式</h3>
+      <p>应用场景：在 HTML 源代码内如果要写 &lt;&gt; 等数据，会被浏览器解释为标签符号，因此 &lt;&gt;这两个数据不会被显示，这是就要将 &lt;&gt; 换成实体符号</p>
+<p>格式：&amp;开头    ；结尾 </p>
+<p>示例：&amp;nbsp；</p>
+
+        <h3 id="常见的实体符号"   >
+          <a href="#常见的实体符号" class="heading-link"><i class="fas fa-link"></i></a><a href="#常见的实体符号" class="headerlink" title="常见的实体符号"></a>常见的实体符号</h3>
+      <p>空格实体符号：&amp;nbsp；</p>
+<p>大于号实体符号：&amp;gt；</p>
+<p>小于号实体符号：&amp;lt；</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152207483.png"  alt="image-20211007152207483">
+      </p>
+
+        <h2 id="HTML中的表格"   >
+          <a href="#HTML中的表格" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML中的表格" class="headerlink" title="HTML中的表格"></a>HTML中的表格</h2>
+      
+        <h3 id="HTML-中表格的图示原理"   >
+          <a href="#HTML-中表格的图示原理" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中表格的图示原理" class="headerlink" title="HTML 中表格的图示原理"></a>HTML 中表格的图示原理</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152224309.png"  alt="image-20211007152224309">
+      </p>
+
+        <h3 id="利用-HTML-代码创建一个表格"   >
+          <a href="#利用-HTML-代码创建一个表格" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用-HTML-代码创建一个表格" class="headerlink" title="利用 HTML 代码创建一个表格"></a>利用 HTML 代码创建一个表格</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152238412.png"  alt="image-20211007152238412">
+      </p>
+
+        <h3 id="怎么对表格内的单元格进行合并【多行单元格合并与多列单元格合并】"   >
+          <a href="#怎么对表格内的单元格进行合并【多行单元格合并与多列单元格合并】" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么对表格内的单元格进行合并【多行单元格合并与多列单元格合并】" class="headerlink" title="怎么对表格内的单元格进行合并【多行单元格合并与多列单元格合并】"></a>怎么对表格内的单元格进行合并【多行单元格合并与多列单元格合并】</h3>
+      <p>多行单元格合并与多列单元格合并图示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152258968.png"  alt="image-20211007152258968">
+      </p>
+<p>多行单元格合并口诀：将最后的单元格注释掉，在最前面的单元格内【td标签】添加 rowspan 属性，合并几个单元格就将 rowspan 的属性值设置几</p>
+<p>多行单元格合并图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152315665.png"  alt="image-20211007152315665">
+      </p>
+<p>多列单元格合并口诀：将其中一个单元格注释掉，在另外一个单元格内【td标签】添加 colspan 属性，合并几个单元格就将 rowspan 的属性值设置几</p>
+<p>多列单元格合并图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152330416.png"  alt="image-20211007152330416">
+      </p>
+
+        <h3 id="HTML-中-th-标签的功能"   >
+          <a href="#HTML-中-th-标签的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中-th-标签的功能" class="headerlink" title="HTML 中 th 标签的功能"></a>HTML 中 th 标签的功能</h3>
+      <p>功能：th 标签可代替表格中的 td 标签，并且将 th 标签内的数据全部加粗居中显示，一般用于表格的标题信息处</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152349462.png"  alt="image-20211007152349462">
+      </p>
+
+        <h3 id="HTML-的一个表格中-thead、tbody、tfoot三个标签的功能"   >
+          <a href="#HTML-的一个表格中-thead、tbody、tfoot三个标签的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-的一个表格中-thead、tbody、tfoot三个标签的功能" class="headerlink" title="HTML 的一个表格中 thead、tbody、tfoot三个标签的功能"></a>HTML 的一个表格中 thead、tbody、tfoot三个标签的功能</h3>
+      <p>功能：把一个表格分为三部分，分别是表格头、表格体、表格脚，这样做在后期方便 JavaScript 进行处理</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152406204.png"  alt="image-20211007152406204">
+      </p>
+
+        <h2 id="浏览器界面设置背景色及背景图片"   >
+          <a href="#浏览器界面设置背景色及背景图片" class="heading-link"><i class="fas fa-link"></i></a><a href="#浏览器界面设置背景色及背景图片" class="headerlink" title="浏览器界面设置背景色及背景图片"></a>浏览器界面设置背景色及背景图片</h2>
+      
+        <h3 id="在-HTML-内怎么为浏览器网页界面设置背景色及其背景图片"   >
+          <a href="#在-HTML-内怎么为浏览器网页界面设置背景色及其背景图片" class="heading-link"><i class="fas fa-link"></i></a><a href="#在-HTML-内怎么为浏览器网页界面设置背景色及其背景图片" class="headerlink" title="在 HTML 内怎么为浏览器网页界面设置背景色及其背景图片"></a>在 HTML 内怎么为浏览器网页界面设置背景色及其背景图片</h3>
+      <p>设置网页背景色实现：在 HTML 的源代码的<code> &lt;body&gt;</code> 标签内添加一个叫做 bgcolor 的属性即可设置当前页面背景色</p>
+<p>设置网页背景图片实现：在 HTML 的源代码的 <code>&lt;body&gt; </code>标签内添加一个叫做 background 的属性即可设置当前页面背景图片</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152427027.png"  alt="image-20211007152427027">
+      </p>
+
+        <h2 id="图片标签"   >
+          <a href="#图片标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#图片标签" class="headerlink" title="图片标签"></a>图片标签</h2>
+      
+        <h3 id="HTML-中设置图片是什么标签"   >
+          <a href="#HTML-中设置图片是什么标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中设置图片是什么标签" class="headerlink" title="HTML 中设置图片是什么标签"></a>HTML 中设置图片是什么标签</h3>
+      <p>答：是 <code>&lt;img&gt;&lt;/img&gt;</code> 标签</p>
+<p>注意：<br>1：img 图片标签和在 body 标签内设置的浏览器页面背景图片是不一样滴<br>2：如果一个标签内没有内容，那么就可以不写最后的标签，例如 <code>&lt;img&gt;&lt;/img&gt; </code>可以写成<code> &lt;img /&gt;</code> </p>
+
+        <h3 id="图片标签的属性及其功能"   >
+          <a href="#图片标签的属性及其功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#图片标签的属性及其功能" class="headerlink" title="图片标签的属性及其功能"></a>图片标签的属性及其功能</h3>
+      <p>属性：</p>
+<p>src：设置图片的访问路径<br>title：鼠标悬停在图片上时提示的文字信息<br>width：用于设置图片的宽度<br>alt：图片加载失败显示的文字信息</p>
+<p>注意：在利用 width 属性设置完图片宽度后，不可以在设置图片高度，因为图片的高度是根据宽度自动调整的！！</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152458321.png"  alt="image-20211007152458321">
+      </p>
+
+        <h2 id="超链接标签"   >
+          <a href="#超链接标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#超链接标签" class="headerlink" title="超链接标签"></a>超链接标签</h2>
+      
+        <h3 id="HTML-中超链接标签是什么及其超链接的特点"   >
+          <a href="#HTML-中超链接标签是什么及其超链接的特点" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中超链接标签是什么及其超链接的特点" class="headerlink" title="HTML 中超链接标签是什么及其超链接的特点"></a>HTML 中超链接标签是什么及其超链接的特点</h3>
+      <p>超链接标签：</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">“链接的网站或本地文件”</span>&gt;</span>待连接的文本或图片<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>href：表示热链接</p>
+<p>超链接特点：</p>
+<p>1：超链接的 href 属性值可以是网站，也可以是本地文件<br>2：超链接不仅可链接文本，还可以设置图片超链接<br>3：指针悬停在超链接文本或图片上，鼠标指针变为一个小手<br>4：超链接文本会自动在文本下面加上下划线<br>5：鼠标悬停在超链接文本或图片上会自动在左下角显示连接的网站或者本地文件</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152556340.png"  alt="image-20211007152556340">
+      </p>
+
+        <h3 id="超链接标签内的-target-属性的功能"   >
+          <a href="#超链接标签内的-target-属性的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#超链接标签内的-target-属性的功能" class="headerlink" title="超链接标签内的 target 属性的功能"></a>超链接标签内的 target 属性的功能</h3>
+      <p>target属性值及其功能：</p>
+<p>_self：点击超链接在当前网页打开链接的网站<br>_blank：点击超链接在新的网页打开链接的网站<br>_parent：点击超链接在当前网页的父窗口打开链接的网站<br>_top：点击超链接在当前网页的顶级窗口打开链接的网站</p>
+<p>注意：</p>
+<p>1：在不设置 target 属性值时，超链接默认在当前网页内打开！！<br>2：父级窗口与顶级窗口是在网页内存在 iframe 标签时在生效<br>3：iframe 标签是一个窗口中的内部窗口【常常用于网站登录！】</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152622061.png"  alt="image-20211007152622061">
+      </p>
+
+        <h3 id="herf与src属性的区别"   >
+          <a href="#herf与src属性的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#herf与src属性的区别" class="headerlink" title="herf与src属性的区别"></a>herf与src属性的区别</h3>
+      <p>区别：href 属性只能用在超链接标签<code>&lt;a&gt;</code>与外部导入.css文件的<code>&lt;link&gt;</code>标签内，src 属性可用在很多标签内，例如 <code>&lt;script&gt;</code>、<code>&lt;img&gt;</code>、<code>&lt;iframe</code>&gt;等</p>
+
+        <h2 id="无序列表与有序列表"   >
+          <a href="#无序列表与有序列表" class="heading-link"><i class="fas fa-link"></i></a><a href="#无序列表与有序列表" class="headerlink" title="无序列表与有序列表"></a>无序列表与有序列表</h2>
+      
+        <h3 id="HTML内怎么创建无序列表"   >
+          <a href="#HTML内怎么创建无序列表" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML内怎么创建无序列表" class="headerlink" title="HTML内怎么创建无序列表"></a>HTML内怎么创建无序列表</h3>
+      <p>实现标签：</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;/<span class="name">ul</span>&gt;</span>    </span><br></pre></td></tr></table></div></figure>
+
+<p>【其中 ul 标签代表无序列表，li 标签代表列表项】</p>
+<p>ul 标签的 type 属性值：</p>
+<p>circle：列表项前面显示圆圈<br>disc：列表项前面显示圆点<br>square：列表项前面显示方块</p>
+<p>注意：在无序列表内的列表项中还可以嵌套无序列表…….</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152652994.png"  alt="image-20211007152652994">
+      </p>
+
+        <h3 id="HTML内怎么创建有序列表"   >
+          <a href="#HTML内怎么创建有序列表" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML内怎么创建有序列表" class="headerlink" title="HTML内怎么创建有序列表"></a>HTML内怎么创建有序列表</h3>
+      <p>实现标签：</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ol</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;/<span class="name">ol</span>&gt;</span>       </span><br></pre></td></tr></table></div></figure>
+
+<p>【其中 ol 代表有序表列标签  li 代表列表项标签】</p>
+<p>注意：在有序列表内的列表项中还可以嵌套有序列表…….</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152716641.png"  alt="image-20211007152716641">
+      </p>
+
+        <h3 id="无序列表与有序列表的区别"   >
+          <a href="#无序列表与有序列表的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#无序列表与有序列表的区别" class="headerlink" title="无序列表与有序列表的区别"></a>无序列表与有序列表的区别</h3>
+      <p>1：无序列表用 <code>&lt;ul&gt;</code> 标签代表，有序标签用<code>&lt;ol&gt;</code>标签代表<br>2：无序列表内的列表项前面的符号没有顺序，有序列表内的列表项前面的符号有顺序</p>
+
+        <h2 id="Form表单"   >
+          <a href="#Form表单" class="heading-link"><i class="fas fa-link"></i></a><a href="#Form表单" class="headerlink" title="Form表单"></a>Form表单</h2>
+      
+        <h3 id="什么是-from-表单及它有什么用？"   >
+          <a href="#什么是-from-表单及它有什么用？" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是-from-表单及它有什么用？" class="headerlink" title="什么是 from 表单及它有什么用？"></a>什么是 from 表单及它有什么用？</h3>
+      <p>概念：form表单可收集用户的数据，并且带着这些数据一起发送给指定的网站服务器</p>
+<p>用途：form表单常常用来验证用户登录信息</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152741062.png"  alt="image-20211007152741062">
+      </p>
+
+        <h3 id="from-表单与-超链接的异同点"   >
+          <a href="#from-表单与-超链接的异同点" class="heading-link"><i class="fas fa-link"></i></a><a href="#from-表单与-超链接的异同点" class="headerlink" title="from 表单与 超链接的异同点"></a>from 表单与 超链接的异同点</h3>
+      <p>相同点：form表单与超链接都可以向指定的网站服务器发送请求</p>
+<p>不同点：form可以带着用户填写的数据一起发送给网站服务器，超链接被点击后直接向网站服务器发送请求，用户不能填写数据</p>
+
+        <h3 id="HTML-怎么创建简单的表单并且提交表单"   >
+          <a href="#HTML-怎么创建简单的表单并且提交表单" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-怎么创建简单的表单并且提交表单" class="headerlink" title="HTML 怎么创建简单的表单并且提交表单"></a>HTML 怎么创建简单的表单并且提交表单</h3>
+      <p>创建表单标签：</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">”目标网站“</span>&gt;</span><span class="tag">&lt;/<span class="name">form</span>&gt;</span>         </span><br></pre></td></tr></table></div></figure>
+<p>【action属性值代表提交表单时向哪个网站服务器发送请求，一般填写网站】</p>
+<p>提交表单的实现：在<code>&lt;form&gt;&lt;/form&gt;</code>标签内嵌套一个<code>&lt;input&gt;</code>标签，且 type 属性值为 submit 的按钮，点击这个按钮即可提交表单！！</p>
+<p>表单对象的属性值：<br>action：类似于超链接标签内的 href 属性，代表向哪个服务器提交表单，一般值都是网站地址</p>
+<p>注意：<br>1：所有能够提交表单的按钮，其 type 属性值都为 submit类型【目前来说】<br>2：想要提交一个表单，那么 <code>&lt;input/&gt;</code> 标签 type 属性值为 submit 的按钮必须在 form 表单内定义<br>3：一个网页内可以有多个表单对象</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152804841.png"  alt="image-20211007152804841">
+      </p>
+
+        <h3 id="四：实现重置表单"   >
+          <a href="#四：实现重置表单" class="heading-link"><i class="fas fa-link"></i></a><a href="#四：实现重置表单" class="headerlink" title="四：实现重置表单"></a>四：实现重置表单</h3>
+      <p>实现标签：</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;reset&quot;</span> <span class="attr">value</span>=<span class="string">&quot;重置表单&quot;</span> /&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>注意：重置表单的标签必须在 form 表单内才可以重置表单</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152818903.png"  alt="image-20211007152818903">
+      </p>
+
+        <h3 id="HTML-内一个-Form-表单对象的组成【自己总结版本】"   >
+          <a href="#HTML-内一个-Form-表单对象的组成【自己总结版本】" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-内一个-Form-表单对象的组成【自己总结版本】" class="headerlink" title="HTML 内一个 Form 表单对象的组成【自己总结版本】"></a>HTML 内一个 Form 表单对象的组成【自己总结版本】</h3>
+      <p>组成：表单项、提交表单按钮</p>
+<p>表单项：用于接收用户填写的数据</p>
+<p>提交表单按钮：向指定网站服务器提交表单发起请求</p>
+<p>注意：提交表单按钮不能有 name 属性哦</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152845385.png"  alt="image-20211007152845385">
+      </p>
+
+        <h3 id="在-Form-表单内怎么实现点击按钮即可携带用户填写的数据向指定服务器提交表单"   >
+          <a href="#在-Form-表单内怎么实现点击按钮即可携带用户填写的数据向指定服务器提交表单" class="heading-link"><i class="fas fa-link"></i></a><a href="#在-Form-表单内怎么实现点击按钮即可携带用户填写的数据向指定服务器提交表单" class="headerlink" title="在 Form 表单内怎么实现点击按钮即可携带用户填写的数据向指定服务器提交表单"></a>在 Form 表单内怎么实现点击按钮即可携带用户填写的数据向指定服务器提交表单</h3>
+      <p>实现：</p>
+<p>1：在所有获取用户数据的表单项的标签内必须要有 name 属性！<br>2：提交表单按钮的 type 属性值必须为 submit<br>3：书写提交表单按钮的标签位置必须要在 Form 标签内部！</p>
+<p>注意：<br>1：在最终提交表单的时候，表单项内有name属性的才会被提交，没有name属性的不会被提交哦</p>
+<p>2：提交表单按钮不能设置name属性值，要不然就会把提交表单的 value 提交上去….</p>
+<p>3：浏览器向服务器提交表单的 url 格式为 ： 服务器地址?表单项name属性值=表单项的value值&amp;表单项name属性值=表单项的value…【非常重要】</p>
+<p>4：上面的提交表单 url 格式是 W3C 制定的标准所有浏览器都需要遵守…</p>
+<p>实现提交表单</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152908195.png"  alt="image-20211007152908195">
+      </p>
+<p>注意事项第二条图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152919736.png"  alt="image-20211007152919736">
+      </p>
+
+        <h3 id="创建一个简单的登录表单"   >
+          <a href="#创建一个简单的登录表单" class="heading-link"><i class="fas fa-link"></i></a><a href="#创建一个简单的登录表单" class="headerlink" title="创建一个简单的登录表单"></a>创建一个简单的登录表单</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007152931868.png"  alt="image-20211007152931868">
+      </p>
+
+        <h2 id="input输入域的type属性"   >
+          <a href="#input输入域的type属性" class="heading-link"><i class="fas fa-link"></i></a><a href="#input输入域的type属性" class="headerlink" title="input输入域的type属性"></a>input输入域的type属性</h2>
+      
+        <h3 id="HTML-中-input-输入域标签"   >
+          <a href="#HTML-中-input-输入域标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中-input-输入域标签" class="headerlink" title="HTML 中 input 输入域标签"></a>HTML 中 input 输入域标签</h3>
+      <p>标签简介：input 输入域标签是用来获取用户输入及其选择的数据的，input标签中的 type 属性值可设置input标签为文本框或者密码框、单选框、复选框、普通按钮、提交表单按钮、重置表单按钮等等…</p>
+
+        <h3 id="HTML-中-input-输入域标签中的-type-属性的一些常用值及其对应的样式"   >
+          <a href="#HTML-中-input-输入域标签中的-type-属性的一些常用值及其对应的样式" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中-input-输入域标签中的-type-属性的一些常用值及其对应的样式" class="headerlink" title="HTML 中 input 输入域标签中的 type 属性的一些常用值及其对应的样式"></a>HTML 中 input 输入域标签中的 type 属性的一些常用值及其对应的样式</h3>
+      <p>type属性值：</p>
+<p>text：当前 input 输入域标签变为文本框</p>
+<p>password：当前 input 输入域标签变为密码框</p>
+<p>radio：当前 input 输入域标签变为单选框</p>
+<p>checkbox：当前 input 输入域标签变为复选框【多选框】</p>
+<p>button：当前 input 输入域标签变为普通按钮</p>
+<p>submit：当前 input 输入域标签变为提交表单按钮</p>
+<p>reset：当前 input 输入域标签变为表单重置按钮</p>
+<p>file：当前 input 输入域标签变为文件选择按钮</p>
+<p>hidden：当前 input 输入域标签变为隐藏域</p>
+<p>注意：</p>
+<p>1：在指定的一组单选框与复选框中的一个框内设置 checked 属性【复选框可多选】，默认选择当前的单选框或者复选框…..<br>2：同一组的单选框name属性值都要一致…..否则会出现单选框可以多选的情况<br>3：同一组的复选框的name属性值都要一致……<br>4：除了文本框与密码框与文字域，其他的组件的value值需要自己定义，上面三种可从用户填写获取</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153002309.png"  alt="image-20211007153002309">
+      </p>
+<p>提交表单与重置表单按钮：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153016955.png"  alt="image-20211007153016955">
+      </p>
+
+        <h2 id="下拉列表与文字域标签"   >
+          <a href="#下拉列表与文字域标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#下拉列表与文字域标签" class="headerlink" title="下拉列表与文字域标签"></a>下拉列表与文字域标签</h2>
+      
+        <h3 id="HTML-中创建下拉列表的标签"   >
+          <a href="#HTML-中创建下拉列表的标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中创建下拉列表的标签" class="headerlink" title="HTML 中创建下拉列表的标签"></a>HTML 中创建下拉列表的标签</h3>
+      <p>实现标签：</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span>&gt;</span><span class="tag">&lt;<span class="name">option</span>&gt;</span>下拉列表的值1<span class="tag">&lt;/<span class="name">option</span>&gt;</span><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>option 标签内的 selected 属性值功能：在哪个 option 标签上设置 selected 属性值，那么下拉列表就默认选择哪个数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153042037.png"  alt="image-20211007153042037">
+      </p>
+
+        <h3 id="HTML-中创建文字域的标签"   >
+          <a href="#HTML-中创建文字域的标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中创建文字域的标签" class="headerlink" title="HTML 中创建文字域的标签"></a>HTML 中创建文字域的标签</h3>
+      <p>标签实现：</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">textarea</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>文字域功能：用来接收用户填写的大量数据…</p>
+<p>标签属性：<br>rows：设置文字域占浏览器几行<br>cols：设置文字域占浏览器几列</p>
+<p>注意：文字域可以接收用户填写的数据，因此文字域标签内不需要设置 value 属性..</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153101341.png"  alt="image-20211007153101341">
+      </p>
+
+        <h2 id="实现简单的注册表单"   >
+          <a href="#实现简单的注册表单" class="heading-link"><i class="fas fa-link"></i></a><a href="#实现简单的注册表单" class="headerlink" title="实现简单的注册表单"></a>实现简单的注册表单</h2>
+      
+        <h3 id="利用上面所学的知识创建一个用户注册的提交表单"   >
+          <a href="#利用上面所学的知识创建一个用户注册的提交表单" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用上面所学的知识创建一个用户注册的提交表单" class="headerlink" title="利用上面所学的知识创建一个用户注册的提交表单"></a>利用上面所学的知识创建一个用户注册的提交表单</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153123304.png"  alt="image-20211007153123304">
+      </p>
+<p>ps：上面的注册表单提交后，浏览器会携带具有name属性值的标签的 value 值跳转到百度网站页面，浏览器的地址栏数据如下：</p>
+<p>地址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.baidu.com/?username=askdskad&amp;userpsd=asdasdasd&amp;gender=male&amp;hubby=basketball&amp;hubby=swim&amp;Education=benke&amp;Introduction=woaini" >https://www.baidu.com/?username=askdskad&amp;userpsd=asdasdasd&amp;gender=male&amp;hubby=basketball&amp;hubby=swim&amp;Education=benke&amp;Introduction=woaini</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="文件控件"   >
+          <a href="#文件控件" class="heading-link"><i class="fas fa-link"></i></a><a href="#文件控件" class="headerlink" title="文件控件"></a>文件控件</h2>
+      
+        <h3 id="HTML-中怎么创建文件控件"   >
+          <a href="#HTML-中怎么创建文件控件" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中怎么创建文件控件" class="headerlink" title="HTML 中怎么创建文件控件"></a>HTML 中怎么创建文件控件</h3>
+      <p>实现语法：</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">value</span>=<span class="string">&quot;选择文件&quot;</span> /&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153140603.png"  alt="image-20211007153140603">
+      </p>
+
+        <h2 id="隐藏域"   >
+          <a href="#隐藏域" class="heading-link"><i class="fas fa-link"></i></a><a href="#隐藏域" class="headerlink" title="隐藏域"></a>隐藏域</h2>
+      
+        <h3 id="HTML-中隐藏域组件的功能"   >
+          <a href="#HTML-中隐藏域组件的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中隐藏域组件的功能" class="headerlink" title="HTML 中隐藏域组件的功能"></a>HTML 中隐藏域组件的功能</h3>
+      <p>功能：开发者不希望用户在填写表单时看到一些信息，但是提交表单数据时这些数据还要提交，那么就可以利用隐藏域进行实现，隐藏域在浏览器上是看不到的哦</p>
+
+        <h3 id="HTML-中怎么创建隐藏域组件"   >
+          <a href="#HTML-中怎么创建隐藏域组件" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-中怎么创建隐藏域组件" class="headerlink" title="HTML 中怎么创建隐藏域组件"></a>HTML 中怎么创建隐藏域组件</h3>
+      <p>实现语法：</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;one&quot;</span> <span class="attr">value</span>=<span class="string">&quot;two&quot;</span> /&gt;</span>        </span><br></pre></td></tr></table></div></figure>
+
+<p>【name属性和value属性不是必须的，在充当表单项时才必须】</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153207718.png"  alt="image-20211007153207718">
+      </p>
+
+        <h2 id="文本框的三种常用属性"   >
+          <a href="#文本框的三种常用属性" class="heading-link"><i class="fas fa-link"></i></a><a href="#文本框的三种常用属性" class="headerlink" title="文本框的三种常用属性"></a>文本框的三种常用属性</h2>
+      
+        <h3 id="HTML-文本框的-readonly-与-disabled-属性的功能及其异同点"   >
+          <a href="#HTML-文本框的-readonly-与-disabled-属性的功能及其异同点" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-文本框的-readonly-与-disabled-属性的功能及其异同点" class="headerlink" title="HTML 文本框的 readonly 与 disabled 属性的功能及其异同点"></a>HTML 文本框的 readonly 与 disabled 属性的功能及其异同点</h3>
+      <p> readonly属性功能：被装饰的文本框不能写入数据，只能看到数据</p>
+<p> disabled属性功能：被装饰的文本框不能写入数据，只能看到数据【只读】</p>
+<p>异同点：</p>
+<p>相同点：修饰的文本框都只能读，不能对文本框内的数据进行修改</p>
+<p>不同点：如果修饰的是 Form 表单内的文本框【表单项】，那么在提交表单时 readonly属性修饰的文本框可被提交，disabled则不可以</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153235324.png"  alt="image-20211007153235324">
+      </p>
+
+        <h3 id="HTML-文本框的-maxlength-属性功能"   >
+          <a href="#HTML-文本框的-maxlength-属性功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-文本框的-maxlength-属性功能" class="headerlink" title="HTML 文本框的 maxlength 属性功能"></a>HTML 文本框的 maxlength 属性功能</h3>
+      <p>maxlength 属性功能：限制文本框最多输入的数据长度</p>
+<p>语法格式：maxlength = “3”     [文本框内最多输入三个字符数据]</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153248213.png"  alt="image-20211007153248213">
+      </p>
+
+        <h2 id="HTML-标签中的-id-属性"   >
+          <a href="#HTML-标签中的-id-属性" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-标签中的-id-属性" class="headerlink" title="HTML 标签中的 id 属性"></a>HTML 标签中的 id 属性</h2>
+      
+        <h3 id="HTML-所有标签中的-id-属性"   >
+          <a href="#HTML-所有标签中的-id-属性" class="heading-link"><i class="fas fa-link"></i></a><a href="#HTML-所有标签中的-id-属性" class="headerlink" title="HTML 所有标签中的 id 属性"></a>HTML 所有标签中的 id 属性</h3>
+      <p>id属性详解：</p>
+<p>1：在 HTML 文档中任何结点标签都是存在 id 属性的，主要是看开发者写不写这个 id 属性</p>
+<p>2：一个结点标签的 id 属性就是这个结点的身份证号，每一个结点的 id 属性值都唯一…</p>
+<p>3：不同的结点中 id 的属性值是不可能相同的</p>
+<p>结点 id 属性的功能呢个：方便后期 JS 代码查找某个结点，对这个结点进行增删改查，实现网页的动态效果….</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153309804.png"  alt="image-20211007153309804">
+      </p>
+
+        <h2 id="div与span图层标签"   >
+          <a href="#div与span图层标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#div与span图层标签" class="headerlink" title="div与span图层标签"></a>div与span图层标签</h2>
+      
+        <h3 id="认识-div-标签与-span-标签"   >
+          <a href="#认识-div-标签与-span-标签" class="heading-link"><i class="fas fa-link"></i></a><a href="#认识-div-标签与-span-标签" class="headerlink" title="认识 div 标签与 span 标签"></a>认识 div 标签与 span 标签</h3>
+      <p>div 与 span 标签概念：这两个标签相当于浏览器页面的图层，把浏览器整个页面比作一张图片，在页面上的 div 与 span 标签就是这个图片上面的图层</p>
+<p>div 与 span 标签功能：页面布局，在很久之前浏览器页面布局需要用 table 布局，现在全都用div+span了，因为它们非常灵活【图层之间的嵌套等，图层可以在页面任何位置出现等..】</p>
+<p>div 与 span 标签定位：可以这两个标签比作盒子，在盒子的左上方有 x、y坐标，就通过这个坐标对 div 与 span 标签进行定位，后期学CSS实现图层定位！</p>
+<p>div 与 span 标签差异：div图层标签独占一行，span图层标签不独占一行</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211007153327855.png"  alt="image-20211007153327855">
+      </p>
+<p>HTML基础知识完毕…..</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/07/HTML%E5%9F%BA%E7%A1%80/">http://pythonlamb.github.io/2021/10/07/HTML%E5%9F%BA%E7%A1%80/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/HTML%E5%9F%BA%E7%A1%80/">HTML基础</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/07/CSS%E5%9F%BA%E7%A1%80/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">CSS基础</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/07/JavaScript-JSON%E7%9B%B8%E5%85%B3/"><span class="paginator-prev__text">JavaScript--JSON相关</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86-HTML"><span class="toc-number">1.</span> <span class="toc-text">
+          认识 HTML</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-HTML"><span class="toc-number">1.1.</span> <span class="toc-text">
+          什么是 HTML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E5%89%8D%E4%BA%94%E5%A4%A7%E4%B8%BB%E6%B5%81%E6%B5%8F%E8%A7%88%E5%99%A8%E5%88%86%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%E4%BB%A5%E5%8F%8A-WEB-%E5%BC%80%E5%8F%91%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">
+          目前五大主流浏览器分别是什么以及 WEB 开发又是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WEB%E5%BC%80%E5%8F%91%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">
+          WEB开发是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#W3C-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.4.</span> <span class="toc-text">
+          W3C 是什么</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">
+          HTML文档格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">
+          文档格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E6%96%87%E6%A1%A3%E6%9C%89%E4%BB%80%E4%B9%88%E7%89%B9%E7%82%B9"><span class="toc-number">2.2.</span> <span class="toc-text">
+          HTML 文档有什么特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AE%B5%E8%90%BD%E4%B8%8E%E6%A0%87%E9%A2%98%E5%AD%97%E6%A0%87%E7%AD%BE"><span class="toc-number">3.</span> <span class="toc-text">
+          段落与标题字标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD%E6%AE%B5%E8%90%BD%E4%B8%8E%E6%A0%87%E9%A2%98%E5%AD%97%E6%A0%87%E7%AD%BE%E5%88%86%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">
+          HTML 中段落与标题字标签分别是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E7%8B%AC%E7%9B%AE%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">4.</span> <span class="toc-text">
+          常用的独目运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E7%8B%AC%E7%9B%AE%E8%BF%90%E7%AE%97%E7%AC%A6%E5%8F%8A%E5%85%B6%E7%94%A8%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">
+          HTML 中常用的独目运算符及其用法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E4%BD%93%E5%A4%84%E7%90%86%E6%A0%87%E7%AD%BE"><span class="toc-number">5.</span> <span class="toc-text">
+          字体处理标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E5%86%85%E5%B8%B8%E7%94%A8%E7%9A%84%E5%AD%97%E4%BD%93%E5%A4%84%E7%90%86%E6%A0%87%E7%AD%BE"><span class="toc-number">5.1.</span> <span class="toc-text">
+          HTML 内常用的字体处理标签</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E8%A7%88%E6%A0%BC%E5%BC%8F%E6%A0%87%E7%AD%BE"><span class="toc-number">6.</span> <span class="toc-text">
+          预览格式标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E5%86%85%E9%A2%84%E7%95%99%E6%A0%BC%E5%BC%8F%E6%A0%87%E7%AD%BE%E6%80%8E%E4%B9%88%E5%86%99%E5%8F%8A%E5%85%B6%E5%8A%9F%E8%83%BD"><span class="toc-number">6.1.</span> <span class="toc-text">
+          HTML 内预留格式标签怎么写及其功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BD%93%E7%AC%A6%E5%8F%B7"><span class="toc-number">7.</span> <span class="toc-text">
+          实体符号</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD%E5%AE%9E%E4%BD%93%E7%AC%A6%E5%8F%B7%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%BB%A5%E5%8F%8A%E5%85%B6%E6%A0%BC%E5%BC%8F"><span class="toc-number">7.1.</span> <span class="toc-text">
+          HTML 中实体符号的应用场景以及其格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%AE%9E%E4%BD%93%E7%AC%A6%E5%8F%B7"><span class="toc-number">7.2.</span> <span class="toc-text">
+          常见的实体符号</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML%E4%B8%AD%E7%9A%84%E8%A1%A8%E6%A0%BC"><span class="toc-number">8.</span> <span class="toc-text">
+          HTML中的表格</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD%E8%A1%A8%E6%A0%BC%E7%9A%84%E5%9B%BE%E7%A4%BA%E5%8E%9F%E7%90%86"><span class="toc-number">8.1.</span> <span class="toc-text">
+          HTML 中表格的图示原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-HTML-%E4%BB%A3%E7%A0%81%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%A1%A8%E6%A0%BC"><span class="toc-number">8.2.</span> <span class="toc-text">
+          利用 HTML 代码创建一个表格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%AF%B9%E8%A1%A8%E6%A0%BC%E5%86%85%E7%9A%84%E5%8D%95%E5%85%83%E6%A0%BC%E8%BF%9B%E8%A1%8C%E5%90%88%E5%B9%B6%E3%80%90%E5%A4%9A%E8%A1%8C%E5%8D%95%E5%85%83%E6%A0%BC%E5%90%88%E5%B9%B6%E4%B8%8E%E5%A4%9A%E5%88%97%E5%8D%95%E5%85%83%E6%A0%BC%E5%90%88%E5%B9%B6%E3%80%91"><span class="toc-number">8.3.</span> <span class="toc-text">
+          怎么对表格内的单元格进行合并【多行单元格合并与多列单元格合并】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD-th-%E6%A0%87%E7%AD%BE%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">8.4.</span> <span class="toc-text">
+          HTML 中 th 标签的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E7%9A%84%E4%B8%80%E4%B8%AA%E8%A1%A8%E6%A0%BC%E4%B8%AD-thead%E3%80%81tbody%E3%80%81tfoot%E4%B8%89%E4%B8%AA%E6%A0%87%E7%AD%BE%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">8.5.</span> <span class="toc-text">
+          HTML 的一个表格中 thead、tbody、tfoot三个标签的功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%95%8C%E9%9D%A2%E8%AE%BE%E7%BD%AE%E8%83%8C%E6%99%AF%E8%89%B2%E5%8F%8A%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87"><span class="toc-number">9.</span> <span class="toc-text">
+          浏览器界面设置背景色及背景图片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-HTML-%E5%86%85%E6%80%8E%E4%B9%88%E4%B8%BA%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BD%91%E9%A1%B5%E7%95%8C%E9%9D%A2%E8%AE%BE%E7%BD%AE%E8%83%8C%E6%99%AF%E8%89%B2%E5%8F%8A%E5%85%B6%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87"><span class="toc-number">9.1.</span> <span class="toc-text">
+          在 HTML 内怎么为浏览器网页界面设置背景色及其背景图片</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E6%A0%87%E7%AD%BE"><span class="toc-number">10.</span> <span class="toc-text">
+          图片标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD%E8%AE%BE%E7%BD%AE%E5%9B%BE%E7%89%87%E6%98%AF%E4%BB%80%E4%B9%88%E6%A0%87%E7%AD%BE"><span class="toc-number">10.1.</span> <span class="toc-text">
+          HTML 中设置图片是什么标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E6%A0%87%E7%AD%BE%E7%9A%84%E5%B1%9E%E6%80%A7%E5%8F%8A%E5%85%B6%E5%8A%9F%E8%83%BD"><span class="toc-number">10.2.</span> <span class="toc-text">
+          图片标签的属性及其功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B6%85%E9%93%BE%E6%8E%A5%E6%A0%87%E7%AD%BE"><span class="toc-number">11.</span> <span class="toc-text">
+          超链接标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD%E8%B6%85%E9%93%BE%E6%8E%A5%E6%A0%87%E7%AD%BE%E6%98%AF%E4%BB%80%E4%B9%88%E5%8F%8A%E5%85%B6%E8%B6%85%E9%93%BE%E6%8E%A5%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">11.1.</span> <span class="toc-text">
+          HTML 中超链接标签是什么及其超链接的特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B6%85%E9%93%BE%E6%8E%A5%E6%A0%87%E7%AD%BE%E5%86%85%E7%9A%84-target-%E5%B1%9E%E6%80%A7%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">11.2.</span> <span class="toc-text">
+          超链接标签内的 target 属性的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#herf%E4%B8%8Esrc%E5%B1%9E%E6%80%A7%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">11.3.</span> <span class="toc-text">
+          herf与src属性的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8E%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-number">12.</span> <span class="toc-text">
+          无序列表与有序列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML%E5%86%85%E6%80%8E%E4%B9%88%E5%88%9B%E5%BB%BA%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-number">12.1.</span> <span class="toc-text">
+          HTML内怎么创建无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML%E5%86%85%E6%80%8E%E4%B9%88%E5%88%9B%E5%BB%BA%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-number">12.2.</span> <span class="toc-text">
+          HTML内怎么创建有序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8E%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">12.3.</span> <span class="toc-text">
+          无序列表与有序列表的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Form%E8%A1%A8%E5%8D%95"><span class="toc-number">13.</span> <span class="toc-text">
+          Form表单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-from-%E8%A1%A8%E5%8D%95%E5%8F%8A%E5%AE%83%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%EF%BC%9F"><span class="toc-number">13.1.</span> <span class="toc-text">
+          什么是 from 表单及它有什么用？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#from-%E8%A1%A8%E5%8D%95%E4%B8%8E-%E8%B6%85%E9%93%BE%E6%8E%A5%E7%9A%84%E5%BC%82%E5%90%8C%E7%82%B9"><span class="toc-number">13.2.</span> <span class="toc-text">
+          from 表单与 超链接的异同点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E6%80%8E%E4%B9%88%E5%88%9B%E5%BB%BA%E7%AE%80%E5%8D%95%E7%9A%84%E8%A1%A8%E5%8D%95%E5%B9%B6%E4%B8%94%E6%8F%90%E4%BA%A4%E8%A1%A8%E5%8D%95"><span class="toc-number">13.3.</span> <span class="toc-text">
+          HTML 怎么创建简单的表单并且提交表单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%EF%BC%9A%E5%AE%9E%E7%8E%B0%E9%87%8D%E7%BD%AE%E8%A1%A8%E5%8D%95"><span class="toc-number">13.4.</span> <span class="toc-text">
+          四：实现重置表单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E5%86%85%E4%B8%80%E4%B8%AA-Form-%E8%A1%A8%E5%8D%95%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%BB%84%E6%88%90%E3%80%90%E8%87%AA%E5%B7%B1%E6%80%BB%E7%BB%93%E7%89%88%E6%9C%AC%E3%80%91"><span class="toc-number">13.5.</span> <span class="toc-text">
+          HTML 内一个 Form 表单对象的组成【自己总结版本】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-Form-%E8%A1%A8%E5%8D%95%E5%86%85%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%82%B9%E5%87%BB%E6%8C%89%E9%92%AE%E5%8D%B3%E5%8F%AF%E6%90%BA%E5%B8%A6%E7%94%A8%E6%88%B7%E5%A1%AB%E5%86%99%E7%9A%84%E6%95%B0%E6%8D%AE%E5%90%91%E6%8C%87%E5%AE%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8F%90%E4%BA%A4%E8%A1%A8%E5%8D%95"><span class="toc-number">13.6.</span> <span class="toc-text">
+          在 Form 表单内怎么实现点击按钮即可携带用户填写的数据向指定服务器提交表单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%99%BB%E5%BD%95%E8%A1%A8%E5%8D%95"><span class="toc-number">13.7.</span> <span class="toc-text">
+          创建一个简单的登录表单</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#input%E8%BE%93%E5%85%A5%E5%9F%9F%E7%9A%84type%E5%B1%9E%E6%80%A7"><span class="toc-number">14.</span> <span class="toc-text">
+          input输入域的type属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD-input-%E8%BE%93%E5%85%A5%E5%9F%9F%E6%A0%87%E7%AD%BE"><span class="toc-number">14.1.</span> <span class="toc-text">
+          HTML 中 input 输入域标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD-input-%E8%BE%93%E5%85%A5%E5%9F%9F%E6%A0%87%E7%AD%BE%E4%B8%AD%E7%9A%84-type-%E5%B1%9E%E6%80%A7%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%80%BC%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%BA%94%E7%9A%84%E6%A0%B7%E5%BC%8F"><span class="toc-number">14.2.</span> <span class="toc-text">
+          HTML 中 input 输入域标签中的 type 属性的一些常用值及其对应的样式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E6%8B%89%E5%88%97%E8%A1%A8%E4%B8%8E%E6%96%87%E5%AD%97%E5%9F%9F%E6%A0%87%E7%AD%BE"><span class="toc-number">15.</span> <span class="toc-text">
+          下拉列表与文字域标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD%E5%88%9B%E5%BB%BA%E4%B8%8B%E6%8B%89%E5%88%97%E8%A1%A8%E7%9A%84%E6%A0%87%E7%AD%BE"><span class="toc-number">15.1.</span> <span class="toc-text">
+          HTML 中创建下拉列表的标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD%E5%88%9B%E5%BB%BA%E6%96%87%E5%AD%97%E5%9F%9F%E7%9A%84%E6%A0%87%E7%AD%BE"><span class="toc-number">15.2.</span> <span class="toc-text">
+          HTML 中创建文字域的标签</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84%E6%B3%A8%E5%86%8C%E8%A1%A8%E5%8D%95"><span class="toc-number">16.</span> <span class="toc-text">
+          实现简单的注册表单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E4%B8%8A%E9%9D%A2%E6%89%80%E5%AD%A6%E7%9A%84%E7%9F%A5%E8%AF%86%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E7%9A%84%E6%8F%90%E4%BA%A4%E8%A1%A8%E5%8D%95"><span class="toc-number">16.1.</span> <span class="toc-text">
+          利用上面所学的知识创建一个用户注册的提交表单</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8E%A7%E4%BB%B6"><span class="toc-number">17.</span> <span class="toc-text">
+          文件控件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD%E6%80%8E%E4%B9%88%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E6%8E%A7%E4%BB%B6"><span class="toc-number">17.1.</span> <span class="toc-text">
+          HTML 中怎么创建文件控件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%90%E8%97%8F%E5%9F%9F"><span class="toc-number">18.</span> <span class="toc-text">
+          隐藏域</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD%E9%9A%90%E8%97%8F%E5%9F%9F%E7%BB%84%E4%BB%B6%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">18.1.</span> <span class="toc-text">
+          HTML 中隐藏域组件的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E4%B8%AD%E6%80%8E%E4%B9%88%E5%88%9B%E5%BB%BA%E9%9A%90%E8%97%8F%E5%9F%9F%E7%BB%84%E4%BB%B6"><span class="toc-number">18.2.</span> <span class="toc-text">
+          HTML 中怎么创建隐藏域组件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E6%A1%86%E7%9A%84%E4%B8%89%E7%A7%8D%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7"><span class="toc-number">19.</span> <span class="toc-text">
+          文本框的三种常用属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E6%96%87%E6%9C%AC%E6%A1%86%E7%9A%84-readonly-%E4%B8%8E-disabled-%E5%B1%9E%E6%80%A7%E7%9A%84%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%85%B6%E5%BC%82%E5%90%8C%E7%82%B9"><span class="toc-number">19.1.</span> <span class="toc-text">
+          HTML 文本框的 readonly 与 disabled 属性的功能及其异同点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E6%96%87%E6%9C%AC%E6%A1%86%E7%9A%84-maxlength-%E5%B1%9E%E6%80%A7%E5%8A%9F%E8%83%BD"><span class="toc-number">19.2.</span> <span class="toc-text">
+          HTML 文本框的 maxlength 属性功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML-%E6%A0%87%E7%AD%BE%E4%B8%AD%E7%9A%84-id-%E5%B1%9E%E6%80%A7"><span class="toc-number">20.</span> <span class="toc-text">
+          HTML 标签中的 id 属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-%E6%89%80%E6%9C%89%E6%A0%87%E7%AD%BE%E4%B8%AD%E7%9A%84-id-%E5%B1%9E%E6%80%A7"><span class="toc-number">20.1.</span> <span class="toc-text">
+          HTML 所有标签中的 id 属性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#div%E4%B8%8Espan%E5%9B%BE%E5%B1%82%E6%A0%87%E7%AD%BE"><span class="toc-number">21.</span> <span class="toc-text">
+          div与span图层标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86-div-%E6%A0%87%E7%AD%BE%E4%B8%8E-span-%E6%A0%87%E7%AD%BE"><span class="toc-number">21.1.</span> <span class="toc-text">
+          认识 div 标签与 span 标签</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

@@ -1,0 +1,667 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：在学习Python编程的过程中遇到的各种疑难杂症，包括但不限于pip安装第三方库下载慢的问题、在ubuntu系统中安装火狐浏览器的flash插件等等…..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的疑难杂症【第一期】">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/08/Python%E7%9A%84%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87%E3%80%90%E7%AC%AC%E4%B8%80%E6%9C%9F%E3%80%91/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：在学习Python编程的过程中遇到的各种疑难杂症，包括但不限于pip安装第三方库下载慢的问题、在ubuntu系统中安装火狐浏览器的flash插件等等…..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008093839549.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008093903251.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008093939634.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008093959725.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094025086.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094039290.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094056402.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094147275.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094233909.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094251400.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094307735.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094339903.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094352215.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094405124.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094417913.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094431437.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094445875.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094521338.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094534297.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094554394.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094656725.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094717664.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094742677.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094756619.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094816247.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094826935.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094839450.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094902190.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094916206.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094939993.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008095004472.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008095034003.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008095131684.png">
+<meta property="article:published_time" content="2021-10-08T01:21:40.000Z">
+<meta property="article:modified_time" content="2021-10-08T02:01:22.439Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="疑难杂症篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008093839549.png"><title>Python的疑难杂症【第一期】 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/08/Python%E7%9A%84%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87%E3%80%90%E7%AC%AC%E4%B8%80%E6%9C%9F%E3%80%91/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Python的疑难杂症【第一期】</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-08</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-08</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.5k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">17分</span></span></div></header><div class="post-body"><p>本文主讲：在学习Python编程的过程中遇到的各种疑难杂症，包括但不限于pip安装第三方库下载慢的问题、在ubuntu系统中安装火狐浏览器的flash插件等等…..</p>
+<span id="more"></span>
+
+
+
+
+        <h2 id="解决pip安装第三方库下载速度慢的问题"   >
+          <a href="#解决pip安装第三方库下载速度慢的问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#解决pip安装第三方库下载速度慢的问题" class="headerlink" title="解决pip安装第三方库下载速度慢的问题"></a>解决pip安装第三方库下载速度慢的问题</h2>
+      
+        <h3 id="如何利用-pip-指令在-Linux-终端快速下载第三方库"   >
+          <a href="#如何利用-pip-指令在-Linux-终端快速下载第三方库" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何利用-pip-指令在-Linux-终端快速下载第三方库" class="headerlink" title="如何利用 pip 指令在 Linux 终端快速下载第三方库"></a>如何利用 pip 指令在 Linux 终端快速下载第三方库</h3>
+      <p>步骤截图如下：</p>
+<p>第一步：找到中国的pip软件镜像源，如清华大学pip源、阿里源等</p>
+<p>阿里云 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://mirrors.aliyun.com/pypi/simple/" >http://mirrors.aliyun.com/pypi/simple/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>中国科技大学 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://pypi.mirrors.ustc.edu.cn/simple/" >https://pypi.mirrors.ustc.edu.cn/simple/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>豆瓣(douban) <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://pypi.douban.com/simple/" >http://pypi.douban.com/simple/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>清华大学 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple/" >https://pypi.tuna.tsinghua.edu.cn/simple/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>中国科学技术大学 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://pypi.mirrors.ustc.edu.cn/simple/" >http://pypi.mirrors.ustc.edu.cn/simple/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>第二步：Linxu下利用 vi 指令修改 /home/lamb/.pip/pip.conf 文件没有则创建目录及文件（.pip目录 与 pip.conf文件）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008093839549.png"  alt="image-20211008093839549">
+      </p>
+<p>第三步：将下面内容复制到 pip.conf 文件内保存即可</p>
+<p>文件内容如下（其中蓝色网址代表pip中国镜像网站，可更改）：</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">index-url &#x3D; https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;pypi&#x2F;simple&#x2F;</span><br><span class="line">[install]</span><br><span class="line">trusted-host&#x3D;mirrors.aliyun.com</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008093903251.png"  alt="image-20211008093903251">
+      </p>
+<p>注意事项：利用 pip3 install 库名 安装的库是安装在 主机上面的，不是安装在虚拟机上面，虚拟机上面需要用别的指令</p>
+
+        <h2 id="怎么在ubuntu中安装火狐浏览器的flash插件"   >
+          <a href="#怎么在ubuntu中安装火狐浏览器的flash插件" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么在ubuntu中安装火狐浏览器的flash插件" class="headerlink" title="怎么在ubuntu中安装火狐浏览器的flash插件"></a>怎么在ubuntu中安装火狐浏览器的flash插件</h2>
+      <p>答：在终端输入以下指令即可快速安装 flash 插件</p>
+<p><code>sudo apt-get install flashplugin-installer</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008093939634.png"  alt="image-20211008093939634">
+      </p>
+
+        <h2 id="Windows怎么用-pyinstaller-库将py文件打包成exe文件"   >
+          <a href="#Windows怎么用-pyinstaller-库将py文件打包成exe文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#Windows怎么用-pyinstaller-库将py文件打包成exe文件" class="headerlink" title="Windows怎么用 pyinstaller 库将py文件打包成exe文件"></a>Windows怎么用 pyinstaller 库将py文件打包成exe文件</h2>
+      <p>第一步：打开终端安装 pyinstaller 库</p>
+<p>指令：<code>pip3 install pyinstaller </code></p>
+<p>图示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008093959725.png"  alt="image-20211008093959725">
+      </p>
+<p>第二步：将 需要打包的py文件独立放到一个文件夹内（文件夹不要中文），在地址栏输入cmd进入文件夹终端</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094025086.png"  alt="image-20211008094025086">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094039290.png"  alt="image-20211008094039290">
+      </p>
+<p>第三步：输入指令 pyinstaller -F -w video.py 即可将文件打包成功</p>
+<p>指令选项：<br>-F：生成单个可执行文件（exe文件）<br>-w：去除窗口控制台，这个很重要，python在GUI软件中打包 -w 选项很有用<br>-i：将打包的可执行文件（exe文件）加上自己准备的图标（ico文件）</p>
+<p>注意事项：</p>
+<p>1：打包好的的 exe文件在dist文件夹内！！</p>
+<p>2：如果想要给打包好的 exe 文件加上自己的图标，可在指令中加上 -i 选项   </p>
+<p>例如  pyinstaller -i  ico图标路径 -F -w video.py   其中 ico图标路径是准备好的ico文件路径，video是待打包的py文件</p>
+<p>图示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094056402.png"  alt="image-20211008094056402">
+      </p>
+
+        <h2 id="ubuntu系统解决长时间不使用，桥接模式无法上网的问题"   >
+          <a href="#ubuntu系统解决长时间不使用，桥接模式无法上网的问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#ubuntu系统解决长时间不使用，桥接模式无法上网的问题" class="headerlink" title="ubuntu系统解决长时间不使用，桥接模式无法上网的问题"></a>ubuntu系统解决长时间不使用，桥接模式无法上网的问题</h2>
+      <p>第一步：在ubuntu系统终端输入下面指令，查看ubuntu系统的网络设置  </p>
+<p><code>cd /var/lib/NetworkManager</code><br><code>sudo  gedit NetworkManager.state</code></p>
+<p>查询的结果如下图后，关闭这个文件</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094147275.png"  alt="image-20211008094147275">
+      </p>
+<p>第二步：关闭文件后回到终端 输入指令  <code>sudo service network-manager stop</code> 关闭网络</p>
+<p>第三步：输入下面指令来修改这个文件</p>
+<p><code>sudo gedit /var/lib/NetworkManager/NetworkManager.state</code></p>
+<p>来自 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.jianshu.com/p/38b5318efc25" >https://www.jianshu.com/p/38b5318efc25</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094233909.png"  alt="image-20211008094233909">
+      </p>
+<p>第四步：退回终端输入下面指令重新开启网络即可大功告成</p>
+<p><code>sudo service network-manager start</code></p>
+
+        <h2 id="navicat连接本地数据库失败的问题！"   >
+          <a href="#navicat连接本地数据库失败的问题！" class="heading-link"><i class="fas fa-link"></i></a><a href="#navicat连接本地数据库失败的问题！" class="headerlink" title="navicat连接本地数据库失败的问题！"></a>navicat连接本地数据库失败的问题！</h2>
+      <p>问题一：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094251400.png"  alt="image-20211008094251400">
+      </p>
+<p>解决办法：将 localhost 更改为 127.0.0.1 即可</p>
+<p>问题二：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094307735.png"  alt="image-20211008094307735">
+      </p>
+<p>解决办法步骤：</p>
+<p>第一步：进入管理员用户 sudo -s<br>第二步：重启数据库 service mysql restart<br>第三步：进入数据库 mysql -u root -p<br>第四步：更改密码（默认密码为空）分步骤输入下面代码</p>
+<p>1：use mysql；</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094339903.png"  alt="image-20211008094339903">
+      </p>
+<p>#其中yhq256112是设置的新密码！</p>
+<p>2：ALTER USER ‘root’@’localhost’ IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY ‘yhq256112’;</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094352215.png"  alt="image-20211008094352215">
+      </p>
+<p>3：flush privileges;</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094405124.png"  alt="image-20211008094405124">
+      </p>
+<p>4：quit;</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094417913.png"  alt="image-20211008094417913">
+      </p>
+<p>5：重新利用 navicat 登录数据库</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094431437.png"  alt="image-20211008094431437">
+      </p>
+<p>问题1、问题2参考网站：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_25719943/article/details/107760503?ops_request_misc=%25257B%252522request%25255Fid%252522%25253A%252522161147949816780264046707%252522%25252C%252522scm%252522%25253A%25252220140713.130102334.pc%25255Fall.%252522%25257D&amp;request_id=161147949816780264046707&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_v2~rank_v29-1-107760503.pc_search_result_hbase_insert&amp;utm_term=linux%E5%88%A9%E7%94%A8navicat%E8%BF%9E%E6%8E%A5mysql8.0.22%E6%95%B0%E6%8D%AE%E5%BA%93%E6%98%BE%E7%A4%BA%20Access%20denied%20for%20user%20%27root%27@%27localhos" >https://blog.csdn.net/qq_25719943/article/details/107760503?ops_request_misc=%25257B%252522request%25255Fid%252522%25253A%252522161147949816780264046707%252522%25252C%252522scm%252522%25253A%25252220140713.130102334.pc%25255Fall.%252522%25257D&amp;request_id=161147949816780264046707&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_v2~rank_v29-1-107760503.pc_search_result_hbase_insert&amp;utm_term=linux%E5%88%A9%E7%94%A8navicat%E8%BF%9E%E6%8E%A5mysql8.0.22%E6%95%B0%E6%8D%AE%E5%BA%93%E6%98%BE%E7%A4%BA%20Access%20denied%20for%20user%20%27root%27@%27localhos</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>问题3：</p>
+<p>建立数据库报1449号错误截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094445875.png"  alt="image-20211008094445875">
+      </p>
+<p>解决方案代码如下（先进入mysql数据库）：</p>
+<p><code>drop user </code>mysql.infoschema<code>@&quot;localhost&quot;;</code><br> // 这个部分``mysql.infoschema<code>@&quot;localhost&quot;</code>就是连接数据库报错提示的用户与地址</p>
+<p> flush privileges;<br> //刷新权限</p>
+<p>create user <code>mysql.infoschema</code>@”localhost” identified by ‘h102’;<br>//<code>mysql.infoschema</code>@”localhost” 这个也要改成你报错的用户与地址</p>
+<p>flush privileges;</p>
+<p>————————————————————————————————————</p>
+<p>问题4：</p>
+<p>解决问题4后又报出 ERROR 1356 (HY000): View ‘information_schema. SCHEMATA’… 错误</p>
+<p>解决方案代码：</p>
+<p>use mysql</p>
+<p>update user set Select_priv = ‘Y’ where User = ‘mysql.infoschema’;<br>//这里注意用户名，也是你报错的用户名</p>
+<p>flush privileges;</p>
+<p>问题3、问题4解决方案参考博客：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43558190/article/details/108676123?ops_request_misc=%25257B%252522request%25255Fid%252522%25253A%252522161148985916780265486587%252522%25252C%252522scm%252522%25253A%25252220140713.130102334.pc%25255Fall.%252522%25257D&amp;request_id=161148985916780265486587&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_v2~rank_v29-2-108676123.pc_search_result_hbase_insert&amp;utm_term=navicat%E8%BF%9E%E6%8E%A5mysql%E6%8A%A5%E5%87%BA1449%20-%20The%20user%20specified%20as%20a%20definer%20(%27mysql.infoschema%27@%27localhost%27)%20does%20not%20exist" >https://blog.csdn.net/weixin_43558190/article/details/108676123?ops_request_misc=%25257B%252522request%25255Fid%252522%25253A%252522161148985916780265486587%252522%25252C%252522scm%252522%25253A%25252220140713.130102334.pc%25255Fall.%252522%25257D&amp;request_id=161148985916780265486587&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_v2~rank_v29-2-108676123.pc_search_result_hbase_insert&amp;utm_term=navicat%E8%BF%9E%E6%8E%A5mysql%E6%8A%A5%E5%87%BA1449%20-%20The%20user%20specified%20as%20a%20definer%20(%27mysql.infoschema%27@%27localhost%27)%20does%20not%20exist</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="navicat远程连接linux服务器出现2003—10061号错误解决方案"   >
+          <a href="#navicat远程连接linux服务器出现2003—10061号错误解决方案" class="heading-link"><i class="fas fa-link"></i></a><a href="#navicat远程连接linux服务器出现2003—10061号错误解决方案" class="headerlink" title="navicat远程连接linux服务器出现2003—10061号错误解决方案"></a>navicat远程连接linux服务器出现2003—10061号错误解决方案</h2>
+      <p>问题截图（windows远程连接服务器数据库出现的错误！）：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094521338.png"  alt="image-20211008094521338">
+      </p>
+<p>出错原因：配置出错！</p>
+<p>解决步骤：</p>
+<p>第一步：查看3306端口号的主机！</p>
+<p>查看指令：netstat -ntlp | grep -v tcp6;</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094534297.png"  alt="image-20211008094534297">
+      </p>
+<p>第二步：修改 mysql 的配置文件（将 bind-address = 127.0.0.1 修改成 bind-address = 0.0.0.0）</p>
+<p>打开文件指令：<code>gedit /etc/mysql/mysql.conf.d/mysqld.cnf  </code></p>
+<p>将 bind-address = 127.0.0.1 修改成 bind-address = 0.0.0.0</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094554394.png"  alt="image-20211008094554394">
+      </p>
+<p>第三步：重启mysql数据库、重新连接</p>
+<p>重启指令：service mysql restart</p>
+<p>再次查看3306端口号主机</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094656725.png"  alt="image-20211008094656725">
+      </p>
+<p>重新远程连接截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094717664.png"  alt="image-20211008094717664">
+      </p>
+
+        <h2 id="ubuntu手欠按下-ctrl-alt-del-黑屏怎么解决"   >
+          <a href="#ubuntu手欠按下-ctrl-alt-del-黑屏怎么解决" class="heading-link"><i class="fas fa-link"></i></a><a href="#ubuntu手欠按下-ctrl-alt-del-黑屏怎么解决" class="headerlink" title="ubuntu手欠按下 ctrl + alt + del 黑屏怎么解决"></a>ubuntu手欠按下 ctrl + alt + del 黑屏怎么解决</h2>
+      <p>答：在黑屏界面按下  ctrl + alt + F7 就行啦</p>
+
+        <h2 id="怎么手动安装python第三方包（-whl文件）"   >
+          <a href="#怎么手动安装python第三方包（-whl文件）" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么手动安装python第三方包（-whl文件）" class="headerlink" title="怎么手动安装python第三方包（.whl文件）"></a>怎么手动安装python第三方包（.whl文件）</h2>
+      <p>第一步：进入下面网站下载对应版本的python包（.whl后缀文件）</p>
+<p>网站：<br>官方网站：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://pypi.org/" >https://pypi.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>非官方网站【只用于windows系统】：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#wordcloud" >https://www.lfd.uci.edu/~gohlke/pythonlibs/#wordcloud</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>第二步：找到.whl后缀文件所在目录，在目录下进入终端</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094742677.png"  alt="image-20211008094742677">
+      </p>
+<p>第三步：在终端输入指令 pip3 install   whl后缀文件的全名（带上.whl）即可安装成功</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094756619.png"  alt="image-20211008094756619">
+      </p>
+
+        <h2 id="怎么手动安装python第三方包（-tar-gz文件）"   >
+          <a href="#怎么手动安装python第三方包（-tar-gz文件）" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么手动安装python第三方包（-tar-gz文件）" class="headerlink" title="怎么手动安装python第三方包（.tar.gz文件）"></a>怎么手动安装python第三方包（.tar.gz文件）</h2>
+      <p>第一步：进入下面网站下载对应版本的python包（.tar.gz后缀文件）</p>
+<p>网站：<br>官方网站：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://pypi.org/" >https://pypi.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>非官方网站：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#wordcloud" >https://www.lfd.uci.edu/~gohlke/pythonlibs/#wordcloud</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>第二步：找到下载python包（.tar.gz后缀文件）的文件夹【linux系统为例】，将这个压缩包进行解压</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094816247.png"  alt="image-20211008094816247">
+      </p>
+<p>第三步：解压后进入这个包的文件夹后在终端打开</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094826935.png"  alt="image-20211008094826935">
+      </p>
+<p>第四步：在终端输入下面指令即可安装成功<br>安装指令：<code>sudo python3 setup.py install</code></p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094839450.png"  alt="image-20211008094839450">
+      </p>
+
+        <h2 id="redis数据库的安装与配置"   >
+          <a href="#redis数据库的安装与配置" class="heading-link"><i class="fas fa-link"></i></a><a href="#redis数据库的安装与配置" class="headerlink" title="redis数据库的安装与配置"></a>redis数据库的安装与配置</h2>
+      <p>教程网站：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41996197/article/details/89427073?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162640227416780255259420%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=162640227416780255259420&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-89427073.pc_search_result_control_group&amp;utm_term=WIN10%E6%80%8E%E4%B9%88%E5%AE%89%E8%A3%85redis&amp;spm=1018.2226.3001.4187" >https://blog.csdn.net/weixin_41996197/article/details/89427073?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162640227416780255259420%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=162640227416780255259420&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-89427073.pc_search_result_control_group&amp;utm_term=WIN10%E6%80%8E%E4%B9%88%E5%AE%89%E8%A3%85redis&amp;spm=1018.2226.3001.4187</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="解决cmd命令行输入python打开商店问题"   >
+          <a href="#解决cmd命令行输入python打开商店问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#解决cmd命令行输入python打开商店问题" class="headerlink" title="解决cmd命令行输入python打开商店问题"></a>解决cmd命令行输入python打开商店问题</h2>
+      <p>出现的问题：安装好 python 之后，环境变量也配置好了，但是在终端输入 python 直接打开了应用商店的解决办法</p>
+<p>解决办法：按下 win + q 搜索 管理应用执行别名 打开这个程序，将应用安装程序全部关闭即可解决</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094902190.png"  alt="image-20211008094902190">
+      </p>
+<p>问题解决网站：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43706426/article/details/104347702" >https://blog.csdn.net/qq_43706426/article/details/104347702</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36949278/article/details/115265034?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162893118616780357254654%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&amp;request_id=162893118616780357254654&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_v2~rank_v29-2-115265034.first_rank_v2_pc_rank_v29&amp;utm_term=%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%BE%93%E5%85%A5python%E6%89%93%E5%BC%80%E4%BA%86%E5%95%86%E5%BA%97&amp;spm=1018.2226.3001.4187" >https://blog.csdn.net/qq_36949278/article/details/115265034?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162893118616780357254654%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&amp;request_id=162893118616780357254654&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_v2~rank_v29-2-115265034.first_rank_v2_pc_rank_v29&amp;utm_term=%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%BE%93%E5%85%A5python%E6%89%93%E5%BC%80%E4%BA%86%E5%95%86%E5%BA%97&amp;spm=1018.2226.3001.4187</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="怎么卸载python"   >
+          <a href="#怎么卸载python" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么卸载python" class="headerlink" title="怎么卸载python"></a>怎么卸载python</h2>
+      <p>第一步：首先在终端看一下 python 的版本<br>指令： python3</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094916206.png"  alt="image-20211008094916206">
+      </p>
+<p>第二步：复制 python 的名称以及版本号，在查找文件软件中粘贴查找</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008094939993.png"  alt="image-20211008094939993">
+      </p>
+<p>第三步：点击…..将python进行卸载</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008095004472.png"  alt="image-20211008095004472">
+      </p>
+
+        <h2 id="windows怎么升级-python"   >
+          <a href="#windows怎么升级-python" class="heading-link"><i class="fas fa-link"></i></a><a href="#windows怎么升级-python" class="headerlink" title="windows怎么升级 python"></a>windows怎么升级 python</h2>
+      <p>第一步：对原版本的 python 进行卸载</p>
+<p>第二步：去官网下载指定版本的 python 安装包</p>
+<p>第三步：进行安装【配置好环境变量】</p>
+
+        <h2 id="python怎么卸载安装的包"   >
+          <a href="#python怎么卸载安装的包" class="heading-link"><i class="fas fa-link"></i></a><a href="#python怎么卸载安装的包" class="headerlink" title="python怎么卸载安装的包"></a>python怎么卸载安装的包</h2>
+      <p>第一步：查看当前所有安装的包<br>指令：<code>pip list</code></p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008095034003.png"  alt="image-20211008095034003">
+      </p>
+<p>第二步：对安装包进行卸载<br>指令：<code> pip uninstall 包名</code></p>
+
+        <h2 id="python中pip与pip3有什么区别"   >
+          <a href="#python中pip与pip3有什么区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#python中pip与pip3有什么区别" class="headerlink" title="python中pip与pip3有什么区别"></a>python中pip与pip3有什么区别</h2>
+      <p>1、pip是python的包管理工具，pip和pip3版本不同，都位于Scripts\目录下：</p>
+<p>2、如果系统中只安装了Python2，那么就只能使用pip。</p>
+<p>3、如果系统中只安装了Python3，那么既可以使用pip也可以使用pip3，二者是等价的。</p>
+<p>4、如果系统中同时安装了Python2和Python3，则pip默认给Python2用，pip3指定给Python3用。</p>
+<p>5、重要：虚拟环境中，若只存在一个python版本，可以认为在用系统中pip和pip3命令都是相同的</p>
+
+        <h2 id="windows安装Scrapy的注意事项【重中之重】"   >
+          <a href="#windows安装Scrapy的注意事项【重中之重】" class="heading-link"><i class="fas fa-link"></i></a><a href="#windows安装Scrapy的注意事项【重中之重】" class="headerlink" title="windows安装Scrapy的注意事项【重中之重】"></a>windows安装Scrapy的注意事项【重中之重】</h2>
+      <p>问题出现：在windows下用指令 pip install Scrapy 会出现各种各样的错误，下面是安装 Scrapy 之前必须要安装的一些依赖库，只有安装了这些依赖库，scrapy才能安装成功！</p>
+<p>scrapy所需依赖库大纲网站：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://my.oschina.net/xtfjt1988/blog/364577" >https://my.oschina.net/xtfjt1988/blog/364577</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>注意：pyOpenSSL库很重要</p>
+<p>问题解决网站：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/liuliliuli2017/p/6746440.html" >https://www.cnblogs.com/liuliliuli2017/p/6746440.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="浏览器抓包时犯病怎么解决"   >
+          <a href="#浏览器抓包时犯病怎么解决" class="heading-link"><i class="fas fa-link"></i></a><a href="#浏览器抓包时犯病怎么解决" class="headerlink" title="浏览器抓包时犯病怎么解决"></a>浏览器抓包时犯病怎么解决</h2>
+      <p>浏览器清除缓存快捷键：Ctrl + Shift + Del 【如果浏览器犯病就试试这个快捷键】</p>
+
+        <h2 id="怎么安装特定版本的python包【重点】"   >
+          <a href="#怎么安装特定版本的python包【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么安装特定版本的python包【重点】" class="headerlink" title="怎么安装特定版本的python包【重点】"></a>怎么安装特定版本的python包【重点】</h2>
+      <p>安装指令：pip install 包名 == 版本号</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211008095131684.png"  alt="image-20211008095131684">
+      </p>
+<p>遇到的问题持续更新中………</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/08/Python%E7%9A%84%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87%E3%80%90%E7%AC%AC%E4%B8%80%E6%9C%9F%E3%80%91/">http://pythonlamb.github.io/2021/10/08/Python%E7%9A%84%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87%E3%80%90%E7%AC%AC%E4%B8%80%E6%9C%9F%E3%80%91/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87%E7%AF%87/">疑难杂症篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/08/Python%E7%9A%84%E6%9C%89%E8%B6%A3%E6%A1%88%E4%BE%8B%E3%80%90%E7%AC%AC%E4%B8%80%E6%9C%9F%E3%80%91/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Python的有趣案例【第一期】</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/07/CSS%E5%9F%BA%E7%A1%80/"><span class="paginator-prev__text">CSS基础</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3pip%E5%AE%89%E8%A3%85%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93%E4%B8%8B%E8%BD%BD%E9%80%9F%E5%BA%A6%E6%85%A2%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">
+          解决pip安装第三方库下载速度慢的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8-pip-%E6%8C%87%E4%BB%A4%E5%9C%A8-Linux-%E7%BB%88%E7%AB%AF%E5%BF%AB%E9%80%9F%E4%B8%8B%E8%BD%BD%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93"><span class="toc-number">1.1.</span> <span class="toc-text">
+          如何利用 pip 指令在 Linux 终端快速下载第三方库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%9C%A8ubuntu%E4%B8%AD%E5%AE%89%E8%A3%85%E7%81%AB%E7%8B%90%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84flash%E6%8F%92%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">
+          怎么在ubuntu中安装火狐浏览器的flash插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows%E6%80%8E%E4%B9%88%E7%94%A8-pyinstaller-%E5%BA%93%E5%B0%86py%E6%96%87%E4%BB%B6%E6%89%93%E5%8C%85%E6%88%90exe%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">
+          Windows怎么用 pyinstaller 库将py文件打包成exe文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu%E7%B3%BB%E7%BB%9F%E8%A7%A3%E5%86%B3%E9%95%BF%E6%97%B6%E9%97%B4%E4%B8%8D%E4%BD%BF%E7%94%A8%EF%BC%8C%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F%E6%97%A0%E6%B3%95%E4%B8%8A%E7%BD%91%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">
+          ubuntu系统解决长时间不使用，桥接模式无法上网的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#navicat%E8%BF%9E%E6%8E%A5%E6%9C%AC%E5%9C%B0%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%81"><span class="toc-number">5.</span> <span class="toc-text">
+          navicat连接本地数据库失败的问题！</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#navicat%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%87%BA%E7%8E%B02003%E2%80%9410061%E5%8F%B7%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">6.</span> <span class="toc-text">
+          navicat远程连接linux服务器出现2003—10061号错误解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu%E6%89%8B%E6%AC%A0%E6%8C%89%E4%B8%8B-ctrl-alt-del-%E9%BB%91%E5%B1%8F%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3"><span class="toc-number">7.</span> <span class="toc-text">
+          ubuntu手欠按下 ctrl + alt + del 黑屏怎么解决</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85python%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8C%85%EF%BC%88-whl%E6%96%87%E4%BB%B6%EF%BC%89"><span class="toc-number">8.</span> <span class="toc-text">
+          怎么手动安装python第三方包（.whl文件）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85python%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8C%85%EF%BC%88-tar-gz%E6%96%87%E4%BB%B6%EF%BC%89"><span class="toc-number">9.</span> <span class="toc-text">
+          怎么手动安装python第三方包（.tar.gz文件）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="toc-number">10.</span> <span class="toc-text">
+          redis数据库的安装与配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3cmd%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%BE%93%E5%85%A5python%E6%89%93%E5%BC%80%E5%95%86%E5%BA%97%E9%97%AE%E9%A2%98"><span class="toc-number">11.</span> <span class="toc-text">
+          解决cmd命令行输入python打开商店问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%8D%B8%E8%BD%BDpython"><span class="toc-number">12.</span> <span class="toc-text">
+          怎么卸载python</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#windows%E6%80%8E%E4%B9%88%E5%8D%87%E7%BA%A7-python"><span class="toc-number">13.</span> <span class="toc-text">
+          windows怎么升级 python</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python%E6%80%8E%E4%B9%88%E5%8D%B8%E8%BD%BD%E5%AE%89%E8%A3%85%E7%9A%84%E5%8C%85"><span class="toc-number">14.</span> <span class="toc-text">
+          python怎么卸载安装的包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python%E4%B8%ADpip%E4%B8%8Epip3%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="toc-number">15.</span> <span class="toc-text">
+          python中pip与pip3有什么区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#windows%E5%AE%89%E8%A3%85Scrapy%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E3%80%90%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D%E3%80%91"><span class="toc-number">16.</span> <span class="toc-text">
+          windows安装Scrapy的注意事项【重中之重】</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8A%93%E5%8C%85%E6%97%B6%E7%8A%AF%E7%97%85%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3"><span class="toc-number">17.</span> <span class="toc-text">
+          浏览器抓包时犯病怎么解决</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84python%E5%8C%85%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">18.</span> <span class="toc-text">
+          怎么安装特定版本的python包【重点】</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

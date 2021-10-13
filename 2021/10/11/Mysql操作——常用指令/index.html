@@ -1,0 +1,704 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：常用的SQL指令等等….【重点】">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql操作——常用指令">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/11/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：常用的SQL指令等等….【重点】">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011194938794.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011194953090.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195019906.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195036096.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195048859.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195058818.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195129435.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195142293.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195153531.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195209887.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195216854.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195226698.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195257504.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195308611.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195319203.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195328433.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195406050.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195429410.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195439947.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195504599.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195511467.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195534216.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195540970.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195556152.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195602737.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195700792.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195716350.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195734526.png">
+<meta property="article:published_time" content="2021-10-11T11:40:48.000Z">
+<meta property="article:modified_time" content="2021-10-11T12:00:16.531Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="Mysql操作">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011194938794.png"><title>Mysql操作——常用指令 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/11/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Mysql操作——常用指令</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.7k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">16分</span></span></div></header><div class="post-body"><p>本文主讲：常用的SQL指令等等….【重点】</p>
+<span id="more"></span>
+
+
+
+
+
+
+        <h2 id="SQL指令——数据库的一般操作【重点】"   >
+          <a href="#SQL指令——数据库的一般操作【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——数据库的一般操作【重点】" class="headerlink" title="SQL指令——数据库的一般操作【重点】"></a>SQL指令——数据库的一般操作【重点】</h2>
+      
+        <h3 id="SQL指令——show——查看所有数据库"   >
+          <a href="#SQL指令——show——查看所有数据库" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——show——查看所有数据库" class="headerlink" title="SQL指令——show——查看所有数据库"></a>SQL指令——show——查看所有数据库</h3>
+      <p>指令功能：<br>1：查看当前连接的服务器所有的数据库信息<br>2：查看创建数据库的过程</p>
+<p>指令示例：</p>
+<p>1（查看所有数据库）：<code>show databases</code></p>
+<p>2（查看数据库的创建过程）：<code>show create database 数据库名</code></p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011194938794.png"  alt="image-20211011194938794">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011194953090.png"  alt="image-20211011194953090">
+      </p>
+
+        <h3 id="SQL指令——select——查看当前所在的数据库"   >
+          <a href="#SQL指令——select——查看当前所在的数据库" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——select——查看当前所在的数据库" class="headerlink" title="SQL指令——select——查看当前所在的数据库"></a>SQL指令——select——查看当前所在的数据库</h3>
+      <p>功能：查看当前所在的数据库</p>
+<p>指令格式：<code>select database（）；</code></p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195019906.png"  alt="image-20211011195019906">
+      </p>
+
+        <h3 id="SQL指令——create——创建数据库"   >
+          <a href="#SQL指令——create——创建数据库" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——create——创建数据库" class="headerlink" title="SQL指令——create——创建数据库"></a>SQL指令——create——创建数据库</h3>
+      <p>功能：创建数据库</p>
+<p>指令：</p>
+<p>1(创建不指定编码的数据库)：<code>create database 数据库名;</code><br>2（创建指定编码的字符集）：<code>create database 数据库名 charset = 字符集;</code></p>
+<p>​    </p>
+<p>指令示例：</p>
+<p>1：<code>create database name1；</code> 表示创建一个名为name1不指定编码的数据库</p>
+<p>2：<code>create database name1 charset = utf8；</code> 表示创建一个名为name1编码为utf8的数据库</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195036096.png"  alt="image-20211011195036096">
+      </p>
+
+        <h3 id="SQL指令——drop——删除数据库"   >
+          <a href="#SQL指令——drop——删除数据库" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——drop——删除数据库" class="headerlink" title="SQL指令——drop——删除数据库"></a>SQL指令——drop——删除数据库</h3>
+      <p>功能：删除指定MySQL数据库</p>
+<p>指令：<code>drop database 数据库名</code></p>
+<p>示例：<code>drop database python_ceshi1</code></p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195048859.png"  alt="image-20211011195048859">
+      </p>
+
+        <h3 id="SQL指令——use——选择指定数据库"   >
+          <a href="#SQL指令——use——选择指定数据库" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——use——选择指定数据库" class="headerlink" title="SQL指令——use——选择指定数据库"></a>SQL指令——use——选择指定数据库</h3>
+      <p>功能：选择指定的数据库</p>
+<p>指令：<code>use 数据库名</code></p>
+<p>指令示例：<code>use python_database</code></p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195058818.png"  alt="image-20211011195058818">
+      </p>
+<p>总结：<br>1：在使用 create 创建数据库的时候建议加上charset = utf8，要不然数据库容易出现乱码<br>2：最常用的数据库操作指令 show 、create 、use</p>
+
+        <h2 id="SQL指令——表的创建【重点】"   >
+          <a href="#SQL指令——表的创建【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——表的创建【重点】" class="headerlink" title="SQL指令——表的创建【重点】"></a>SQL指令——表的创建【重点】</h2>
+      
+        <h3 id="SQL指令——create-在数据库内创建数据表"   >
+          <a href="#SQL指令——create-在数据库内创建数据表" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——create-在数据库内创建数据表" class="headerlink" title="SQL指令——create 在数据库内创建数据表"></a>SQL指令——create 在数据库内创建数据表</h3>
+      <p>功能：在指定的数据库内创建数据表，用来存放数据</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">指令语法：create table 表名（</span><br><span class="line">字段1的名称  字段1的数据类型 字段1的约束条件 ，</span><br><span class="line">字段2的名称  字段2的数据类型 字段2的约束条件 ，</span><br><span class="line">字段3的名称  字段3的数据类型 字段3的约束条件 </span><br><span class="line"></span><br><span class="line">		）；</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>注意事项：</p>
+<p>1：每一个字段类型创建完毕后，都要在后面加上，最后一个字段除外</p>
+<p>2：字段的约束条件很多，可以是不为空（not null）、自动增长（auto_increment）、无符号(unsight)、主键约束（primary key）等等</p>
+<p>3：创建表时不要忘记最后括号外面的；号</p>
+<p>4：id字段（数据表第一个字段）一般约束为 (primary key主键) 与 (auto_increment自动增长)</p>
+<p>5：字段的约束条件可不写</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195129435.png"  alt="image-20211011195129435">
+      </p>
+
+        <h3 id="SQL指令——show查看数据库内的数据表"   >
+          <a href="#SQL指令——show查看数据库内的数据表" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——show查看数据库内的数据表" class="headerlink" title="SQL指令——show查看数据库内的数据表"></a>SQL指令——show查看数据库内的数据表</h3>
+      <p>功能：查看指定数据库内的所有数据表</p>
+<p>语法：<code>show tables；</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195142293.png"  alt="image-20211011195142293">
+      </p>
+
+        <h3 id="SQL指令——desc查看一个数据表内的所有字段信息"   >
+          <a href="#SQL指令——desc查看一个数据表内的所有字段信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——desc查看一个数据表内的所有字段信息" class="headerlink" title="SQL指令——desc查看一个数据表内的所有字段信息"></a>SQL指令——desc查看一个数据表内的所有字段信息</h3>
+      <p>功能：查看指定数据表内的所有字段信息</p>
+<p>语法：<code>desc 数据表名；</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195153531.png"  alt="image-20211011195153531">
+      </p>
+
+        <h3 id="SQL指令——show-create-table-查看一个数据表的创建过程"   >
+          <a href="#SQL指令——show-create-table-查看一个数据表的创建过程" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——show-create-table-查看一个数据表的创建过程" class="headerlink" title="SQL指令——show create table 查看一个数据表的创建过程"></a>SQL指令——show create table 查看一个数据表的创建过程</h3>
+      <p>功能：查看指定数据表的创建过程</p>
+<p>语法：</p>
+<p>1：<code>show create table 数据表名 ; </code>   (虚线模式查看建表过程，较乱)<br>2：<code>show create table 数据表名 \G ;  </code>  （星号模式查看建表过程）</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195209887.png"  alt="image-20211011195209887">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195216854.png"  alt="image-20211011195216854">
+      </p>
+
+        <h3 id="SQL指令——drop-删除指定的数据表"   >
+          <a href="#SQL指令——drop-删除指定的数据表" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——drop-删除指定的数据表" class="headerlink" title="SQL指令——drop 删除指定的数据表"></a>SQL指令——drop 删除指定的数据表</h3>
+      <p>功能：删除指定的数据表</p>
+<p>语法：<code>drop table 数据表名</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195226698.png"  alt="image-20211011195226698">
+      </p>
+
+        <h2 id="SQL指令——清除表内数据【重点】"   >
+          <a href="#SQL指令——清除表内数据【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——清除表内数据【重点】" class="headerlink" title="SQL指令——清除表内数据【重点】"></a>SQL指令——清除表内数据【重点】</h2>
+      
+        <h3 id="如何清除表内的数据"   >
+          <a href="#如何清除表内的数据" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何清除表内的数据" class="headerlink" title="如何清除表内的数据"></a>如何清除表内的数据</h3>
+      <p>语法：<code>truncate table 数据表名</code></p>
+
+        <h2 id="SQL指令——表结构（字段）的修改【重点】"   >
+          <a href="#SQL指令——表结构（字段）的修改【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——表结构（字段）的修改【重点】" class="headerlink" title="SQL指令——表结构（字段）的修改【重点】"></a>SQL指令——表结构（字段）的修改【重点】</h2>
+      <p>前言：本节课适用场景</p>
+<p>答：在创建好一个数据表情况下，发现这个数据表内的结构不满足条件，这时我们就要对这个数据表进行修改！</p>
+<p>本节必须注意：一个项目运行起来之后，我们就要谨慎修改数据表内的字段！否则会造成项目的瘫痪，那有什么办法可以避免修改数据库字段的情况呢？</p>
+<p>答：在创建数据表时，多创建几个空闲字段！</p>
+<p>目标：</p>
+<p>1：掌握SQL指令——add 向数据表内添加字段<br>2：掌握SQL指令——change 修改数据表内字段的名称<br>3：掌握SQL指令——modify 修改数据表内字段类型<br>4：掌握SQL指令——drop 删除数据表内某一个字段</p>
+
+        <h3 id="SQL指令——add-向数据表内添加字段"   >
+          <a href="#SQL指令——add-向数据表内添加字段" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——add-向数据表内添加字段" class="headerlink" title="SQL指令——add 向数据表内添加字段"></a>SQL指令——add 向数据表内添加字段</h3>
+      <p>功能：向指定数据表内添加一个新的字段</p>
+<p>语法：<code>alter table 表名 add 新字段名 字段类型 约束条件；</code></p>
+<p>注意事项：在添加字段时约束条件可有可无</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195257504.png"  alt="image-20211011195257504">
+      </p>
+
+        <h3 id="SQL指令——change-修改数据表内字段的名称"   >
+          <a href="#SQL指令——change-修改数据表内字段的名称" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——change-修改数据表内字段的名称" class="headerlink" title="SQL指令——change 修改数据表内字段的名称"></a>SQL指令——change 修改数据表内字段的名称</h3>
+      <p>功能：修改指定数据表内指定字段的名称</p>
+<p>语法：<code>alter table 表名 change 原字段名 新字段名 新字段类型 约束条件；</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195308611.png"  alt="image-20211011195308611">
+      </p>
+
+        <h3 id="SQL指令——modify-修改数据表内字段类型"   >
+          <a href="#SQL指令——modify-修改数据表内字段类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——modify-修改数据表内字段类型" class="headerlink" title="SQL指令——modify 修改数据表内字段类型"></a>SQL指令——modify 修改数据表内字段类型</h3>
+      <p>功能：修改指定数据表内的指定字段的数据类型</p>
+<p>语法：<code>alter table 表名 modify 字段名 新的数据类型 约束条件</code></p>
+<p>注意事项：约束条件可不写</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195319203.png"  alt="image-20211011195319203">
+      </p>
+
+        <h3 id="SQL指令——drop-删除数据表内某一个字段"   >
+          <a href="#SQL指令——drop-删除数据表内某一个字段" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——drop-删除数据表内某一个字段" class="headerlink" title="SQL指令——drop 删除数据表内某一个字段"></a>SQL指令——drop 删除数据表内某一个字段</h3>
+      <p>功能：删除指定数据表内的指定字段</p>
+<p>语法：<code>alter table 表名 drop 字段名</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195328433.png"  alt="image-20211011195328433">
+      </p>
+
+        <h2 id="SQL指令——数据表内数据的增删改查【重点】"   >
+          <a href="#SQL指令——数据表内数据的增删改查【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——数据表内数据的增删改查【重点】" class="headerlink" title="SQL指令——数据表内数据的增删改查【重点】"></a>SQL指令——数据表内数据的增删改查【重点】</h2>
+      
+        <h3 id="SQL指令——select-查看数据表内字段的数据"   >
+          <a href="#SQL指令——select-查看数据表内字段的数据" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——select-查看数据表内字段的数据" class="headerlink" title="SQL指令——select 查看数据表内字段的数据"></a>SQL指令——select 查看数据表内字段的数据</h3>
+      <p>功能：查看数据表内字段的数据信息</p>
+<p>语法：</p>
+<p>1：<code>select * from 数据表名 ； </code> （表示查看数据表内所有字段的数据信息）</p>
+<p>2：<code>select id ，name from 数据表名；</code>  （表示查看数据表内id和name字段的所有信息）</p>
+<p>3：<code>select id as “编号”,name as &quot;姓名&quot; from 数据表名 ；</code> （表示查询id与name字段的数据，以id别名编号与name别名姓名显示出来！！！）</p>
+<p>4：<code>select id  “编号”，name  “姓名” from 数据表名；</code>（表示查询id与name字段的数据，以id别名编号与name别名姓名显示出来！！！）注意: id与name后面的空格类似于as的功能</p>
+<p>5：<code>select * from 数据表名 where id = 1；</code> （表示查看id为1那个记录的所有字段的信息） </p>
+<p>注意事项：</p>
+<p>1：<code>select  id ，name from 数据表名；</code> 这样查出来的数据 id字段数据在 name字段数据前面显示</p>
+<p>2：查询字段的数据信息，如果一个数据表内没有数据，查询为空</p>
+<p>快速代码体验</p>
+<p>字段有数据查询全部</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195406050.png"  alt="image-20211011195406050">
+      </p>
+<p>字段有数据查询全部</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195429410.png"  alt="image-20211011195429410">
+      </p>
+<p>有数据查询指定别名字段数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195439947.png"  alt="image-20211011195439947">
+      </p>
+
+        <h3 id="SQL指令——insert-向数据表内增加数据"   >
+          <a href="#SQL指令——insert-向数据表内增加数据" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——insert-向数据表内增加数据" class="headerlink" title="SQL指令——insert 向数据表内增加数据"></a>SQL指令——insert 向数据表内增加数据</h3>
+      <p>功能：向指定数据表内添加数据</p>
+<p>语法：</p>
+<p>1：<code>insert  into  数据表名  value（字段1的值，字段2的值…….）</code>  【表示向数据表内添加所有字段的一行（记录）数据信息】</p>
+<p>2：<code>insert into 数据表名 value （字段1的值，字段2的值…）</code>，（字段1的值，字段2的值…）  【表示向数据表内添加所有字段的两行数据信息】</p>
+<p>3：<code>insert into 数据表名（id，name）value（id字段的值，name字段的值…）</code>   【表示向数据表内添加id字段与name字段的一行信息】</p>
+<p>注意事项：</p>
+<p>1：如果某个字段设置为自动增长，那么在向这个字段添加数据时可为空（null），系统会实现数据自动增长</p>
+<p>2：书写增加数据语句时可以写 value 也可以写 values</p>
+<p>快速代码体验：</p>
+<p>向数据表内添加多个记录（多行）数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195504599.png"  alt="image-20211011195504599">
+      </p>
+<p>向指定字段添加数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195511467.png"  alt="image-20211011195511467">
+      </p>
+
+        <h3 id="SQL指令——update-更改数据表内的数据"   >
+          <a href="#SQL指令——update-更改数据表内的数据" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——update-更改数据表内的数据" class="headerlink" title="SQL指令——update 更改数据表内的数据"></a>SQL指令——update 更改数据表内的数据</h3>
+      <p>功能：对数据表内的已存在数据进行更改更新</p>
+<p>语法：</p>
+<p>1：<code>update 数据表名 set  字段名 = 更改值 </code>  （表示对数据表内某个字段的所有数据【全部记录】全部更改）</p>
+<p>2：<code>update 数据表名 set 字段名 = 更改值 where id = 1</code>   （表示对数据表内id等于1的记录的某个字段的数据进行更改）</p>
+<p>3：<code>update 数据表名 set 字段名1 = 更改值1，字段名2 = 更改值2</code> （表示更改多个字段的所有数据）</p>
+<p>快速代码体验</p>
+<p>更改一个字段的所有数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195534216.png"  alt="image-20211011195534216">
+      </p>
+<p>更改指定一个记录的数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195540970.png"  alt="image-20211011195540970">
+      </p>
+
+        <h3 id="SQL指令——delete-删除数据表中的指定数据"   >
+          <a href="#SQL指令——delete-删除数据表中的指定数据" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——delete-删除数据表中的指定数据" class="headerlink" title="SQL指令——delete 删除数据表中的指定数据"></a>SQL指令——delete 删除数据表中的指定数据</h3>
+      <p>功能：物理删除指定数据表内的指定数据</p>
+<p>语法：</p>
+<p>1：<code>delete from 数据表名 </code> （表示删除数据表内的所有数据）</p>
+<p>2：<code>delete from 数据表名 where id = 1 </code> （表示删除数据表内 id字段等于 1 那个记录的数据）</p>
+<p>注意事项：delete指令是物理删除数据，不能恢复，我们可以选择逻辑删除从而更好地保存数据</p>
+<p>快速代码体验</p>
+<p>删除数据表内所有数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195556152.png"  alt="image-20211011195556152">
+      </p>
+<p>删除指定条件（指定记录）的数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195602737.png"  alt="image-20211011195602737">
+      </p>
+
+        <h3 id="逻辑删除数据表内的数据"   >
+          <a href="#逻辑删除数据表内的数据" class="heading-link"><i class="fas fa-link"></i></a><a href="#逻辑删除数据表内的数据" class="headerlink" title="逻辑删除数据表内的数据"></a>逻辑删除数据表内的数据</h3>
+      <p>实现方法：</p>
+<p>第一步：向数据表内添加一个新的字段 字段名为 is_delete  字段属性为bit 字段默认值为 0</p>
+<p>第二步：将需要删除的一个记录（一行）数据的 is_delete那个字段数据默认值更改为 1</p>
+<p>第三步：查找is_delete 那个字段值为0的所有记录信息，默认值为0的那个记录不出现 就实现了逻辑删除</p>
+<p>实现代码：</p>
+<p>1.添加新字段：<code>alter table 数据表名 add  is_delete  bit  default 0 ;</code></p>
+<p>2.更给默认值：<code> update 数据表名 set is_delect default = 1 where id = 2;</code></p>
+<p>3.查找数据：<code>select * from 数据表名 where is_delete = 0 ;</code></p>
+<p>注意事项：<br>1：新建一个字段名为 is_delete的字段而不是 is_delect的字段（截图创建的就是错误的）</p>
+<p>2：创建is_delete字段时，字段的类型为bit，且默认值为0</p>
+<p>3：bit数据类型只能存放两个值即0与1</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195700792.png"  alt="image-20211011195700792">
+      </p>
+
+        <h2 id="SQL指令——数据库的备份与恢复【重点】"   >
+          <a href="#SQL指令——数据库的备份与恢复【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL指令——数据库的备份与恢复【重点】" class="headerlink" title="SQL指令——数据库的备份与恢复【重点】"></a>SQL指令——数据库的备份与恢复【重点】</h2>
+      
+        <h3 id="在Linux终端将指定数据库备份（导出）为SQL文件"   >
+          <a href="#在Linux终端将指定数据库备份（导出）为SQL文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#在Linux终端将指定数据库备份（导出）为SQL文件" class="headerlink" title="在Linux终端将指定数据库备份（导出）为SQL文件"></a>在Linux终端将指定数据库备份（导出）为SQL文件</h3>
+      <p>功能：将数据库导出到计算机磁盘中（后缀为sql的文件）</p>
+<p>导出语法： <code>mysqldump -u 用户名 -p  数据库名  &gt;  数据库文件名.sql</code></p>
+<p>示例： <code>mysqldump -u root -p python_ceshi1 &gt; python_ceshi2.sql</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195716350.png"  alt="image-20211011195716350">
+      </p>
+
+        <h3 id="在Linux终端将SQL文件导入到创建好的数据库中，以实现恢复数据库数据"   >
+          <a href="#在Linux终端将SQL文件导入到创建好的数据库中，以实现恢复数据库数据" class="heading-link"><i class="fas fa-link"></i></a><a href="#在Linux终端将SQL文件导入到创建好的数据库中，以实现恢复数据库数据" class="headerlink" title="在Linux终端将SQL文件导入到创建好的数据库中，以实现恢复数据库数据"></a>在Linux终端将SQL文件导入到创建好的数据库中，以实现恢复数据库数据</h3>
+      <p>功能：将后缀为SQL文件导入创建好的数据库中，实现恢复数据库数据（数据表）功能</p>
+<p>导入语法：<code>mysql -u 用户名 -p 数据库名 &lt; 后缀为SQL的文件</code></p>
+<p>示例：<code>mysql -u root -p python_ceshi &lt; python_ceshi2.sql </code>  (表示将python_ceshi2.sql脚本文件导入到名为python_ceshi这个数据库中)</p>
+<p>注意事项：因意外原因造成数据库删除，这是我们要新建一个同名的数据库，然后再把后缀为sql的备份文件导入才会成功，否则导入失败！</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011195734526.png"  alt="image-20211011195734526">
+      </p>
+<p>未完待续….</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/11/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/">http://pythonlamb.github.io/2021/10/11/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/Mysql%E6%93%8D%E4%BD%9C/">Mysql操作</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/11/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E8%BF%9B%E9%98%B6%E6%8C%87%E4%BB%A4%E8%AF%AD%E6%B3%95/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Mysql操作——进阶指令语法</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/11/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80/"><span class="paginator-prev__text">Mysql操作——数据库基础</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%80%E8%88%AC%E6%93%8D%E4%BD%9C%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">1.</span> <span class="toc-text">
+          SQL指令——数据库的一般操作【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94show%E2%80%94%E2%80%94%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.1.</span> <span class="toc-text">
+          SQL指令——show——查看所有数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94select%E2%80%94%E2%80%94%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E6%89%80%E5%9C%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.2.</span> <span class="toc-text">
+          SQL指令——select——查看当前所在的数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94create%E2%80%94%E2%80%94%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.3.</span> <span class="toc-text">
+          SQL指令——create——创建数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94drop%E2%80%94%E2%80%94%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.4.</span> <span class="toc-text">
+          SQL指令——drop——删除数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94use%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8C%87%E5%AE%9A%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.5.</span> <span class="toc-text">
+          SQL指令——use——选择指定数据库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94%E8%A1%A8%E7%9A%84%E5%88%9B%E5%BB%BA%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">2.</span> <span class="toc-text">
+          SQL指令——表的创建【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94create-%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="toc-number">2.1.</span> <span class="toc-text">
+          SQL指令——create 在数据库内创建数据表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94show%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="toc-number">2.2.</span> <span class="toc-text">
+          SQL指令——show查看数据库内的数据表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94desc%E6%9F%A5%E7%9C%8B%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%86%85%E7%9A%84%E6%89%80%E6%9C%89%E5%AD%97%E6%AE%B5%E4%BF%A1%E6%81%AF"><span class="toc-number">2.3.</span> <span class="toc-text">
+          SQL指令——desc查看一个数据表内的所有字段信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94show-create-table-%E6%9F%A5%E7%9C%8B%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E5%88%9B%E5%BB%BA%E8%BF%87%E7%A8%8B"><span class="toc-number">2.4.</span> <span class="toc-text">
+          SQL指令——show create table 查看一个数据表的创建过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94drop-%E5%88%A0%E9%99%A4%E6%8C%87%E5%AE%9A%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="toc-number">2.5.</span> <span class="toc-text">
+          SQL指令——drop 删除指定的数据表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94%E6%B8%85%E9%99%A4%E8%A1%A8%E5%86%85%E6%95%B0%E6%8D%AE%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          SQL指令——清除表内数据【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%B8%85%E9%99%A4%E8%A1%A8%E5%86%85%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">3.1.</span> <span class="toc-text">
+          如何清除表内的数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94%E8%A1%A8%E7%BB%93%E6%9E%84%EF%BC%88%E5%AD%97%E6%AE%B5%EF%BC%89%E7%9A%84%E4%BF%AE%E6%94%B9%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          SQL指令——表结构（字段）的修改【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94add-%E5%90%91%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%86%85%E6%B7%BB%E5%8A%A0%E5%AD%97%E6%AE%B5"><span class="toc-number">4.1.</span> <span class="toc-text">
+          SQL指令——add 向数据表内添加字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94change-%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%86%85%E5%AD%97%E6%AE%B5%E7%9A%84%E5%90%8D%E7%A7%B0"><span class="toc-number">4.2.</span> <span class="toc-text">
+          SQL指令——change 修改数据表内字段的名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94modify-%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%86%85%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.3.</span> <span class="toc-text">
+          SQL指令——modify 修改数据表内字段类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94drop-%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%86%85%E6%9F%90%E4%B8%80%E4%B8%AA%E5%AD%97%E6%AE%B5"><span class="toc-number">4.4.</span> <span class="toc-text">
+          SQL指令——drop 删除数据表内某一个字段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%86%85%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          SQL指令——数据表内数据的增删改查【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94select-%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%86%85%E5%AD%97%E6%AE%B5%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">5.1.</span> <span class="toc-text">
+          SQL指令——select 查看数据表内字段的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94insert-%E5%90%91%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%86%85%E5%A2%9E%E5%8A%A0%E6%95%B0%E6%8D%AE"><span class="toc-number">5.2.</span> <span class="toc-text">
+          SQL指令——insert 向数据表内增加数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94update-%E6%9B%B4%E6%94%B9%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%86%85%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">5.3.</span> <span class="toc-text">
+          SQL指令——update 更改数据表内的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94delete-%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%8C%87%E5%AE%9A%E6%95%B0%E6%8D%AE"><span class="toc-number">5.4.</span> <span class="toc-text">
+          SQL指令——delete 删除数据表中的指定数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%86%85%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">5.5.</span> <span class="toc-text">
+          逻辑删除数据表内的数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E6%8C%87%E4%BB%A4%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          SQL指令——数据库的备份与恢复【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8Linux%E7%BB%88%E7%AB%AF%E5%B0%86%E6%8C%87%E5%AE%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%EF%BC%88%E5%AF%BC%E5%87%BA%EF%BC%89%E4%B8%BASQL%E6%96%87%E4%BB%B6"><span class="toc-number">6.1.</span> <span class="toc-text">
+          在Linux终端将指定数据库备份（导出）为SQL文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8Linux%E7%BB%88%E7%AB%AF%E5%B0%86SQL%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%88%B0%E5%88%9B%E5%BB%BA%E5%A5%BD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%EF%BC%8C%E4%BB%A5%E5%AE%9E%E7%8E%B0%E6%81%A2%E5%A4%8D%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE"><span class="toc-number">6.2.</span> <span class="toc-text">
+          在Linux终端将SQL文件导入到创建好的数据库中，以实现恢复数据库数据</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

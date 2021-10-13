@@ -1,0 +1,823 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：Python中有关于多进程相关的知识…..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多任务编程——多进程">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/11/%E5%A4%9A%E4%BB%BB%E5%8A%A1%E7%BC%96%E7%A8%8B%E2%80%94%E2%80%94%E5%A4%9A%E8%BF%9B%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：Python中有关于多进程相关的知识…..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165051015.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165111519.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165117851.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165152621.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165215259.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165244981.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165258464.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165414564.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165432815.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165448042.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165457888.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165524119.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165541588.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165618187.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165634999.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165700391.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165708935.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165746751.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165804154.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165810714.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165817853.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165823789.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165837547.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165851708.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165909972.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165946447.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165953349.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165959275.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170016420.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170023558.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170039772.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170055846.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170103268.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170127948.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170134678.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170154915.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170201954.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170208591.png">
+<meta property="article:published_time" content="2021-10-11T08:38:17.000Z">
+<meta property="article:modified_time" content="2021-10-11T09:02:25.517Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="多任务编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165051015.png"><title>多任务编程——多进程 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/11/%E5%A4%9A%E4%BB%BB%E5%8A%A1%E7%BC%96%E7%A8%8B%E2%80%94%E2%80%94%E5%A4%9A%E8%BF%9B%E7%A8%8B/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">多任务编程——多进程</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">4.2k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">22分</span></span></div></header><div class="post-body"><p>本文主讲：Python中有关于多进程相关的知识…..</p>
+<span id="more"></span>
+
+
+
+
+
+
+        <h2 id="进程以及状态【重点】"   >
+          <a href="#进程以及状态【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程以及状态【重点】" class="headerlink" title="进程以及状态【重点】"></a>进程以及状态【重点】</h2>
+      
+        <h3 id="一：什么是进程？"   >
+          <a href="#一：什么是进程？" class="heading-link"><i class="fas fa-link"></i></a><a href="#一：什么是进程？" class="headerlink" title="一：什么是进程？"></a>一：什么是进程？</h3>
+      <p>概念：进程（Process）是系统资源分配的基本单位，也是线程的容器，即线程是轻量级的进程，一个进程包含多个线程</p>
+<p>程序与进程的区别：</p>
+<p>程序：例如xxxx.py就是程序，是静态的</p>
+<p>进程：进程是程序运行起来后，程序代码+用到的资源，它是动态的，是操作系统分配资源的基本单位，即操作系统先将资源分配给进程，进程在分配给其他线程等</p>
+<p>注意事项：如果没有进程线程是不能独立运行的</p>
+<p>截图说明</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165051015.png"  alt="image-20211011165051015">
+      </p>
+
+        <h3 id="进程的几种状态"   >
+          <a href="#进程的几种状态" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程的几种状态" class="headerlink" title="进程的几种状态"></a>进程的几种状态</h3>
+      <p>读前须知：cpu处理多任务的方式为时间片轮询！</p>
+<p>新建状态：cpu在处理一个任务时，另一个新的任务加入进来，加入的任务为进程新建状态，或者任务没有获取到资源的状态</p>
+<p>就绪状态：两种可能是就绪状态，第一种刚加入的任务获取到资源进入就绪状态，等待运行，第二种是任务刚从运行状态结束等待下一次运行为就绪状态</p>
+<p>运行状态：cpu通过时间片轮询方式轮询到这个任务时为运行状态</p>
+<p>等待状态：在cpu处理一个任务时，这个任务意外关闭（time.sleep（2））（阻塞），则这个任务进入等待状态，满足条件后进入就绪状态</p>
+<p>死亡状态：一个任务运行结束后，没有其他的任务即机死亡状态</p>
+<p>流程演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165111519.png"  alt="image-20211011165111519">
+      </p>
+<p>流程图解：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165117851.png"  alt="image-20211011165117851">
+      </p>
+
+        <h2 id="进程——基本使用【重点】"   >
+          <a href="#进程——基本使用【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程——基本使用【重点】" class="headerlink" title="进程——基本使用【重点】"></a>进程——基本使用【重点】</h2>
+      
+        <h3 id="创建子进程"   >
+          <a href="#创建子进程" class="heading-link"><i class="fas fa-link"></i></a><a href="#创建子进程" class="headerlink" title="创建子进程"></a>创建子进程</h3>
+      <p>语法：</p>
+<p>1：导入模块 import multiprocessing<br>2：创建进程对象 process_obj = multiprocessing.Process（target = 函数任务名无括号）<br>3：启动进程 process_obj . start( )</p>
+<p>创建的子进程对象的参数作用：</p>
+<p>target：为子进程传递任务函数</p>
+<p>args：给任务函数传参（元组形式）</p>
+<p>kwargs：给认为函数传参（字典形式）</p>
+<p>name：为创建的子进程命名，也可以不命名</p>
+<p>group：为创建的子进程指定组，大多数用不到</p>
+<p>Process类创建的子进程方法及功能：</p>
+<p>创建的子进程对象.start（）：启动子进程</p>
+<p>创建的子进程对象.is_alive（）：判断子进程是否还活着</p>
+<p>创建的子进程对象.join（）：是否等待其他子进程执行完毕再执行</p>
+<p>创建的子进程对象.terminate（）：不管任务是否完成立刻结束子进程</p>
+<p>Process类创建的子进程属性：pid：当前进程的pid号（进程号）</p>
+<p>注意事项：</p>
+<p>1：进程与线程是受操作系统调配的，因此不同的操作系统执行的结果可能会不同</p>
+<p>2：程序启动会建立一个主进程，主进程内又包含了主线程，因此一个程序启动就会建立一个主线程</p>
+<p>3：target方法指定的函数任务没有括号！</p>
+<p>4：创建子进程的方法和创建子线程的方法类似</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165152621.png"  alt="image-20211011165152621">
+      </p>
+<p>截图感悟：从代码打印结果上来看，主线程和子进程是同时运行的！</p>
+
+        <h2 id="进程——获取名称、PID号、PPID号【重点】"   >
+          <a href="#进程——获取名称、PID号、PPID号【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程——获取名称、PID号、PPID号【重点】" class="headerlink" title="进程——获取名称、PID号、PPID号【重点】"></a>进程——获取名称、PID号、PPID号【重点】</h2>
+      
+        <h3 id="获取当前进程名称——multiprocessing-current-process"   >
+          <a href="#获取当前进程名称——multiprocessing-current-process" class="heading-link"><i class="fas fa-link"></i></a><a href="#获取当前进程名称——multiprocessing-current-process" class="headerlink" title="获取当前进程名称——multiprocessing.current_process( )"></a>获取当前进程名称——multiprocessing.current_process( )</h3>
+      <p>功能：获取当前运行的进程名称（可以是主进程也可以是子进程）</p>
+<p>语法：<code>print（multiprocessing.current_process( )）</code></p>
+<p>注意事项：获取进程名称是主进程还是子进程要看代码书写的位置</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165215259.png"  alt="image-20211011165215259">
+      </p>
+
+        <h3 id="获取进程id的几种方法"   >
+          <a href="#获取进程id的几种方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#获取进程id的几种方法" class="headerlink" title="获取进程id的几种方法"></a>获取进程id的几种方法</h3>
+      <p>你问我答：什么是进程id？为什么要获取进程id？</p>
+<p>答：进程id就是进程的编号，获取进程id是为了在终端输入特定指令（kill -9）杀死该进程</p>
+<p>方法一：multiprocess.current_process( ).pid 即可获取当前线程的id号，pid是 process id 的缩写，是进程id的意思</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165244981.png"  alt="image-20211011165244981">
+      </p>
+<p>方法二：os 模块下的 getpid（）方法获取进程的编号（id）即 os . getpid（）</p>
+<p>注意事项：os . getpid（）写在什么位置就获取的是什么位置的进程id号</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165258464.png"  alt="image-20211011165258464">
+      </p>
+
+        <h3 id="获取进程-父id-的方法"   >
+          <a href="#获取进程-父id-的方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#获取进程-父id-的方法" class="headerlink" title="获取进程 父id 的方法"></a>获取进程 父id 的方法</h3>
+      <p>你问我答：什么是进程的 父id</p>
+<p>答：进程的 父id 就是创建这个进程的那个进程的id号就是父id</p>
+<p>进程父id获取方法：os 模块下的 getppid（）方法 ，即 os . getppid（ ）</p>
+<p>注意事项：os . getppid（）写在什么位置就获取的是什么位置的进程父id号</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165414564.png"  alt="image-20211011165414564">
+      </p>
+
+        <h2 id="进程——终端指令杀死进程【重点】"   >
+          <a href="#进程——终端指令杀死进程【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程——终端指令杀死进程【重点】" class="headerlink" title="进程——终端指令杀死进程【重点】"></a>进程——终端指令杀死进程【重点】</h2>
+      <p>目标：掌握在终端输入指令 kill -9 进程编号 作用</p>
+<p>​    </p>
+
+        <h3 id="终端输入指令-kill-9-进程编号-以及-kill-15-进程编号-的作用"   >
+          <a href="#终端输入指令-kill-9-进程编号-以及-kill-15-进程编号-的作用" class="heading-link"><i class="fas fa-link"></i></a><a href="#终端输入指令-kill-9-进程编号-以及-kill-15-进程编号-的作用" class="headerlink" title="终端输入指令 kill -9 进程编号 以及 kill -15 进程编号 的作用"></a>终端输入指令 kill -9 进程编号 以及 kill -15 进程编号 的作用</h3>
+      <p>Kill -9 进程id：在终端输入这个指令，不管这个进程id的进程是否结束，直接杀死该进程（结束掉）</p>
+<p>注意事项：<br>1：如果用 kill -9 指令杀死的是主进程，那么其余的子进程也随之结束<br>2：如果用 kill -9 指令杀死的是子进程，那么主进程不受影响，继续执行，直到结束！</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165432815.png"  alt="image-20211011165432815">
+      </p>
+
+        <h2 id="进程——参数、全局变量【重点】"   >
+          <a href="#进程——参数、全局变量【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程——参数、全局变量【重点】" class="headerlink" title="进程——参数、全局变量【重点】"></a>进程——参数、全局变量【重点】</h2>
+      
+        <h3 id="验证子进程之间不能共享一个全局变量"   >
+          <a href="#验证子进程之间不能共享一个全局变量" class="heading-link"><i class="fas fa-link"></i></a><a href="#验证子进程之间不能共享一个全局变量" class="headerlink" title="验证子进程之间不能共享一个全局变量"></a>验证子进程之间不能共享一个全局变量</h3>
+      <p>验证思想：定义一个函数work1，对一个全局变量进行累加处理，在定义一个work2函数读取这个全局变量，再定义两个子进程，两个子进程分别执行这两个函数任务，如果执行读取全局变量的进程可以成功读取到另一个进程修改后的全局变量，那么说明多个进程间可以共享全局变量，如果执行读取全局变量的进程读取到的全局变量是没有修改的全局变量，说明多个进程之间不可以共享全局变量！！！</p>
+<p>为什么子进程间不能共享全局变量？</p>
+<p>答：因为子进程只是把全局变量的值都复制到自己内部然后独立修改，不会修改全局变量的值，因此多个子进程间互不影响</p>
+<p>子进程间不能共享全局变量的例子：计算机打开微信（子进程1）与浏览器（子进程2）如果子进程间可以共享全局变量的话，那么在微信上的聊天记录不就被浏览器获取了嘛！</p>
+<p>程序设计截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165448042.png"  alt="image-20211011165448042">
+      </p>
+
+        <h3 id="子进程访问（修改、读取）全局变量的底层原理"   >
+          <a href="#子进程访问（修改、读取）全局变量的底层原理" class="heading-link"><i class="fas fa-link"></i></a><a href="#子进程访问（修改、读取）全局变量的底层原理" class="headerlink" title="子进程访问（修改、读取）全局变量的底层原理"></a>子进程访问（修改、读取）全局变量的底层原理</h3>
+      <p>原理图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165457888.png"  alt="image-20211011165457888">
+      </p>
+<p><strong>注意事项：子进程访问（修改）全局变量时并不会真正改变全局变量的值，而是将全局变量的值复制下来供自己使用，并不会真正的改变全局变量的值！</strong></p>
+
+        <h3 id="给子进程指定的任务函数传递参数"   >
+          <a href="#给子进程指定的任务函数传递参数" class="heading-link"><i class="fas fa-link"></i></a><a href="#给子进程指定的任务函数传递参数" class="headerlink" title="给子进程指定的任务函数传递参数"></a>给子进程指定的任务函数传递参数</h3>
+      <p>传递方法：</p>
+<p>1：args（元组法）</p>
+<p>2：kwargs（字典法）</p>
+<p>3：args、kwargs（元组字典法）</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165524119.png"  alt="image-20211011165524119">
+      </p>
+
+        <h2 id="进程——设置守护主线程【重点】"   >
+          <a href="#进程——设置守护主线程【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程——设置守护主线程【重点】" class="headerlink" title="进程——设置守护主线程【重点】"></a>进程——设置守护主线程【重点】</h2>
+      
+        <h3 id="设置子进程守护主线程"   >
+          <a href="#设置子进程守护主线程" class="heading-link"><i class="fas fa-link"></i></a><a href="#设置子进程守护主线程" class="headerlink" title="设置子进程守护主线程"></a>设置子进程守护主线程</h3>
+      <p>功能：将子进程设置为守护主进程，即主进程结束，子进程也随之结束</p>
+<p>实现代码：子进程对象 . daemon = True</p>
+<p>注意事项：设置子进程守护主进程要在子进程开始运行（start（））之前设置</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165541588.png"  alt="image-20211011165541588">
+      </p>
+
+        <h2 id="进程——强制杀死子进程【重点】"   >
+          <a href="#进程——强制杀死子进程【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程——强制杀死子进程【重点】" class="headerlink" title="进程——强制杀死子进程【重点】"></a>进程——强制杀死子进程【重点】</h2>
+      
+        <h3 id="强制杀死子进程"   >
+          <a href="#强制杀死子进程" class="heading-link"><i class="fas fa-link"></i></a><a href="#强制杀死子进程" class="headerlink" title="强制杀死子进程"></a>强制杀死子进程</h3>
+      <p>功能：不管子进程是否结束，强制杀死子进程</p>
+<p>语法：创建的子进程对象 . terminate（）</p>
+<p>注意事项：强制杀死子进程与设置子进程守护主进程不一样</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165618187.png"  alt="image-20211011165618187">
+      </p>
+
+        <h2 id="多进程与多线程的区别【面试】【重中之重】"   >
+          <a href="#多进程与多线程的区别【面试】【重中之重】" class="heading-link"><i class="fas fa-link"></i></a><a href="#多进程与多线程的区别【面试】【重中之重】" class="headerlink" title="多进程与多线程的区别【面试】【重中之重】"></a>多进程与多线程的区别【面试】【重中之重】</h2>
+      
+        <h3 id="掌握进程与线程之间的区别"   >
+          <a href="#掌握进程与线程之间的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#掌握进程与线程之间的区别" class="headerlink" title="掌握进程与线程之间的区别"></a>掌握进程与线程之间的区别</h3>
+      <p>进程：可以完成多任务，一个进程就相当于计算机中一个应用程序，多进程就相当于在计算机中打开多个qq应用程序</p>
+<p>线程：可以完成多任务，一个线程就相当于计算机中一个应用中的一个功能窗口，多线程相当于一个qq应用程序打开多个聊天窗口</p>
+<p>实例截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165634999.png"  alt="image-20211011165634999">
+      </p>
+<p>使用区别：</p>
+<p>1：进程是系统进行资源分配的进本单元，线程是cpu调度和分派的基本单位，进程包括线程</p>
+<p>2：线程占用内存资源比进程少（划分尺度小），这使的多线程程序有高并发行</p>
+<p>3：多个进程运行时，每个进程都拥有独立的内存资源（多进程间不能共享全局变量），而多个线程运行时，共享一个内存（因此多线程间可共享全局变量），因此多进程相对于多线程更稳定</p>
+<p>图解：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165700391.png"  alt="image-20211011165700391">
+      </p>
+<p>进程与线程对比图示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165708935.png"  alt="image-20211011165708935">
+      </p>
+<p>注意事项：</p>
+<p>1：一个程序至少有一个进程（主进程），一个进程至少有一个线程（主线程）</p>
+<p>2：线程不能单独运行，必须依赖进程中运行（进程提供线程运行的资源），比如必须开启qq（进程）才能聊天（线程）</p>
+
+        <h3 id="实际处理问题时进程与线程的优先选择："   >
+          <a href="#实际处理问题时进程与线程的优先选择：" class="heading-link"><i class="fas fa-link"></i></a><a href="#实际处理问题时进程与线程的优先选择：" class="headerlink" title="实际处理问题时进程与线程的优先选择："></a>实际处理问题时进程与线程的优先选择：</h3>
+      <p>1：需要频繁的创建销毁，优先选择线程，因为进程占用资源多，创建销毁慢，例如WEB服务器</p>
+<p>2：线程切换速度快，在需要大量计算，频繁切换时，使用线程，例如算法、图像处理</p>
+<p>3：多机分布用进程、多核分布用线程</p>
+<p>4：需要运行稳定优先用进程，想要运行速度快优先用线程</p>
+<p>5：cpu密集型（频繁操作），优先使用进程，因为现在python的解释器cpython存在GIL（全局解释器锁）创建互斥锁，会造成线程处理问题时，多核cpu处理问题变为单核cpu，进程不会出现这种现象</p>
+<p>6：i/o密集型可以使用线程</p>
+<p>注意事项：</p>
+<p>1：在以后实际处理问题时，要用进程+线程+协程的思想，不要选入非此即彼的思想中，灵活运用</p>
+
+        <h2 id="消息队列——基本操作【重点】"   >
+          <a href="#消息队列——基本操作【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#消息队列——基本操作【重点】" class="headerlink" title="消息队列——基本操作【重点】"></a>消息队列——基本操作【重点】</h2>
+      
+        <h3 id="为什么要学习消息队列？什么是队列？"   >
+          <a href="#为什么要学习消息队列？什么是队列？" class="heading-link"><i class="fas fa-link"></i></a><a href="#为什么要学习消息队列？什么是队列？" class="headerlink" title="为什么要学习消息队列？什么是队列？"></a>为什么要学习消息队列？什么是队列？</h3>
+      <p>答：进程之间是不可以进行共享全局变量的，但是我们可以创建一个消息队列，用来传递进程间的数据，从而间接进行数据共享，消息队列相当于两个进程间的对接人，媒婆，进程靠着消息队列传递消息</p>
+<p>什么是队列：队列是一种线性数据结构类型，队列存放数据在队尾存放，而取数据在队首取走</p>
+<p>图示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165746751.png"  alt="image-20211011165746751">
+      </p>
+<p>python中怎么创建消息队列：multiprocessing模块中的Queue（num）类可创建消息队列</p>
+<p>例如：queue1 = multiprocessing.Queue(3)  代表创建一个长度为3的队列</p>
+
+        <h3 id="Queue（队列）的-put（）以及-put-nowait-与-get（）和-get-nowait-的基本作用"   >
+          <a href="#Queue（队列）的-put（）以及-put-nowait-与-get（）和-get-nowait-的基本作用" class="heading-link"><i class="fas fa-link"></i></a><a href="#Queue（队列）的-put（）以及-put-nowait-与-get（）和-get-nowait-的基本作用" class="headerlink" title="Queue（队列）的 put（）以及 put_nowait( ) 与 get（）和 get_nowait( ) 的基本作用"></a>Queue（队列）的 put（）以及 put_nowait( ) 与 get（）和 get_nowait( ) 的基本作用</h3>
+      <p>功能：</p>
+<p>put（“3”）: 向队列中存放“3”数据（从队尾存入）,如果队列数据已满，那么会等待队列释放后再存入，程序处于阻塞状态</p>
+<p>put_nowait( “3”): 向队列中存放“3”数据，如果队列已满，程序不会进入阻塞状态，直接报错</p>
+<p>get（）：在队列中取出数据（从队首取出），执行一次在队列中取走一个数据！如果队列已空，程序进入阻塞状态，等待数据存入队列中在取出</p>
+<p>get_nowait( ) :在队列中取出数据（从队首取出），执行一次在队列中取走一个数据！如果队列已空，程序不会进入阻塞状态，直接报错</p>
+<p>快速代码体验（put方法）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165804154.png"  alt="image-20211011165804154">
+      </p>
+<p>put_nowait（）方法</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165810714.png"  alt="image-20211011165810714">
+      </p>
+<p>get（）方法</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165817853.png"  alt="image-20211011165817853">
+      </p>
+<p>get_nowait( )方法</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165823789.png"  alt="image-20211011165823789">
+      </p>
+
+        <h2 id="消息队列—常见判断【重点】"   >
+          <a href="#消息队列—常见判断【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#消息队列—常见判断【重点】" class="headerlink" title="消息队列—常见判断【重点】"></a>消息队列—常见判断【重点】</h2>
+      
+        <h3 id="队列中-full（）方法与-empty（）方法的作用"   >
+          <a href="#队列中-full（）方法与-empty（）方法的作用" class="heading-link"><i class="fas fa-link"></i></a><a href="#队列中-full（）方法与-empty（）方法的作用" class="headerlink" title="队列中 full（）方法与 empty（）方法的作用"></a>队列中 full（）方法与 empty（）方法的作用</h3>
+      <p>消息队列的full（）方法：判断消息队列是否为满，如果消息队列已满返回True，反之False</p>
+<p>实例：bool = queue.full（） 判断queue这个消息队列是否已满，并且返回值</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165837547.png"  alt="image-20211011165837547">
+      </p>
+<p>消息队列的empty（）方法：判断消息队列是否为空，为空返回True，反之False</p>
+<p>实例：bool = queue.empty（）  判断queue这个队列是否为空，并且返回值</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165851708.png"  alt="image-20211011165851708">
+      </p>
+
+        <h3 id="消息队列中qsize（）方法的作用"   >
+          <a href="#消息队列中qsize（）方法的作用" class="heading-link"><i class="fas fa-link"></i></a><a href="#消息队列中qsize（）方法的作用" class="headerlink" title="消息队列中qsize（）方法的作用"></a>消息队列中qsize（）方法的作用</h3>
+      <p>功能：返回消息队列中尚存的数据个数，注意是尚存，不是消息队列的长度！</p>
+<p>语法：num = 消息队列对象 . qsize（）</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165909972.png"  alt="image-20211011165909972">
+      </p>
+
+        <h2 id="消息队列——判断是否为空的坑【重点】"   >
+          <a href="#消息队列——判断是否为空的坑【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#消息队列——判断是否为空的坑【重点】" class="headerlink" title="消息队列——判断是否为空的坑【重点】"></a>消息队列——判断是否为空的坑【重点】</h2>
+      
+        <h3 id="判断消息队列是否为空的坑！！"   >
+          <a href="#判断消息队列是否为空的坑！！" class="heading-link"><i class="fas fa-link"></i></a><a href="#判断消息队列是否为空的坑！！" class="headerlink" title="判断消息队列是否为空的坑！！"></a>判断消息队列是否为空的坑！！</h3>
+      <p>你问我答：是什么坑？</p>
+<p>答：当消息队列被数据项填满，用empty（）判断消息队列是否为空时，返回值为True，说明消息队列已空，这就是坑</p>
+<p>二：出现这种坑的原因</p>
+<p>答：可以理解为向队列中存数据为子进程1控制，判断队列是否为空是子进程2控制，但是子进程2的运行速度快过于子进程1，造成了数据还没有存入队列，就进行了判断，因此出现了队列中明明有数据却判断为空的原因</p>
+<p>原理截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165946447.png"  alt="image-20211011165946447">
+      </p>
+<p>代码图示（坑）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165953349.png"  alt="image-20211011165953349">
+      </p>
+<p>解决这个坑的方法代码截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011165959275.png"  alt="image-20211011165959275">
+      </p>
+
+        <h2 id="Queue实现进程间的通信【重点】"   >
+          <a href="#Queue实现进程间的通信【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#Queue实现进程间的通信【重点】" class="headerlink" title="Queue实现进程间的通信【重点】"></a>Queue实现进程间的通信【重点】</h2>
+      
+        <h3 id="消息队列可以实现进程间的通信与通信原理"   >
+          <a href="#消息队列可以实现进程间的通信与通信原理" class="heading-link"><i class="fas fa-link"></i></a><a href="#消息队列可以实现进程间的通信与通信原理" class="headerlink" title="消息队列可以实现进程间的通信与通信原理"></a>消息队列可以实现进程间的通信与通信原理</h3>
+      <p>通信原理：Queue（消息队列）相当于一个中介，它可以存储进程1的数据，从而让进程2取出，这样就实现了进程间数据的传递</p>
+<p>原理模型截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170016420.png"  alt="image-20211011170016420">
+      </p>
+<p>代码截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170023558.png"  alt="image-20211011170023558">
+      </p>
+
+        <h2 id="进程——进程池【重点】"   >
+          <a href="#进程——进程池【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程——进程池【重点】" class="headerlink" title="进程——进程池【重点】"></a>进程——进程池【重点】</h2>
+      
+        <h3 id="什么是进程池？"   >
+          <a href="#什么是进程池？" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是进程池？" class="headerlink" title="什么是进程池？"></a>什么是进程池？</h3>
+      <p>进程池概念：当创建大量进程的时候，multiprocess的Process（）方法就太过麻烦，我们需要采用multiprocess内的Pool（）来创建进程池，用来保存大量进程，即进程池是进程的容器，我们可以用它创建指定数量的进程</p>
+<p>进程序功能：管理与维护进程池</p>
+<p>创建进程池语法：pool_obj = multiprocess.Pool( 3 ) 表示最大创建一个内含三个进程的进程池</p>
+<p>注意事项：multiprocess.Pool( 3 )表示最大可以创建三个进程，在只有一个任务的时候，只需创建一个进程完成任务即可</p>
+<p>不需要把三个进程都创建出来完成任务</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170039772.png"  alt="image-20211011170039772">
+      </p>
+<p>进程池工作方式（同步与异步）：</p>
+<p>同步工作方式</p>
+<p>概念：进程池内的进程执行函数任务时，同一时间只允许一个进程工作<br>函数方法：进程池对象 . apply（函数任务，（函数参数1，参数2…….））：以同步的方式执行任务<br>注意事项：同步的方法给任务函数传递参数只有以元组的方式进行传递</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170055846.png"  alt="image-20211011170055846">
+      </p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170103268.png"  alt="image-20211011170103268">
+      </p>
+<p>异步工作方式：</p>
+<p>概念：进程池内的进程同一时间可以一起工作</p>
+<p>函数方法：进程池对象 . apply_async(函数参数1，参数2….) </p>
+<p>注意事项：</p>
+<p>1：异步的方法给任务函数传递参数只有以元组的方式进行传递</p>
+<p>2：在使用进程池异步工作方式时，一定要将添加完任务的线程池执行close（）操作，表示不再接受新的任务，否则的话会造成进程池不运行！</p>
+<p>3：采用进程池异步工作方式，主进程将不再等待进程池执行结束后退出！！为了避免数据在主进程退出时销毁，要对进程池采用 join（）方法！</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170127948.png"  alt="image-20211011170127948">
+      </p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170134678.png"  alt="image-20211011170134678">
+      </p>
+
+        <h2 id="进程——进程池间的通信"   >
+          <a href="#进程——进程池间的通信" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程——进程池间的通信" class="headerlink" title="进程——进程池间的通信"></a>进程——进程池间的通信</h2>
+      
+        <h3 id="进程池内进程间的通信"   >
+          <a href="#进程池内进程间的通信" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程池内进程间的通信" class="headerlink" title="进程池内进程间的通信"></a>进程池内进程间的通信</h3>
+      <p>通信原理：利用进程池内创建的Queue（队列）来实现进程池内进程间的通信</p>
+<p>进程池内创建队列方法：pool_queue = multiprocessing.Manager（）.Queue（3）   【创建一个长度为3的线程池队列】</p>
+<p>注意事项：</p>
+<p>1：在进程池中创建队列，一定要用multiprocessing模块内的Manager（）类里面的Queue（）类来创建！</p>
+<p>2：在采用异步方法实现进程池中进程的通信时，不要在最后忘记close（）方法和join（）方法</p>
+<p>通信图示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170154915.png"  alt="image-20211011170154915">
+      </p>
+<p>快速代码体验（同步）：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170201954.png"  alt="image-20211011170201954">
+      </p>
+<p>异步【重点】：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211011170208591.png"  alt="image-20211011170208591">
+      </p>
+
+        <h2 id="案例：多进程文件夹copy器"   >
+          <a href="#案例：多进程文件夹copy器" class="heading-link"><i class="fas fa-link"></i></a><a href="#案例：多进程文件夹copy器" class="headerlink" title="案例：多进程文件夹copy器"></a>案例：多进程文件夹copy器</h2>
+      <p>怎么创建文件夹？</p>
+<p>os.mkdir（“文件夹名称”）</p>
+<p>怎么获取文件夹内所有文件名并且保存至一个列表内？（包括文件名和文件夹名）</p>
+<p>os.listdir（“目标文件夹名称”）</p>
+
+        <h2 id="案例：多进程简单web服务器"   >
+          <a href="#案例：多进程简单web服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#案例：多进程简单web服务器" class="headerlink" title="案例：多进程简单web服务器"></a>案例：多进程简单web服务器</h2>
+      <p>略…..</p>
+<p>未完待续…..</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/11/%E5%A4%9A%E4%BB%BB%E5%8A%A1%E7%BC%96%E7%A8%8B%E2%80%94%E2%80%94%E5%A4%9A%E8%BF%9B%E7%A8%8B/">http://pythonlamb.github.io/2021/10/11/%E5%A4%9A%E4%BB%BB%E5%8A%A1%E7%BC%96%E7%A8%8B%E2%80%94%E2%80%94%E5%A4%9A%E8%BF%9B%E7%A8%8B/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E5%A4%9A%E4%BB%BB%E5%8A%A1%E7%BC%96%E7%A8%8B/">多任务编程</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/11/%E5%A4%9A%E4%BB%BB%E5%8A%A1%E7%BC%96%E7%A8%8B%E2%80%94%E2%80%94%E5%8D%8F%E7%A8%8B/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">多任务编程——协程</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/11/%E5%A4%9A%E4%BB%BB%E5%8A%A1%E7%BC%96%E7%A8%8B%E2%80%94%E2%80%94%E5%A4%9A%E7%BA%BF%E7%A8%8B/"><span class="paginator-prev__text">多任务编程——多线程</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E4%BB%A5%E5%8F%8A%E7%8A%B6%E6%80%81%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">1.</span> <span class="toc-text">
+          进程以及状态【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF%E8%BF%9B%E7%A8%8B%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">
+          一：什么是进程？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%87%A0%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="toc-number">1.2.</span> <span class="toc-text">
+          进程的几种状态</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E2%80%94%E2%80%94%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">2.</span> <span class="toc-text">
+          进程——基本使用【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AD%90%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">
+          创建子进程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E2%80%94%E2%80%94%E8%8E%B7%E5%8F%96%E5%90%8D%E7%A7%B0%E3%80%81PID%E5%8F%B7%E3%80%81PPID%E5%8F%B7%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          进程——获取名称、PID号、PPID号【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E8%BF%9B%E7%A8%8B%E5%90%8D%E7%A7%B0%E2%80%94%E2%80%94multiprocessing-current-process"><span class="toc-number">3.1.</span> <span class="toc-text">
+          获取当前进程名称——multiprocessing.current_process( )</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E8%BF%9B%E7%A8%8Bid%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text">
+          获取进程id的几种方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E8%BF%9B%E7%A8%8B-%E7%88%B6id-%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text">
+          获取进程 父id 的方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E2%80%94%E2%80%94%E7%BB%88%E7%AB%AF%E6%8C%87%E4%BB%A4%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          进程——终端指令杀死进程【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%88%E7%AB%AF%E8%BE%93%E5%85%A5%E6%8C%87%E4%BB%A4-kill-9-%E8%BF%9B%E7%A8%8B%E7%BC%96%E5%8F%B7-%E4%BB%A5%E5%8F%8A-kill-15-%E8%BF%9B%E7%A8%8B%E7%BC%96%E5%8F%B7-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">4.1.</span> <span class="toc-text">
+          终端输入指令 kill -9 进程编号 以及 kill -15 进程编号 的作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E2%80%94%E2%80%94%E5%8F%82%E6%95%B0%E3%80%81%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          进程——参数、全局变量【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E5%AD%90%E8%BF%9B%E7%A8%8B%E4%B9%8B%E9%97%B4%E4%B8%8D%E8%83%BD%E5%85%B1%E4%BA%AB%E4%B8%80%E4%B8%AA%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">
+          验证子进程之间不能共享一个全局变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E8%BF%9B%E7%A8%8B%E8%AE%BF%E9%97%AE%EF%BC%88%E4%BF%AE%E6%94%B9%E3%80%81%E8%AF%BB%E5%8F%96%EF%BC%89%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-number">5.2.</span> <span class="toc-text">
+          子进程访问（修改、读取）全局变量的底层原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99%E5%AD%90%E8%BF%9B%E7%A8%8B%E6%8C%87%E5%AE%9A%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0"><span class="toc-number">5.3.</span> <span class="toc-text">
+          给子进程指定的任务函数传递参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E2%80%94%E2%80%94%E8%AE%BE%E7%BD%AE%E5%AE%88%E6%8A%A4%E4%B8%BB%E7%BA%BF%E7%A8%8B%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          进程——设置守护主线程【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%AD%90%E8%BF%9B%E7%A8%8B%E5%AE%88%E6%8A%A4%E4%B8%BB%E7%BA%BF%E7%A8%8B"><span class="toc-number">6.1.</span> <span class="toc-text">
+          设置子进程守护主线程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E2%80%94%E2%80%94%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E5%AD%90%E8%BF%9B%E7%A8%8B%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">7.</span> <span class="toc-text">
+          进程——强制杀死子进程【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E5%AD%90%E8%BF%9B%E7%A8%8B"><span class="toc-number">7.1.</span> <span class="toc-text">
+          强制杀死子进程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91%E3%80%90%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D%E3%80%91"><span class="toc-number">8.</span> <span class="toc-text">
+          多进程与多线程的区别【面试】【重中之重】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%8C%E6%8F%A1%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">8.1.</span> <span class="toc-text">
+          掌握进程与线程之间的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%A4%84%E7%90%86%E9%97%AE%E9%A2%98%E6%97%B6%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%BC%98%E5%85%88%E9%80%89%E6%8B%A9%EF%BC%9A"><span class="toc-number">8.2.</span> <span class="toc-text">
+          实际处理问题时进程与线程的优先选择：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E2%80%94%E2%80%94%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">9.</span> <span class="toc-text">
+          消息队列——基本操作【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AD%A6%E4%B9%A0%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%9F%E4%BB%80%E4%B9%88%E6%98%AF%E9%98%9F%E5%88%97%EF%BC%9F"><span class="toc-number">9.1.</span> <span class="toc-text">
+          为什么要学习消息队列？什么是队列？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Queue%EF%BC%88%E9%98%9F%E5%88%97%EF%BC%89%E7%9A%84-put%EF%BC%88%EF%BC%89%E4%BB%A5%E5%8F%8A-put-nowait-%E4%B8%8E-get%EF%BC%88%EF%BC%89%E5%92%8C-get-nowait-%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%9C%E7%94%A8"><span class="toc-number">9.2.</span> <span class="toc-text">
+          Queue（队列）的 put（）以及 put_nowait( ) 与 get（）和 get_nowait( ) 的基本作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E2%80%94%E5%B8%B8%E8%A7%81%E5%88%A4%E6%96%AD%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">10.</span> <span class="toc-text">
+          消息队列—常见判断【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%9F%E5%88%97%E4%B8%AD-full%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95%E4%B8%8E-empty%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">10.1.</span> <span class="toc-text">
+          队列中 full（）方法与 empty（）方法的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E4%B8%ADqsize%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">10.2.</span> <span class="toc-text">
+          消息队列中qsize（）方法的作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E2%80%94%E2%80%94%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E4%B8%BA%E7%A9%BA%E7%9A%84%E5%9D%91%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">11.</span> <span class="toc-text">
+          消息队列——判断是否为空的坑【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%98%AF%E5%90%A6%E4%B8%BA%E7%A9%BA%E7%9A%84%E5%9D%91%EF%BC%81%EF%BC%81"><span class="toc-number">11.1.</span> <span class="toc-text">
+          判断消息队列是否为空的坑！！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Queue%E5%AE%9E%E7%8E%B0%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">12.</span> <span class="toc-text">
+          Queue实现进程间的通信【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%8F%AF%E4%BB%A5%E5%AE%9E%E7%8E%B0%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E4%B8%8E%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86"><span class="toc-number">12.1.</span> <span class="toc-text">
+          消息队列可以实现进程间的通信与通信原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E2%80%94%E2%80%94%E8%BF%9B%E7%A8%8B%E6%B1%A0%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">13.</span> <span class="toc-text">
+          进程——进程池【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%BF%9B%E7%A8%8B%E6%B1%A0%EF%BC%9F"><span class="toc-number">13.1.</span> <span class="toc-text">
+          什么是进程池？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E2%80%94%E2%80%94%E8%BF%9B%E7%A8%8B%E6%B1%A0%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="toc-number">14.</span> <span class="toc-text">
+          进程——进程池间的通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%B1%A0%E5%86%85%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="toc-number">14.1.</span> <span class="toc-text">
+          进程池内进程间的通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%EF%BC%9A%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%96%87%E4%BB%B6%E5%A4%B9copy%E5%99%A8"><span class="toc-number">15.</span> <span class="toc-text">
+          案例：多进程文件夹copy器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%EF%BC%9A%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%AE%80%E5%8D%95web%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">16.</span> <span class="toc-text">
+          案例：多进程简单web服务器</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

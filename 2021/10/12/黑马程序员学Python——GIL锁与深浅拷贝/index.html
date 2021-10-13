@@ -1,0 +1,685 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：Python中的GIL锁以及怎么去解决这个问题，深浅拷贝等….">
+<meta property="og:type" content="article">
+<meta property="og:title" content="黑马程序员学Python——GIL锁与深浅拷贝">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94GIL%E9%94%81%E4%B8%8E%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：Python中的GIL锁以及怎么去解决这个问题，深浅拷贝等….">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155420672.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155432451.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155447877.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155458246.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155549163.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155558587.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155611363.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155618933.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155709565.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155721184.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155728120.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155801753.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155819140.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155825294.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155839315.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155847748.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155856726.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155903218.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155911751.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155924656.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155937171.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155954539.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012160004682.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012160018221.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012160030517.png">
+<meta property="article:published_time" content="2021-10-12T07:47:07.000Z">
+<meta property="article:modified_time" content="2021-10-12T08:00:34.245Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="Python基础语法篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155420672.png"><title>黑马程序员学Python——GIL锁与深浅拷贝 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94GIL%E9%94%81%E4%B8%8E%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">黑马程序员学Python——GIL锁与深浅拷贝</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-12</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-12</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.4k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">18分</span></span></div></header><div class="post-body"><p>本文主讲：Python中的GIL锁以及怎么去解决这个问题，深浅拷贝等….</p>
+<span id="more"></span>
+
+
+
+
+
+
+        <h2 id="GIL锁对多任务的影响【重点】"   >
+          <a href="#GIL锁对多任务的影响【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#GIL锁对多任务的影响【重点】" class="headerlink" title="GIL锁对多任务的影响【重点】"></a>GIL锁对多任务的影响【重点】</h2>
+      
+        <h3 id="unubtu-系统的-htop-指令查看CUP的使用情况（百分比）"   >
+          <a href="#unubtu-系统的-htop-指令查看CUP的使用情况（百分比）" class="heading-link"><i class="fas fa-link"></i></a><a href="#unubtu-系统的-htop-指令查看CUP的使用情况（百分比）" class="headerlink" title="unubtu 系统的 htop 指令查看CUP的使用情况（百分比）"></a>unubtu 系统的 htop 指令查看CUP的使用情况（百分比）</h3>
+      <p>指令：终端输入 htop 即可</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155420672.png"  alt="image-20211012155420672">
+      </p>
+
+        <h3 id="单进程单线程死循环、多进程单线程死循环、多线程单进程死循环对CPU核的调用情况"   >
+          <a href="#单进程单线程死循环、多进程单线程死循环、多线程单进程死循环对CPU核的调用情况" class="heading-link"><i class="fas fa-link"></i></a><a href="#单进程单线程死循环、多进程单线程死循环、多线程单进程死循环对CPU核的调用情况" class="headerlink" title="单进程单线程死循环、多进程单线程死循环、多线程单进程死循环对CPU核的调用情况"></a>单进程单线程死循环、多进程单线程死循环、多线程单进程死循环对CPU核的调用情况</h3>
+      <p>1.单进程单线程死循环使用情况：</p>
+<p>结论：单进程可完美利用cpu的核数</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155432451.png" >
+      </p>
+<p>2.多进程单线程</p>
+<p>结论：两个多进程死循环运行，两个cpu核利用率为百分之百，因此多进程可完美利用CPU的核数，不存在 cpu 利用不充分的问题哦！</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155447877.png"  alt="image-20211012155447877">
+      </p>
+<p>3.多线程单进程</p>
+<p>结论：多个线程同时运行死循环函数，但是CPU的核却没有一个占满百分之百，可以说明多线程是伪多线程，并不能同时运行多个任务，这是因为GIL全局解释器锁的原因</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155458246.png"  alt="image-20211012155458246">
+      </p>
+
+        <h2 id="GIL锁的概念及影响【重点、面试点】"   >
+          <a href="#GIL锁的概念及影响【重点、面试点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#GIL锁的概念及影响【重点、面试点】" class="headerlink" title="GIL锁的概念及影响【重点、面试点】"></a>GIL锁的概念及影响【重点、面试点】</h2>
+      
+        <h3 id="什么是GIL"   >
+          <a href="#什么是GIL" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是GIL" class="headerlink" title="什么是GIL"></a>什么是GIL</h3>
+      <p>答：GIL称为全局解释器锁，python执行多线程任务之前，某线程会获得一把GIL，而且GIL又是一把互斥锁，某个线程执行任务调用cpu核资源时，其他线程就不能执行其他任务，只能等待GIL释放完毕才会执行任务，保证同一时间只有一个线程在使用GIL，简而言之，每个执行任务的线程都会获得一把GIL，有且整个程序只有一把GIL</p>
+<p>注意:GIL与python语言无关，而是与cpython解释器有关，比如jpython解释器就没有这个GIL</p>
+
+        <h3 id="GIL存在的原因"   >
+          <a href="#GIL存在的原因" class="heading-link"><i class="fas fa-link"></i></a><a href="#GIL存在的原因" class="headerlink" title="GIL存在的原因"></a>GIL存在的原因</h3>
+      <p>1：编写PYTHON的时候计算机普遍是单核cpu<br>2：不加GIL执行多线程任务容易引起资源竞争</p>
+
+        <h3 id="GIL对多任务的影响"   >
+          <a href="#GIL对多任务的影响" class="heading-link"><i class="fas fa-link"></i></a><a href="#GIL对多任务的影响" class="headerlink" title="GIL对多任务的影响"></a>GIL对多任务的影响</h3>
+      <p>多线程：造成伪多线程，实际同一时间只有一个cpu内核在轮询执行任务，保证同一时间只有一个线程可以执行任务</p>
+<p>多进程：不会造成影响，两个进程，那就调度两个cpu内核执行这两个进程任务</p>
+
+        <h3 id="在什么时候可以释放GIL"   >
+          <a href="#在什么时候可以释放GIL" class="heading-link"><i class="fas fa-link"></i></a><a href="#在什么时候可以释放GIL" class="headerlink" title="在什么时候可以释放GIL"></a>在什么时候可以释放GIL</h3>
+      <p>1：获得全局解释器锁的线程任务执行完毕</p>
+<p>2：获得全局解释器锁的线程超过时间片轮询时间，自动释放GIL，执行其他任务</p>
+<p>3：I/O操作阻塞时自动释放GIL</p>
+<p>4：获得全局解释器锁的线程执行阻塞时自动释放GIL</p>
+<p>你问我答：因为GIL也是一把互斥锁，那么是否意味着我们在操作多线程全局变量时不用添加互斥锁了呢？</p>
+<p>答：错误，因为无法控制GIL锁释放的时间，不能确保使用完全局变量的操作是否已经完成！</p>
+<p>课后习题：因为GIL存在的原因，多线程相当与伪多线程，那么为什么多线程的执行效率比多线程高呢？</p>
+<p>答：因为多线程执行任务时遇到I/O操作阻塞等原因会自动释放GIL</p>
+
+        <h2 id="GIL解决方案【重点、面试点】"   >
+          <a href="#GIL解决方案【重点、面试点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#GIL解决方案【重点、面试点】" class="headerlink" title="GIL解决方案【重点、面试点】"></a>GIL解决方案【重点、面试点】</h2>
+      
+        <h3 id="python多线程解决GIL问题的几种方案"   >
+          <a href="#python多线程解决GIL问题的几种方案" class="heading-link"><i class="fas fa-link"></i></a><a href="#python多线程解决GIL问题的几种方案" class="headerlink" title="python多线程解决GIL问题的几种方案"></a>python多线程解决GIL问题的几种方案</h3>
+      <p>方案一：因为GIL是 python 底层解释器 Cpython 产生的，因此可以更换其他底层解释器，例如 jpython 【不推荐】<br>不推荐原因：python默认解释器就是CPython，而不是Jpython，这肯定是有原因的</p>
+<p>方案二：将多线程改成多进程【推荐】</p>
+<p>优点：每一个进程都拥有一把GIL，不会因为互斥锁特性造成同一时间只有一个线程在执行任务，可以解决多线程利用 cpu 核不充分的问题</p>
+<p>缺点：进程是资源分配的基本单元，改成多进程会消耗更多的内存资源，当计算机内存紧张是不推荐使用！</p>
+<p>方案三：将多线程执行的任务（函数）改用 c语言代码编写，可避免GIL！</p>
+<p>详解：python是胶水语言，将 c文件编译为 so 文件，并在python内导入 ctypes 模块即可在python内执行 c文件代码！</p>
+<p>实现步骤：</p>
+<p>第一步：在pycharm内创建后缀为 c 的C语言文件  new → file →文件名.c  编写c语言任务代码（多线程执行任务的代码）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155549163.png"  alt="image-20211012155549163">
+      </p>
+<p>第二步：在 unubtu 终端内将后缀为 c 的文件编译为后缀为 so 的文件</p>
+<p>指令关键字：gcc</p>
+<p>语法：gcc  后缀为c的文件名  -shared  -o   待生成的后缀为so的文件名</p>
+<p>注意事项：</p>
+<p>1：待生成的后缀为so的文件名一般都是以lib三个字母开头</p>
+<p>2：需要进入c文件所在的文件夹内才能执行此命令</p>
+<p>3：-shares选项代表将目标文件编译为so文件</p>
+<p>4：-o选项是用来输入的文件名选项</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155558587.png"  alt="image-20211012155558587">
+      </p>
+<p>第三步：在python程序内导入 ctyes 库并导入 so 文件从而执行so文件内的多线程任务</p>
+<p>关键语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line">lib = ctypes.cdll.LoadLibrary（“./so文件名”）</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+
+<p>注意事项：<br>1：导入so文件时，一定要在相对位置目录导入，并且要加上 ./</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155611363.png"  alt="image-20211012155611363">
+      </p>
+<p>第四步：执行代码查看cpu核的利用率判断是否解决了GIL</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155618933.png"  alt="image-20211012155618933">
+      </p>
+
+        <h3 id="多线程的适用场景"   >
+          <a href="#多线程的适用场景" class="heading-link"><i class="fas fa-link"></i></a><a href="#多线程的适用场景" class="headerlink" title="多线程的适用场景"></a>多线程的适用场景</h3>
+      <p>适用场景：I/O密集型可使用多线程（GIL锁会释放）<br>不适用场景：CPU密集型不建议使用多线程（CPU利用率不高）</p>
+
+        <h2 id="python可变与不可变【重点】"   >
+          <a href="#python可变与不可变【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#python可变与不可变【重点】" class="headerlink" title="python可变与不可变【重点】"></a>python可变与不可变【重点】</h2>
+      
+        <h3 id="python中可变与不可变数据类型的分类以及区别"   >
+          <a href="#python中可变与不可变数据类型的分类以及区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#python中可变与不可变数据类型的分类以及区别" class="headerlink" title="python中可变与不可变数据类型的分类以及区别"></a>python中可变与不可变数据类型的分类以及区别</h3>
+      <p>可变数据类型：列表、字典</p>
+<p>不可变数据类型：数字、字符串、元组</p>
+<p>可变与不可变数据类型的区别：</p>
+<p>答：</p>
+<p>1.可变数据类型在内存创建变量后，如果这个变量发生改变（增加数据等），内存不会开辟新的空间来存放变化后的数据，而是在原位置增加内存空间用来存放变化后的数据</p>
+<p>2.不可变数据类型在内存创建变量后，如果这个变量发生变化，内存会开辟一块新的空间用来存放变化后的数据，而这个变量也会执行这个新的内存地址</p>
+<p>简而言之：可变数据类型在发生变化后，不会在内存中开辟新地址存放数据，不可变数据类型在数据发生变化后，会开辟新的内存地址存放数据，并且原地址数据会被内存释放掉</p>
+<p>注意事项：</p>
+<p>1：变量名指向的是变量的内存地址</p>
+<p>2：可变与不可变是数据发生改变后内存地址是否发生变化</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155709565.png"  alt="image-20211012155709565">
+      </p>
+
+        <h3 id="怎么用python代码验证可变与不可变数据类型"   >
+          <a href="#怎么用python代码验证可变与不可变数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么用python代码验证可变与不可变数据类型" class="headerlink" title="怎么用python代码验证可变与不可变数据类型"></a>怎么用python代码验证可变与不可变数据类型</h3>
+      <p>关键字：id（变量名）</p>
+<p>方法：通过对比数据发生变化前后的内存地址变化从而确定是否为可变数据类型</p>
+<p>代码演示：</p>
+<p>不可变数据类型</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155721184.png"  alt="image-20211012155721184">
+      </p>
+<p>可变数据类型</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155728120.png"  alt="image-20211012155728120">
+      </p>
+
+        <h2 id="数据的浅拷贝与深拷贝区别【重中之重】"   >
+          <a href="#数据的浅拷贝与深拷贝区别【重中之重】" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据的浅拷贝与深拷贝区别【重中之重】" class="headerlink" title="数据的浅拷贝与深拷贝区别【重中之重】"></a>数据的浅拷贝与深拷贝区别【重中之重】</h2>
+      
+        <h3 id="数据的深浅拷贝区别"   >
+          <a href="#数据的深浅拷贝区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据的深浅拷贝区别" class="headerlink" title="数据的深浅拷贝区别"></a>数据的深浅拷贝区别</h3>
+      <p>浅拷贝：只拷贝数据的内存地址（引用），不会开辟新的内存空间，不能保证数据的独立性，如果拷贝的是对象【列表的嵌套】，原对象和copy对象都指向于同一个内存空间，不会拷贝对象内部的子对象</p>
+<p>深拷贝：拷贝后会开辟新的内存空间存放拷贝后的数据，如果拷贝的是对象【列表的嵌套】，原对象和copy对象指向不同的内存空间，会拷贝对象及其子对象</p>
+<p>注意事项：上述的深浅拷贝只是相对的，有些数据类型不能保证其正确性，比如简单可变数据类型（列表）的浅拷贝就会产生新的内存空间！</p>
+
+        <h3 id="python怎么实现深浅拷贝"   >
+          <a href="#python怎么实现深浅拷贝" class="heading-link"><i class="fas fa-link"></i></a><a href="#python怎么实现深浅拷贝" class="headerlink" title="python怎么实现深浅拷贝"></a>python怎么实现深浅拷贝</h3>
+      <p>关键字：</p>
+<p>浅拷贝：copy（变量名）</p>
+<p>深拷贝：deepcopy（变量名）</p>
+<p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">list2 = copy.copy(list1)        浅拷贝</span><br><span class="line">list3 = copy.deepcopy（list1）  深拷贝</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155801753.png"  alt="image-20211012155801753">
+      </p>
+
+        <h2 id="简单可变类型深浅拷贝【重点】"   >
+          <a href="#简单可变类型深浅拷贝【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#简单可变类型深浅拷贝【重点】" class="headerlink" title="简单可变类型深浅拷贝【重点】"></a>简单可变类型深浅拷贝【重点】</h2>
+      
+        <h3 id="简单可变类型（列表）的深浅拷贝特点"   >
+          <a href="#简单可变类型（列表）的深浅拷贝特点" class="heading-link"><i class="fas fa-link"></i></a><a href="#简单可变类型（列表）的深浅拷贝特点" class="headerlink" title="简单可变类型（列表）的深浅拷贝特点"></a>简单可变类型（列表）的深浅拷贝特点</h3>
+      <p>列表浅拷贝特点：产生新的内存空间，原列表与拷贝后的列表数据是相互独立的（互不影响），这与浅拷贝定义是不一样的一定要注意</p>
+<p>列表深拷贝特点：产生新的内存空间，原列表与拷贝后的列表数据是相互独立的（互不影响）</p>
+<p>注意事项：</p>
+<p>1：浅拷贝的定义是 对原数据进行拷贝不会产生新的内存空间，只是对原数据地址的拷贝，但是列表的浅拷贝却产生了新的内存空间</p>
+<p>2：拷贝后产生新的内存空间就是两个数据的内存地址不一样</p>
+<p>图示：</p>
+<p>浅拷贝</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155819140.png"  alt="image-20211012155819140">
+      </p>
+<p>深拷贝</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155825294.png"  alt="image-20211012155825294">
+      </p>
+
+        <h2 id="复杂可变类型深浅拷贝【重点】"   >
+          <a href="#复杂可变类型深浅拷贝【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#复杂可变类型深浅拷贝【重点】" class="headerlink" title="复杂可变类型深浅拷贝【重点】"></a>复杂可变类型深浅拷贝【重点】</h2>
+      
+        <h3 id="复杂可变类型【列表的嵌套】的深浅拷贝的区别"   >
+          <a href="#复杂可变类型【列表的嵌套】的深浅拷贝的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#复杂可变类型【列表的嵌套】的深浅拷贝的区别" class="headerlink" title="复杂可变类型【列表的嵌套】的深浅拷贝的区别"></a>复杂可变类型【列表的嵌套】的深浅拷贝的区别</h3>
+      <p>注意：列表的嵌套可看做是一个对象，这样就更好的理解深浅拷贝定义的后两句话了！</p>
+<p>列表的嵌套浅拷贝：A是一个列表的嵌套对象，其中的子列表地址指向的是原列表的地址，相当于地址的引用，对A列表对象进行浅复制会产生新的内存空间，但是A列表内的子列表经过浅复制后不会产生新的空间，依旧是原列表地址的引用，因此对原列表数据进行更改，浅复制后的数据将发生变化！！</p>
+<p>简而言之：浅拷贝不会拷贝嵌套列表的子列表，只拷贝了地址（引用子列表）</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155839315.png"  alt="image-20211012155839315">
+      </p>
+<p>代码演示：</p>
+<p>注意：下面代码没有演示对A列表数据改变，观察C[0]与D[0]的数据变化   结果是也变化</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155847748.png"  alt="image-20211012155847748">
+      </p>
+<p>列表的嵌套深拷贝：对嵌套的列表进行深复制会产生新的内存空间，并且嵌套的字列表也会产生新的内存空间，不再是地址的引用复制，这样对原数据进行更改，深复制后的数据将不再发生变化</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155856726.png"  alt="image-20211012155856726">
+      </p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155903218.png"  alt="image-20211012155903218">
+      </p>
+
+        <h2 id="简单不可变类型深浅拷贝【重点】"   >
+          <a href="#简单不可变类型深浅拷贝【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#简单不可变类型深浅拷贝【重点】" class="headerlink" title="简单不可变类型深浅拷贝【重点】"></a>简单不可变类型深浅拷贝【重点】</h2>
+      
+        <h3 id="简单不可变数据类型（元组）的深浅拷贝"   >
+          <a href="#简单不可变数据类型（元组）的深浅拷贝" class="heading-link"><i class="fas fa-link"></i></a><a href="#简单不可变数据类型（元组）的深浅拷贝" class="headerlink" title="简单不可变数据类型（元组）的深浅拷贝"></a>简单不可变数据类型（元组）的深浅拷贝</h3>
+      <p>答：简单可变数据类型（元组）不管是深拷贝还是浅拷贝都不会产生新的内存空间，只是单纯的拷贝地址（引用源对象），拷贝前后的数据也不是相互独立的</p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155911751.png"  alt="image-20211012155911751">
+      </p>
+
+        <h2 id="复杂不不可变类型深浅拷贝【重点】"   >
+          <a href="#复杂不不可变类型深浅拷贝【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#复杂不不可变类型深浅拷贝【重点】" class="headerlink" title="复杂不不可变类型深浅拷贝【重点】"></a>复杂不不可变类型深浅拷贝【重点】</h2>
+      <p>目标：掌握复杂不可变类型（元组内嵌套列表）的深浅拷贝对比</p>
+
+        <h3 id="复杂不可变类型（元组内嵌套列表）的深浅拷贝对比"   >
+          <a href="#复杂不可变类型（元组内嵌套列表）的深浅拷贝对比" class="heading-link"><i class="fas fa-link"></i></a><a href="#复杂不可变类型（元组内嵌套列表）的深浅拷贝对比" class="headerlink" title="复杂不可变类型（元组内嵌套列表）的深浅拷贝对比"></a>复杂不可变类型（元组内嵌套列表）的深浅拷贝对比</h3>
+      <p>元组内嵌套列表的浅拷贝：浅拷贝后元组不会产生新的内存空间，并且元组内嵌套的列表也不会产生新的内存空间，只是单纯的拷贝地址，原对象的引用！浅拷贝前后的数据也不是相互独立的！</p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155924656.png"  alt="image-20211012155924656">
+      </p>
+<p>元组内嵌套列表的深拷贝：元组深拷贝之后会产生新的内存空间存放复制后的元组，并且元组内的列表也会开辟新的内存空间，不再是单纯的地址复制，这点从复制前后列表的地址不同可看出，而且复制后两个元组的数据是相互独立的（更改原元组内列表的数据，复制的元组列表内数据不会发生变化）</p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155937171.png"  alt="image-20211012155937171">
+      </p>
+<p>重点：</p>
+<p>1：复杂不可变类型数据（元组内嵌套数据）的深拷贝，如果元组内嵌套的是可变数据类型（列表）就会开辟新的内存空间保存可变的嵌套数据，如果嵌套的是不可变数据类型（元组），则不会开辟新的内存空间存放嵌套的数据！</p>
+<p>2：复杂不可变类型数据（元组内嵌套数据）的浅拷贝，不管元组内嵌套的是可变还是不可变数据类型，都不会开辟新的内存空间，直接内存地址的引用，类似于超链接</p>
+
+        <h2 id="切片拷贝、字典拷贝【重点】"   >
+          <a href="#切片拷贝、字典拷贝【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#切片拷贝、字典拷贝【重点】" class="headerlink" title="切片拷贝、字典拷贝【重点】"></a>切片拷贝、字典拷贝【重点】</h2>
+      
+        <h3 id="简单可变数据类型（列表）的切片拷贝是深拷贝还是浅拷贝"   >
+          <a href="#简单可变数据类型（列表）的切片拷贝是深拷贝还是浅拷贝" class="heading-link"><i class="fas fa-link"></i></a><a href="#简单可变数据类型（列表）的切片拷贝是深拷贝还是浅拷贝" class="headerlink" title="简单可变数据类型（列表）的切片拷贝是深拷贝还是浅拷贝"></a>简单可变数据类型（列表）的切片拷贝是深拷贝还是浅拷贝</h3>
+      <p>切片拷贝示例代码：</p>
+<p>list1 = [1,2,3]</p>
+<p>list2 = list1[ : ]</p>
+<p>list2就是list2的切片拷贝</p>
+<p>实验结论：简单可变数据类型（列表）的切片拷贝是深拷贝</p>
+<p>代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012155954539.png"  alt="image-20211012155954539">
+      </p>
+
+        <h3 id="复杂不可变数据类型（元组内嵌套列表）的切片拷贝是深拷贝还是浅拷贝"   >
+          <a href="#复杂不可变数据类型（元组内嵌套列表）的切片拷贝是深拷贝还是浅拷贝" class="heading-link"><i class="fas fa-link"></i></a><a href="#复杂不可变数据类型（元组内嵌套列表）的切片拷贝是深拷贝还是浅拷贝" class="headerlink" title="复杂不可变数据类型（元组内嵌套列表）的切片拷贝是深拷贝还是浅拷贝"></a>复杂不可变数据类型（元组内嵌套列表）的切片拷贝是深拷贝还是浅拷贝</h3>
+      <p>结论：是浅拷贝</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012160004682.png"  alt="image-20211012160004682">
+      </p>
+
+        <h3 id="简单可变数据类型（字典）的字典拷贝是深拷贝还是浅拷贝"   >
+          <a href="#简单可变数据类型（字典）的字典拷贝是深拷贝还是浅拷贝" class="heading-link"><i class="fas fa-link"></i></a><a href="#简单可变数据类型（字典）的字典拷贝是深拷贝还是浅拷贝" class="headerlink" title="简单可变数据类型（字典）的字典拷贝是深拷贝还是浅拷贝"></a>简单可变数据类型（字典）的字典拷贝是深拷贝还是浅拷贝</h3>
+      <p>关键字：copy</p>
+<p>语法：dict2 = dict1.copy（）</p>
+<p>注意事项：字典拷贝不需要导入 copy 模块即可使用 copy 方法</p>
+<p>结论：简单可变数据类型（字典）的字典拷贝是深拷贝</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012160018221.png"  alt="image-20211012160018221">
+      </p>
+
+        <h3 id="复杂可变数据类型（字典内嵌套列表）的字典拷贝是深拷贝还是浅拷贝"   >
+          <a href="#复杂可变数据类型（字典内嵌套列表）的字典拷贝是深拷贝还是浅拷贝" class="heading-link"><i class="fas fa-link"></i></a><a href="#复杂可变数据类型（字典内嵌套列表）的字典拷贝是深拷贝还是浅拷贝" class="headerlink" title="复杂可变数据类型（字典内嵌套列表）的字典拷贝是深拷贝还是浅拷贝"></a>复杂可变数据类型（字典内嵌套列表）的字典拷贝是深拷贝还是浅拷贝</h3>
+      <p>结论：复杂可变数据类型（字典内嵌套列表）的字典拷贝是浅拷贝</p>
+<p>代码图示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012160030517.png"  alt="image-20211012160030517">
+      </p>
+<p>未完待续…….</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94GIL%E9%94%81%E4%B8%8E%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/">http://pythonlamb.github.io/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94GIL%E9%94%81%E4%B8%8E%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/Python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E7%AF%87/">Python基础语法篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E4%B8%8E%E7%BB%A7%E6%89%BF%E9%97%AE%E9%A2%98/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">黑马程序员学Python——导入模块与继承问题</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E8%A3%85%E9%A5%B0%E5%99%A8%E5%9F%BA%E7%A1%80/"><span class="paginator-prev__text">黑马程序员学Python——装饰器基础</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#GIL%E9%94%81%E5%AF%B9%E5%A4%9A%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%BD%B1%E5%93%8D%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">1.</span> <span class="toc-text">
+          GIL锁对多任务的影响【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#unubtu-%E7%B3%BB%E7%BB%9F%E7%9A%84-htop-%E6%8C%87%E4%BB%A4%E6%9F%A5%E7%9C%8BCUP%E7%9A%84%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5%EF%BC%88%E7%99%BE%E5%88%86%E6%AF%94%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">
+          unubtu 系统的 htop 指令查看CUP的使用情况（百分比）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E8%BF%9B%E7%A8%8B%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%AD%BB%E5%BE%AA%E7%8E%AF%E3%80%81%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%AD%BB%E5%BE%AA%E7%8E%AF%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%8D%95%E8%BF%9B%E7%A8%8B%E6%AD%BB%E5%BE%AA%E7%8E%AF%E5%AF%B9CPU%E6%A0%B8%E7%9A%84%E8%B0%83%E7%94%A8%E6%83%85%E5%86%B5"><span class="toc-number">1.2.</span> <span class="toc-text">
+          单进程单线程死循环、多进程单线程死循环、多线程单进程死循环对CPU核的调用情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GIL%E9%94%81%E7%9A%84%E6%A6%82%E5%BF%B5%E5%8F%8A%E5%BD%B1%E5%93%8D%E3%80%90%E9%87%8D%E7%82%B9%E3%80%81%E9%9D%A2%E8%AF%95%E7%82%B9%E3%80%91"><span class="toc-number">2.</span> <span class="toc-text">
+          GIL锁的概念及影响【重点、面试点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFGIL"><span class="toc-number">2.1.</span> <span class="toc-text">
+          什么是GIL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GIL%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">2.2.</span> <span class="toc-text">
+          GIL存在的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GIL%E5%AF%B9%E5%A4%9A%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">2.3.</span> <span class="toc-text">
+          GIL对多任务的影响</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%AF%E4%BB%A5%E9%87%8A%E6%94%BEGIL"><span class="toc-number">2.4.</span> <span class="toc-text">
+          在什么时候可以释放GIL</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GIL%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E3%80%90%E9%87%8D%E7%82%B9%E3%80%81%E9%9D%A2%E8%AF%95%E7%82%B9%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          GIL解决方案【重点、面试点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#python%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%A7%A3%E5%86%B3GIL%E9%97%AE%E9%A2%98%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%A1%88"><span class="toc-number">3.1.</span> <span class="toc-text">
+          python多线程解决GIL问题的几种方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">3.2.</span> <span class="toc-text">
+          多线程的适用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python%E5%8F%AF%E5%8F%98%E4%B8%8E%E4%B8%8D%E5%8F%AF%E5%8F%98%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          python可变与不可变【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#python%E4%B8%AD%E5%8F%AF%E5%8F%98%E4%B8%8E%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%88%86%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%8C%BA%E5%88%AB"><span class="toc-number">4.1.</span> <span class="toc-text">
+          python中可变与不可变数据类型的分类以及区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E7%94%A8python%E4%BB%A3%E7%A0%81%E9%AA%8C%E8%AF%81%E5%8F%AF%E5%8F%98%E4%B8%8E%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.2.</span> <span class="toc-text">
+          怎么用python代码验证可变与不可变数据类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%8C%BA%E5%88%AB%E3%80%90%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          数据的浅拷贝与深拷贝区别【重中之重】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%8C%BA%E5%88%AB"><span class="toc-number">5.1.</span> <span class="toc-text">
+          数据的深浅拷贝区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-number">5.2.</span> <span class="toc-text">
+          python怎么实现深浅拷贝</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          简单可变类型深浅拷贝【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%88%97%E8%A1%A8%EF%BC%89%E7%9A%84%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D%E7%89%B9%E7%82%B9"><span class="toc-number">6.1.</span> <span class="toc-text">
+          简单可变类型（列表）的深浅拷贝特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">7.</span> <span class="toc-text">
+          复杂可变类型深浅拷贝【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B%E3%80%90%E5%88%97%E8%A1%A8%E7%9A%84%E5%B5%8C%E5%A5%97%E3%80%91%E7%9A%84%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">7.1.</span> <span class="toc-text">
+          复杂可变类型【列表的嵌套】的深浅拷贝的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">8.</span> <span class="toc-text">
+          简单不可变类型深浅拷贝【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%85%83%E7%BB%84%EF%BC%89%E7%9A%84%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-number">8.1.</span> <span class="toc-text">
+          简单不可变数据类型（元组）的深浅拷贝</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E4%B8%8D%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">9.</span> <span class="toc-text">
+          复杂不不可变类型深浅拷贝【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%85%83%E7%BB%84%E5%86%85%E5%B5%8C%E5%A5%97%E5%88%97%E8%A1%A8%EF%BC%89%E7%9A%84%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%AF%B9%E6%AF%94"><span class="toc-number">9.1.</span> <span class="toc-text">
+          复杂不可变类型（元组内嵌套列表）的深浅拷贝对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%87%E7%89%87%E6%8B%B7%E8%B4%9D%E3%80%81%E5%AD%97%E5%85%B8%E6%8B%B7%E8%B4%9D%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">10.</span> <span class="toc-text">
+          切片拷贝、字典拷贝【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%88%97%E8%A1%A8%EF%BC%89%E7%9A%84%E5%88%87%E7%89%87%E6%8B%B7%E8%B4%9D%E6%98%AF%E6%B7%B1%E6%8B%B7%E8%B4%9D%E8%BF%98%E6%98%AF%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-number">10.1.</span> <span class="toc-text">
+          简单可变数据类型（列表）的切片拷贝是深拷贝还是浅拷贝</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%85%83%E7%BB%84%E5%86%85%E5%B5%8C%E5%A5%97%E5%88%97%E8%A1%A8%EF%BC%89%E7%9A%84%E5%88%87%E7%89%87%E6%8B%B7%E8%B4%9D%E6%98%AF%E6%B7%B1%E6%8B%B7%E8%B4%9D%E8%BF%98%E6%98%AF%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-number">10.2.</span> <span class="toc-text">
+          复杂不可变数据类型（元组内嵌套列表）的切片拷贝是深拷贝还是浅拷贝</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%AD%97%E5%85%B8%EF%BC%89%E7%9A%84%E5%AD%97%E5%85%B8%E6%8B%B7%E8%B4%9D%E6%98%AF%E6%B7%B1%E6%8B%B7%E8%B4%9D%E8%BF%98%E6%98%AF%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-number">10.3.</span> <span class="toc-text">
+          简单可变数据类型（字典）的字典拷贝是深拷贝还是浅拷贝</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%AD%97%E5%85%B8%E5%86%85%E5%B5%8C%E5%A5%97%E5%88%97%E8%A1%A8%EF%BC%89%E7%9A%84%E5%AD%97%E5%85%B8%E6%8B%B7%E8%B4%9D%E6%98%AF%E6%B7%B1%E6%8B%B7%E8%B4%9D%E8%BF%98%E6%98%AF%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-number">10.4.</span> <span class="toc-text">
+          复杂可变数据类型（字典内嵌套列表）的字典拷贝是深拷贝还是浅拷贝</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

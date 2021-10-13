@@ -1,0 +1,721 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：Mysql数据库中外键的使用、事务的概念、Mysql数据库与Python进行交互等….">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql操作——数据库编程">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/12/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：Mysql数据库中外键的使用、事务的概念、Mysql数据库与Python进行交互等….">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151343486.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151343486.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151414268.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151423481.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151433707.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151443532.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151514095.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151525693.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151606508.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151624749.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151633154.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151646638.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151656081.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151709986.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151722041.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151738763.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151747531.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151758531.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151819642.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151831293.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151842427.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151850087.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151857844.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012152014285.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012152021827.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012152039698.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012152104800.png">
+<meta property="article:published_time" content="2021-10-12T07:00:04.000Z">
+<meta property="article:modified_time" content="2021-10-12T07:22:53.222Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="Mysql操作">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151343486.png"><title>Mysql操作——数据库编程 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/12/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%96%E7%A8%8B/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Mysql操作——数据库编程</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-12</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-12</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">18分</span></span></div></header><div class="post-body"><p>本文主讲：Mysql数据库中外键的使用、事务的概念、Mysql数据库与Python进行交互等….</p>
+<span id="more"></span>
+
+
+
+
+
+
+        <h2 id="外键使用"   >
+          <a href="#外键使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#外键使用" class="headerlink" title="外键使用"></a>外键使用</h2>
+      
+        <h3 id="外键的使用场景"   >
+          <a href="#外键的使用场景" class="heading-link"><i class="fas fa-link"></i></a><a href="#外键的使用场景" class="headerlink" title="外键的使用场景"></a>外键的使用场景</h3>
+      <p>答：两个数据表相关联，一个数据表是产品名称，另一个数据表是这些产品的分类，向产品名称这个数据表添加数据时，但是产品分类这个数据表内没有这个产品的相应分类，我们就不能向名称数据表进行插入数据，这时就要用到外键！</p>
+
+        <h3 id="什么是外键"   >
+          <a href="#什么是外键" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是外键" class="headerlink" title="什么是外键"></a>什么是外键</h3>
+      <p>答：两个数据表相关联时，一个数据表的主键出现在另外一个数据表中，称另外这个数据表内的这个字段为外键</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151343486.png"  alt="image-20211012151343486">
+      </p>
+
+        <h3 id="怎么向已经存在的字段添加外键约束"   >
+          <a href="#怎么向已经存在的字段添加外键约束" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么向已经存在的字段添加外键约束" class="headerlink" title="怎么向已经存在的字段添加外键约束"></a>怎么向已经存在的字段添加外键约束</h3>
+      <p>关键字：foreign key 、references</p>
+<p>语法：<code>alter table product add foreign key (nid) references classification(id);</code></p>
+<p>表示向 product 表的 nid 字段添加外键，这个外键引用于 classification数据表的主键（id字段）</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151343486.png" >
+      </p>
+
+        <h3 id="怎么在创建数据表时添加外键"   >
+          <a href="#怎么在创建数据表时添加外键" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么在创建数据表时添加外键" class="headerlink" title="怎么在创建数据表时添加外键"></a>怎么在创建数据表时添加外键</h3>
+      <p>语法：</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">create table product_test（</span><br><span class="line">		id int not null primary key，</span><br><span class="line">		name varchar（10）not null，</span><br><span class="line">		mid int not null，</span><br><span class="line">		foreign key (mid) references  classification（id））；</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>上面语法表示创建 product_test 数据表并且为mid字段加上外键，foreign key (mid) references  classification（id）语法表示将mid字段设置为外键，外键引用于 classification数据表的 id 字段</p>
+<p>注意事项：创建数据表添加外键，引用于哪个数据表的字段，那么这个数据表必须事先存在，例如上述的classification数据表之前就已经创建好！</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151414268.png"  alt="image-20211012151414268">
+      </p>
+
+        <h3 id="怎么查询数据表中的外键字段名称"   >
+          <a href="#怎么查询数据表中的外键字段名称" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么查询数据表中的外键字段名称" class="headerlink" title="怎么查询数据表中的外键字段名称"></a>怎么查询数据表中的外键字段名称</h3>
+      <p><code>show create table 要查找外键的数据表名</code></p>
+<p>例如：<code>show create  table product_test;</code></p>
+<p>代码演示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151423481.png"  alt="image-20211012151423481">
+      </p>
+<p>注意事项：上面查询的字段名称不是 mid 而是刚开始的那段字符串，即 product_test_ibfk_1 才是字段名称</p>
+
+        <h3 id="怎么删除数据表中的字段外键"   >
+          <a href="#怎么删除数据表中的字段外键" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么删除数据表中的字段外键" class="headerlink" title="怎么删除数据表中的字段外键"></a>怎么删除数据表中的字段外键</h3>
+      <p><code>alter table 数据表名 drop foreign key 外键字段名</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151433707.png"  alt="image-20211012151433707">
+      </p>
+
+        <h2 id="视图的概念【重点】"   >
+          <a href="#视图的概念【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#视图的概念【重点】" class="headerlink" title="视图的概念【重点】"></a>视图的概念【重点】</h2>
+      
+        <h3 id="什么是视图，视图的使用场景"   >
+          <a href="#什么是视图，视图的使用场景" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是视图，视图的使用场景" class="headerlink" title="什么是视图，视图的使用场景"></a>什么是视图，视图的使用场景</h3>
+      <p>答：简而言之就是将复杂的 SQL 语句封装成一张视图！只可查询数据，不可更改</p>
+<p>使用场景：需要重复使用某条SQL语句时，就可以将这条 SQL 语句封装成视图</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151443532.png"  alt="image-20211012151443532">
+      </p>
+
+        <h2 id="视图的使用【重点】"   >
+          <a href="#视图的使用【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#视图的使用【重点】" class="headerlink" title="视图的使用【重点】"></a>视图的使用【重点】</h2>
+      
+        <h3 id="视图的创建语法以及怎么查看视图是否创建成功"   >
+          <a href="#视图的创建语法以及怎么查看视图是否创建成功" class="heading-link"><i class="fas fa-link"></i></a><a href="#视图的创建语法以及怎么查看视图是否创建成功" class="headerlink" title="视图的创建语法以及怎么查看视图是否创建成功"></a>视图的创建语法以及怎么查看视图是否创建成功</h3>
+      <p>创建语法：<code>create view 视图名 as 封装的SQL语句；</code></p>
+<p>查看语法：<code>show tables；</code></p>
+<p>注意事项：</p>
+<p>1：视图名一般要以 v_ 开头 例如 v_name</p>
+<p>2：视图只是一个虚拟的表，当视图数据来源的表数据发生变化时，视图内的数据也会发生变化！</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151514095.png"  alt="image-20211012151514095">
+      </p>
+
+        <h3 id="怎么查看视图内的数据以及怎么删除视图"   >
+          <a href="#怎么查看视图内的数据以及怎么删除视图" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么查看视图内的数据以及怎么删除视图" class="headerlink" title="怎么查看视图内的数据以及怎么删除视图"></a>怎么查看视图内的数据以及怎么删除视图</h3>
+      <p>查看视图数据语法：<code>select * from 视图名；</code></p>
+<p>删除视图语法：<code>drop view 视图名</code></p>
+<p>快速代码体验；</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151525693.png"  alt="image-20211012151525693">
+      </p>
+
+        <h2 id="事务概念及特性【面试题】"   >
+          <a href="#事务概念及特性【面试题】" class="heading-link"><i class="fas fa-link"></i></a><a href="#事务概念及特性【面试题】" class="headerlink" title="事务概念及特性【面试题】"></a>事务概念及特性【面试题】</h2>
+      
+        <h3 id="事物的使用场景"   >
+          <a href="#事物的使用场景" class="heading-link"><i class="fas fa-link"></i></a><a href="#事物的使用场景" class="headerlink" title="事物的使用场景"></a>事物的使用场景</h3>
+      <p>答：假设控制数据库查询某些数据需要好几条SQL语句，而且这几条语句要么全都执行成功，要么全都执行失败，我们就可以把这几条SQL语句加到事物当中！比如说去银行给别人汇钱操作，分为 查询余额、你给别人汇款操作、别人收款操作，要么这几个步骤全部执行成功，要么这几个步骤全部执行失败！</p>
+<p>简而言之，数据库的事务，就是当执行某操作，其中一个步骤失败，就回到未执行前的状态！要么事务所有步骤全部执行成功，要么全部失败！</p>
+<p>事务功能：保证某个操作要么一定成功执行，要么一定失败执行</p>
+
+        <h3 id="事务的四大特性（ACID）"   >
+          <a href="#事务的四大特性（ACID）" class="heading-link"><i class="fas fa-link"></i></a><a href="#事务的四大特性（ACID）" class="headerlink" title="事务的四大特性（ACID）"></a>事务的四大特性（ACID）</h3>
+      <p>1.原子性：一个事物必须被视为不可分割的最小单元，也就是事务内的所有步骤都是不可分割，要么所有步骤全部成功执行，要么全都失败回滚</p>
+<p>2.一致性：数据库总是从一个状态转换到另外一个状态，汇钱例子，我向你打款500元，我余额减少500，你的余额必须增加500</p>
+<p>3.隔离性：一个事务所做的修改在最终提交以前，对外是不可见的，例如汇款，我的余额600，正在向你汇款500，汇款的过程未结束时，别人是不可在用你卡向别人汇款的，因为他看到你的余额还是600元</p>
+<p>4.持久性：一旦事务提交，则其所做的修改将永久保存到数据库</p>
+<p>图示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151606508.png"  alt="image-20211012151606508">
+      </p>
+
+        <h2 id="事务使用【重点】"   >
+          <a href="#事务使用【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#事务使用【重点】" class="headerlink" title="事务使用【重点】"></a>事务使用【重点】</h2>
+      
+        <h3 id="什么是表引擎以及怎么查看数据表表引擎分类"   >
+          <a href="#什么是表引擎以及怎么查看数据表表引擎分类" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是表引擎以及怎么查看数据表表引擎分类" class="headerlink" title="什么是表引擎以及怎么查看数据表表引擎分类"></a>什么是表引擎以及怎么查看数据表表引擎分类</h3>
+      <p>答：表引擎就是数据表在系统中的存储方式</p>
+<p>查看数据表表引擎分类语法：show engines；</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151624749.png"  alt="image-20211012151624749">
+      </p>
+
+        <h3 id="怎么查看数据表使用的是什么表引擎"   >
+          <a href="#怎么查看数据表使用的是什么表引擎" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么查看数据表使用的是什么表引擎" class="headerlink" title="怎么查看数据表使用的是什么表引擎"></a>怎么查看数据表使用的是什么表引擎</h3>
+      <p>语法：<code>show create table  数据表名；</code></p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151633154.png"  alt="image-20211012151633154">
+      </p>
+
+        <h3 id="begin、commit、rollback关键字对事务的影响"   >
+          <a href="#begin、commit、rollback关键字对事务的影响" class="heading-link"><i class="fas fa-link"></i></a><a href="#begin、commit、rollback关键字对事务的影响" class="headerlink" title="begin、commit、rollback关键字对事务的影响"></a>begin、commit、rollback关键字对事务的影响</h3>
+      <p>begin：开启事务，开启事务之后对数据库的更改都要符合事务的使用规范</p>
+<p>commit：提交事务，开启事务后对数据库修改数据，如果不 commit 一下，别人看见的数据还是未修改之前的，所以数据修改完成后，需要commit才能正式生效，注意 commit之后 在 rollback 不能回滚之前的数据库状态</p>
+<p>rollback：事务回滚，开启事务后修改数据，没有 commit 之前，执行 rollback后，数据库会回到事务begin之前的状态</p>
+<p>注意事项：在事务开启之后，执行了 commit 或者 rollback 之后，事务就关闭了，想在再次开启事务，需再次执行 begin 指令！</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151646638.png"  alt="image-20211012151646638">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151656081.png"  alt="image-20211012151656081">
+      </p>
+
+        <h2 id="验证事务的ACID特性【重点】"   >
+          <a href="#验证事务的ACID特性【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#验证事务的ACID特性【重点】" class="headerlink" title="验证事务的ACID特性【重点】"></a>验证事务的ACID特性【重点】</h2>
+      <p>目标：掌握如何验证事务的隔离性（I）</p>
+
+        <h3 id="如何验证事务的隔离性（I）"   >
+          <a href="#如何验证事务的隔离性（I）" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何验证事务的隔离性（I）" class="headerlink" title="如何验证事务的隔离性（I）"></a>如何验证事务的隔离性（I）</h3>
+      <p>答：LINUX同时开启两个客户端，一个客户端开启事务，对数据进行修改，并且不要commit与rollback（代表事务没有结束），另一个客户端不需要开启事务，同时对这个数据进行更改，就会发现没开启事务的更改数据不成功！</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151709986.png"  alt="image-20211012151709986">
+      </p>
+
+        <h2 id="数据库的三范式【了解】"   >
+          <a href="#数据库的三范式【了解】" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据库的三范式【了解】" class="headerlink" title="数据库的三范式【了解】"></a>数据库的三范式【了解】</h2>
+      <p>前言：数据库设计三范式就是设置数据库时的注意事项</p>
+
+        <h3 id="数据库设计的第一、第二、第三范式"   >
+          <a href="#数据库设计的第一、第二、第三范式" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据库设计的第一、第二、第三范式" class="headerlink" title="数据库设计的第一、第二、第三范式"></a>数据库设计的第一、第二、第三范式</h3>
+      <p>第一范式：强调列的原子性，即每一个字段都不能再次拆分成其他几个字段</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151722041.png"  alt="image-20211012151722041">
+      </p>
+<p>第二范式：需满足第一范式，一个表内必须要有一个主键，非主键字段必须要完全依赖于主键字段，不能只有一部分字段依赖主键，即所有非主键字段全都要完全依赖于一个主键，不能有一部分依赖这个主键，其他不依赖这个主键</p>
+<p>注意事项：如果数据表不满足第二范式，可以将数据表进行拆分</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151738763.png"  alt="image-20211012151738763">
+      </p>
+<p>第三范式：必须要满足第二范式，非主键字段必须直接依赖于主键字段，不能存在传递依赖</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151747531.png"  alt="image-20211012151747531">
+      </p>
+<p>注意事项：如果数据表不满足第二范式，可以将数据表进行拆分</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151758531.png"  alt="image-20211012151758531">
+      </p>
+
+        <h2 id="E-R模型及表间关系【了解】"   >
+          <a href="#E-R模型及表间关系【了解】" class="heading-link"><i class="fas fa-link"></i></a><a href="#E-R模型及表间关系【了解】" class="headerlink" title="E-R模型及表间关系【了解】"></a>E-R模型及表间关系【了解】</h2>
+      
+        <h3 id="E-R模型的使用场景"   >
+          <a href="#E-R模型的使用场景" class="heading-link"><i class="fas fa-link"></i></a><a href="#E-R模型的使用场景" class="headerlink" title="E-R模型的使用场景"></a>E-R模型的使用场景</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151819642.png"  alt="image-20211012151819642">
+      </p>
+
+        <h3 id="E-R模型的组成部分"   >
+          <a href="#E-R模型的组成部分" class="heading-link"><i class="fas fa-link"></i></a><a href="#E-R模型的组成部分" class="headerlink" title="E-R模型的组成部分"></a>E-R模型的组成部分</h3>
+      <p>组成部分：实体、实体属性、联系</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151831293.png"  alt="image-20211012151831293">
+      </p>
+
+        <h3 id="数据表之间的一对一、一对多、多对多关系"   >
+          <a href="#数据表之间的一对一、一对多、多对多关系" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据表之间的一对一、一对多、多对多关系" class="headerlink" title="数据表之间的一对一、一对多、多对多关系"></a>数据表之间的一对一、一对多、多对多关系</h3>
+      <p>一对一：数据表1中的一个字段数据对应数据表2中的一个字段数据，可以靠两个表来实现关系，符号是 1-1</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151842427.png"  alt="image-20211012151842427">
+      </p>
+<p>一对多：数据表1中的一个字段数据对应数据表2中的多个字段数据，可以靠两个表来实现关系，图示一个班级对应多名学生，符号为 1-N表示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151850087.png"  alt="image-20211012151850087">
+      </p>
+<p>多对多：数据表1中的一个字段数据对应数据表2中的多个字段数据，数据表2中的一个字段数据对应数据表1中的多个字段数据，不能靠两个表来实现关系，需要第三个中间表才能实现数据的保存，图示一个科目可以有多个学生选，一个学生也可以选多们课程，符号为 N-N表示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012151857844.png"  alt="image-20211012151857844">
+      </p>
+
+        <h2 id="58到家数据库的30条军规解读【重点】"   >
+          <a href="#58到家数据库的30条军规解读【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#58到家数据库的30条军规解读【重点】" class="headerlink" title="58到家数据库的30条军规解读【重点】"></a>58到家数据库的30条军规解读【重点】</h2>
+      <p>军规阅读地址：</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&amp;mid=2651959906&amp;idx=1&amp;sn=2cbdc66cfb5b53cf4327a1e0d18d9b4a&amp;chksm=bd2d07be8a5a8ea86dc3c04eced3f411ee5ec207f73d317245e1fefea1628feb037ad71531bc&amp;scene=21&amp;key=e82f935468864c7d48052912f819a6dd5e6242373178c6cf6b2a30bc7a3bc45cf528644761f1c83760a26aa894abf4ecc9a77152e7a9d688d98cf9acbefe04f63cb0dbecd86ed0463d85e6e4022081a7&amp;ascene=7&amp;uin=MjE4OTMzMzMwNA==&amp;devicetype=Windows+10&amp;version=6203005d&amp;pass_ticket=HwLIq9t4Fwuxfe3EcHX5+6GOZG4yYlLMCZ8YH/vGq5QnbR/jduDlkLzmQa2Y+uiY&amp;winzoom=1#%23" >https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&amp;mid=2651959906&amp;idx=1&amp;sn=2cbdc66cfb5b53cf4327a1e0d18d9b4a&amp;chksm=bd2d07be8a5a8ea86dc3c04eced3f411ee5ec207f73d317245e1fefea1628feb037ad71531bc&amp;scene=21&amp;key=e82f935468864c7d48052912f819a6dd5e6242373178c6cf6b2a30bc7a3bc45cf528644761f1c83760a26aa894abf4ecc9a77152e7a9d688d98cf9acbefe04f63cb0dbecd86ed0463d85e6e4022081a7&amp;ascene=7&amp;uin=MjE4OTMzMzMwNA%3D%3D&amp;devicetype=Windows+10&amp;version=6203005d&amp;pass_ticket=HwLIq9t4Fwuxfe3EcHX5%2B6GOZG4yYlLMCZ8YH%2FvGq5QnbR%2FjduDlkLzmQa2Y%2BuiY&amp;winzoom=1#%23</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>重点内容提取：</p>
+<p>1：数据库必须使用 InnoDB存储引擎</p>
+<p>2：数据库必须使用 utf-8进行编码</p>
+<p>3：并发量大、数据量大的互联网业务禁止使用外键</p>
+<p>4：禁止使用小数存储货币</p>
+<p>5：禁止使用select * 只获取必要的字段，需要显示说明列属性</p>
+<p>6：禁止大表使用join（连接）</p>
+
+        <h2 id="python连接操作MySQL【重点】"   >
+          <a href="#python连接操作MySQL【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#python连接操作MySQL【重点】" class="headerlink" title="python连接操作MySQL【重点】"></a>python连接操作MySQL【重点】</h2>
+      
+        <h3 id="python-连接数据库的功能"   >
+          <a href="#python-连接数据库的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#python-连接数据库的功能" class="headerlink" title="python 连接数据库的功能"></a>python 连接数据库的功能</h3>
+      <p>答：用 python 代码充当客户端，对数据进行增删改查等操作</p>
+
+        <h3 id="python-连接数据库的步骤并实现查询数据库操作"   >
+          <a href="#python-连接数据库的步骤并实现查询数据库操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#python-连接数据库的步骤并实现查询数据库操作" class="headerlink" title="python 连接数据库的步骤并实现查询数据库操作"></a>python 连接数据库的步骤并实现查询数据库操作</h3>
+      <p>连接前准备： pip3 install pymysql 安装 pymysql 包</p>
+<p>第一步：导入 pymysql 模块 即 import pymysql</p>
+<p>第二步：建立数据库连接对象（相当于建立一条通信的高速公路）</p>
+<p>语法：connection = pymysql.connect（host，port，root，possword，database，charset）</p>
+<p>参数详解：</p>
+<p>host：数据库所在的主机</p>
+<p>port：连接数据库主机的端口号，可省略，默认3306</p>
+<p>user：连接数据库用户名</p>
+<p>password：连接数据库密码</p>
+<p>database：要连接的数据库名</p>
+<p>charset：通信采用的编码，可省略，默认是 utf-8</p>
+<p>第三步：在连接（公路）的基础上，（利用高速公路）创建游标对象（相当于高速公路上的通信兵）<br>详解：cursor 相当于数据库与 python 端的通信兵，数据库数据的操作以及取出都是靠这通信兵来完成</p>
+<p>语法：游标对象 = 连接对象.cursor（）  例如 cursor_obj = connection.cursor（）</p>
+<p>第四步：利用通信兵的 execute 方法对数据库的数据进行查询操作，并返回影响数据库几行数据的结果！</p>
+<p>关键字：execute</p>
+<p>语法：num_result = cursor_obj.execute（SQL语句）</p>
+<p>注意：</p>
+<p>1：返回的结果是num类型</p>
+<p>2：SQL语句是查询语句那就影响所有行数</p>
+<p>3：SQL语句是字符串类型</p>
+<p>第五步：利用通信兵的fetchone或者fetchall方法查询数据库的数据</p>
+<p>关键字：</p>
+<p>fetchone（）：查询数据库第一行数据</p>
+<p>fetchall（）：查询数据库所有数据</p>
+<p>语法：</p>
+<p>1：data_result = cursor_obj.fetchone( )</p>
+<p>2：data_result = cursor_obj.fetchall( )</p>
+<p>注意：fetchone或者fetchall方法查询数据返回的结果都是元组，不同的是fetchone返回的是一个元组，如果数据库有多行数据则fetchall返回的是元组的嵌套</p>
+<p>第六步：关闭通信兵以及高速公路</p>
+<p>关键字：close</p>
+<p>语法：</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">connection.close（）</span><br><span class="line">cursor_obj.close( )</span><br></pre></td></tr></table></div></figure>
+<p>截图演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012152014285.png"  alt="image-20211012152014285">
+      </p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012152021827.png"  alt="image-20211012152021827">
+      </p>
+
+        <h3 id="用-python-连接数据库并实现数据库的增删改操作"   >
+          <a href="#用-python-连接数据库并实现数据库的增删改操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#用-python-连接数据库并实现数据库的增删改操作" class="headerlink" title="用 python 连接数据库并实现数据库的增删改操作"></a>用 python 连接数据库并实现数据库的增删改操作</h3>
+      <p>关键字：execute</p>
+<p>语法：</p>
+<p>返回影响行数值 = 游标对象 . execute（增删改SQL语句） 例如 result_num = cursor_obj.execute(SQL语句)</p>
+<p>连接对象.commit（）  即对数据表修改后需要提交！！</p>
+<p>注意事项：</p>
+<p>1：在对数据库进行增删改操作之后，需要提交修改，做的更改才会生效，否则不生效</p>
+<p>2：对数据库进行增删改需要提交，查询操作不需要提交！</p>
+<p>3：commit提交不是用游标对象提交，而是用连接对象来提交</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012152039698.png"  alt="image-20211012152039698">
+      </p>
+
+        <h3 id="游标对象的-fetchone-与-fetchall-方法在数据库不同操作时打印结果的不同！"   >
+          <a href="#游标对象的-fetchone-与-fetchall-方法在数据库不同操作时打印结果的不同！" class="heading-link"><i class="fas fa-link"></i></a><a href="#游标对象的-fetchone-与-fetchall-方法在数据库不同操作时打印结果的不同！" class="headerlink" title="游标对象的 fetchone 与 fetchall 方法在数据库不同操作时打印结果的不同！"></a>游标对象的 fetchone 与 fetchall 方法在数据库不同操作时打印结果的不同！</h3>
+      <p>答：fetchone（）与fetchall（）方法只有在查询数据库（即查询数据库的SQL语句：select……）的时候才能打印出数据，当增删改数据库里面数据的时候，使用fetchone（）或fetchall（）方法是查询不出来数据的</p>
+
+        <h2 id="SQL防注入【重点】"   >
+          <a href="#SQL防注入【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#SQL防注入【重点】" class="headerlink" title="SQL防注入【重点】"></a>SQL防注入【重点】</h2>
+      
+        <h3 id="什么是SQL注入"   >
+          <a href="#什么是SQL注入" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是SQL注入" class="headerlink" title="什么是SQL注入"></a>什么是SQL注入</h3>
+      <p>答：在查询数据库数据操作时，当别人在输入一些特殊的字符串的时候，可能会获得我们数据库里面的大量数据，但是这些数据我们是不想让它获取的，这样就造成了数据泄露，也称为SQL注入</p>
+
+        <h3 id="怎么防止SQL注入"   >
+          <a href="#怎么防止SQL注入" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么防止SQL注入" class="headerlink" title="怎么防止SQL注入"></a>怎么防止SQL注入</h3>
+      <p>实现点：在利用 cursor 通信兵对象的 execute 方法时，向这个方法内传入第二个参数可有效防止SQL注入（占位符）</p>
+<p>实现语法：num_result = cur_obj.execute(SQL语句，params)  其中 params 是一个列表参数，列表内存放着SQL语句要查询的字段名或其他参数</p>
+<p>注意：参数列表中可以有多个参数，因此SQL语句中也要有多个占位符与其一一对应，</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012152104800.png"  alt="image-20211012152104800">
+      </p>
+<p>未完待续…..</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/12/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%96%E7%A8%8B/">http://pythonlamb.github.io/2021/10/12/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%96%E7%A8%8B/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/Mysql%E6%93%8D%E4%BD%9C/">Mysql操作</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/12/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E9%AB%98%E7%BA%A7/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Mysql操作——数据库高级</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/11/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E8%BF%9B%E9%98%B6%E6%8C%87%E4%BB%A4%E8%AF%AD%E6%B3%95/"><span class="paginator-prev__text">Mysql操作——进阶指令语法</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%96%E9%94%AE%E4%BD%BF%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">
+          外键使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E9%94%AE%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.</span> <span class="toc-text">
+          外键的使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%A4%96%E9%94%AE"><span class="toc-number">1.2.</span> <span class="toc-text">
+          什么是外键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%90%91%E5%B7%B2%E7%BB%8F%E5%AD%98%E5%9C%A8%E7%9A%84%E5%AD%97%E6%AE%B5%E6%B7%BB%E5%8A%A0%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="toc-number">1.3.</span> <span class="toc-text">
+          怎么向已经存在的字段添加外键约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%9C%A8%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%97%B6%E6%B7%BB%E5%8A%A0%E5%A4%96%E9%94%AE"><span class="toc-number">1.4.</span> <span class="toc-text">
+          怎么在创建数据表时添加外键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%E8%A1%A8%E4%B8%AD%E7%9A%84%E5%A4%96%E9%94%AE%E5%AD%97%E6%AE%B5%E5%90%8D%E7%A7%B0"><span class="toc-number">1.5.</span> <span class="toc-text">
+          怎么查询数据表中的外键字段名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E8%A1%A8%E4%B8%AD%E7%9A%84%E5%AD%97%E6%AE%B5%E5%A4%96%E9%94%AE"><span class="toc-number">1.6.</span> <span class="toc-text">
+          怎么删除数据表中的字段外键</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E5%9B%BE%E7%9A%84%E6%A6%82%E5%BF%B5%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">2.</span> <span class="toc-text">
+          视图的概念【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%A7%86%E5%9B%BE%EF%BC%8C%E8%A7%86%E5%9B%BE%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">2.1.</span> <span class="toc-text">
+          什么是视图，视图的使用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E5%9B%BE%E7%9A%84%E4%BD%BF%E7%94%A8%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          视图的使用【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E5%9B%BE%E7%9A%84%E5%88%9B%E5%BB%BA%E8%AF%AD%E6%B3%95%E4%BB%A5%E5%8F%8A%E6%80%8E%E4%B9%88%E6%9F%A5%E7%9C%8B%E8%A7%86%E5%9B%BE%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E6%88%90%E5%8A%9F"><span class="toc-number">3.1.</span> <span class="toc-text">
+          视图的创建语法以及怎么查看视图是否创建成功</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%9F%A5%E7%9C%8B%E8%A7%86%E5%9B%BE%E5%86%85%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BB%A5%E5%8F%8A%E6%80%8E%E4%B9%88%E5%88%A0%E9%99%A4%E8%A7%86%E5%9B%BE"><span class="toc-number">3.2.</span> <span class="toc-text">
+          怎么查看视图内的数据以及怎么删除视图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E6%A6%82%E5%BF%B5%E5%8F%8A%E7%89%B9%E6%80%A7%E3%80%90%E9%9D%A2%E8%AF%95%E9%A2%98%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          事务概念及特性【面试题】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E7%89%A9%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">4.1.</span> <span class="toc-text">
+          事物的使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7%EF%BC%88ACID%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">
+          事务的四大特性（ACID）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E4%BD%BF%E7%94%A8%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          事务使用【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%A1%A8%E5%BC%95%E6%93%8E%E4%BB%A5%E5%8F%8A%E6%80%8E%E4%B9%88%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E8%A1%A8%E8%A1%A8%E5%BC%95%E6%93%8E%E5%88%86%E7%B1%BB"><span class="toc-number">5.1.</span> <span class="toc-text">
+          什么是表引擎以及怎么查看数据表表引擎分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E8%A1%A8%E4%BD%BF%E7%94%A8%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88%E8%A1%A8%E5%BC%95%E6%93%8E"><span class="toc-number">5.2.</span> <span class="toc-text">
+          怎么查看数据表使用的是什么表引擎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#begin%E3%80%81commit%E3%80%81rollback%E5%85%B3%E9%94%AE%E5%AD%97%E5%AF%B9%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">5.3.</span> <span class="toc-text">
+          begin、commit、rollback关键字对事务的影响</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E4%BA%8B%E5%8A%A1%E7%9A%84ACID%E7%89%B9%E6%80%A7%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          验证事务的ACID特性【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%AA%8C%E8%AF%81%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E6%80%A7%EF%BC%88I%EF%BC%89"><span class="toc-number">6.1.</span> <span class="toc-text">
+          如何验证事务的隔离性（I）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%89%E8%8C%83%E5%BC%8F%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91"><span class="toc-number">7.</span> <span class="toc-text">
+          数据库的三范式【了解】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E7%9A%84%E7%AC%AC%E4%B8%80%E3%80%81%E7%AC%AC%E4%BA%8C%E3%80%81%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8F"><span class="toc-number">7.1.</span> <span class="toc-text">
+          数据库设计的第一、第二、第三范式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#E-R%E6%A8%A1%E5%9E%8B%E5%8F%8A%E8%A1%A8%E9%97%B4%E5%85%B3%E7%B3%BB%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91"><span class="toc-number">8.</span> <span class="toc-text">
+          E-R模型及表间关系【了解】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#E-R%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">8.1.</span> <span class="toc-text">
+          E-R模型的使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#E-R%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86"><span class="toc-number">8.2.</span> <span class="toc-text">
+          E-R模型的组成部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%A1%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E4%B8%80%E5%AF%B9%E4%B8%80%E3%80%81%E4%B8%80%E5%AF%B9%E5%A4%9A%E3%80%81%E5%A4%9A%E5%AF%B9%E5%A4%9A%E5%85%B3%E7%B3%BB"><span class="toc-number">8.3.</span> <span class="toc-text">
+          数据表之间的一对一、一对多、多对多关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#58%E5%88%B0%E5%AE%B6%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%8430%E6%9D%A1%E5%86%9B%E8%A7%84%E8%A7%A3%E8%AF%BB%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">9.</span> <span class="toc-text">
+          58到家数据库的30条军规解读【重点】</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9CMySQL%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">10.</span> <span class="toc-text">
+          python连接操作MySQL【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#python-%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">10.1.</span> <span class="toc-text">
+          python 连接数据库的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%AD%A5%E9%AA%A4%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="toc-number">10.2.</span> <span class="toc-text">
+          python 连接数据库的步骤并实现查询数据库操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8-python-%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9%E6%93%8D%E4%BD%9C"><span class="toc-number">10.3.</span> <span class="toc-text">
+          用 python 连接数据库并实现数据库的增删改操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B8%E6%A0%87%E5%AF%B9%E8%B1%A1%E7%9A%84-fetchone-%E4%B8%8E-fetchall-%E6%96%B9%E6%B3%95%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E5%90%8C%E6%93%8D%E4%BD%9C%E6%97%B6%E6%89%93%E5%8D%B0%E7%BB%93%E6%9E%9C%E7%9A%84%E4%B8%8D%E5%90%8C%EF%BC%81"><span class="toc-number">10.4.</span> <span class="toc-text">
+          游标对象的 fetchone 与 fetchall 方法在数据库不同操作时打印结果的不同！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E9%98%B2%E6%B3%A8%E5%85%A5%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">11.</span> <span class="toc-text">
+          SQL防注入【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSQL%E6%B3%A8%E5%85%A5"><span class="toc-number">11.1.</span> <span class="toc-text">
+          什么是SQL注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E9%98%B2%E6%AD%A2SQL%E6%B3%A8%E5%85%A5"><span class="toc-number">11.2.</span> <span class="toc-text">
+          怎么防止SQL注入</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

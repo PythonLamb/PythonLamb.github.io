@@ -1,0 +1,868 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：Python导入模块的几种方式及其注意事项、单继承与多继承、property装饰的使用、魔法属性与魔法方法、with上下文方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="黑马程序员学Python——导入模块与继承问题">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E4%B8%8E%E7%BB%A7%E6%89%BF%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：Python导入模块的几种方式及其注意事项、单继承与多继承、property装饰的使用、魔法属性与魔法方法、with上下文方式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184426752.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184426752.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184507006.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184533216.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184548407.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184600024.png">
+<meta property="og:image" content="c:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20211012184615552.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184711976.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184720347.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184743276.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184751624.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184810727.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184824680.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184831694.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184831694.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184855505.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184915904.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184922866.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184943566.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184958749.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185007087.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185026156.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185104567.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185131386.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185142289.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185202109.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185218659.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185237938.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185248902.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185258083.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185314019.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185335037.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185346280.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185403180.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185419418.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185438098.png">
+<meta property="article:published_time" content="2021-10-12T10:30:48.000Z">
+<meta property="article:modified_time" content="2021-10-12T10:54:47.835Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="Python基础语法篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184426752.png"><title>黑马程序员学Python——导入模块与继承问题 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E4%B8%8E%E7%BB%A7%E6%89%BF%E9%97%AE%E9%A2%98/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">黑马程序员学Python——导入模块与继承问题</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-12</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-12</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.9k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">21分</span></span></div></header><div class="post-body"><p>本文主讲：Python导入模块的几种方式及其注意事项、单继承与多继承、property装饰的使用、魔法属性与魔法方法、with上下文方式</p>
+<span id="more"></span>
+
+
+
+
+
+
+        <h2 id="检测字符串文件的后缀【重点】"   >
+          <a href="#检测字符串文件的后缀【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#检测字符串文件的后缀【重点】" class="headerlink" title="检测字符串文件的后缀【重点】"></a>检测字符串文件的后缀【重点】</h2>
+      
+        <h3 id="怎么检测文件（字符串）的后缀！"   >
+          <a href="#怎么检测文件（字符串）的后缀！" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么检测文件（字符串）的后缀！" class="headerlink" title="怎么检测文件（字符串）的后缀！"></a>怎么检测文件（字符串）的后缀！</h3>
+      <p>关键字：endswith</p>
+<p>语法：文件字符串.endswith（“后缀”）</p>
+<p>注意事项：</p>
+<p>1：后缀要加上.      例如 .py  .txt</p>
+<p>2：文件字符串.endswith（“后缀”）返回的是一个布尔值，是括号里面的后缀则返回True，不是括号里面的后缀返回False</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184426752.png"  alt="image-20211012184426752">
+      </p>
+
+        <h2 id="import导入模块路径【重点】"   >
+          <a href="#import导入模块路径【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#import导入模块路径【重点】" class="headerlink" title="import导入模块路径【重点】"></a>import导入模块路径【重点】</h2>
+      
+        <h3 id="如何使用模块内的变量？"   >
+          <a href="#如何使用模块内的变量？" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何使用模块内的变量？" class="headerlink" title="如何使用模块内的变量？"></a>如何使用模块内的变量？</h3>
+      <p>语法：模块名.变量名</p>
+<p>实例：print（moudle.name） 即可打印 moudle 模块内name变量的值</p>
+<p>注意事项：不仅可以使用模块内的函数以及类还可以使用变量等其他一切资源！</p>
+<p>​    </p>
+
+        <h3 id="如何查看-python-解释器寻找模块所在路径的方法"   >
+          <a href="#如何查看-python-解释器寻找模块所在路径的方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何查看-python-解释器寻找模块所在路径的方法" class="headerlink" title="如何查看 python 解释器寻找模块所在路径的方法"></a>如何查看 python 解释器寻找模块所在路径的方法</h3>
+      <p>关键字：sys.path</p>
+<p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="built_in">print</span>（sys.path）</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>注意：sys.path是一个列表，里面存放着 python 解释器查找模块的所有路径</p>
+<p>演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184426752.png" >
+      </p>
+
+        <h3 id="如何利用-import-导入指定路径的模块"   >
+          <a href="#如何利用-import-导入指定路径的模块" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何利用-import-导入指定路径的模块" class="headerlink" title="如何利用 import 导入指定路径的模块"></a>如何利用 import 导入指定路径的模块</h3>
+      <p>第一步：查看目标模块的路径</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184507006.png"  alt="image-20211012184507006">
+      </p>
+<p>第二步：将目标模块路径加到 python 查找模块路径的列表内即可！</p>
+<p>添加方法：</p>
+<p>1：列表.append（待添加数据）</p>
+<p>2：列表.insert（位置，待添加数据）</p>
+<p>注意事项：</p>
+<p>1：向 sys.path 列表（python查找模块的路径列表）内添加完模块目标路径之后，程序重新运行后，添加的那些数据会被清空！只是临时添加，需要重新添加否则报错</p>
+<p>2：必须要先添加模块所在路径才能 import 导入 目标模块，否则报错！！</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184533216.png"  alt="image-20211012184533216">
+      </p>
+<p>关于注意事项1的截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184548407.png"  alt="image-20211012184548407">
+      </p>
+
+        <h2 id="import的reload加载问题【重点】"   >
+          <a href="#import的reload加载问题【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#import的reload加载问题【重点】" class="headerlink" title="import的reload加载问题【重点】"></a>import的reload加载问题【重点】</h2>
+      
+        <h3 id="为什么要在一段程序中重新加载模块"   >
+          <a href="#为什么要在一段程序中重新加载模块" class="heading-link"><i class="fas fa-link"></i></a><a href="#为什么要在一段程序中重新加载模块" class="headerlink" title="为什么要在一段程序中重新加载模块"></a>为什么要在一段程序中重新加载模块</h3>
+      <p>答：一段程序用到某模块运行时，其他人修改了这个模块的代码，但是运行的这段代码用的还是没修改之前的模块，这样就会造成损失，所以需要重新加载模块</p>
+<p>注意事项：import 有防止模块重复功能，就是导入两个相同的模块，后面导入的那个一样的模块就不起作用了！</p>
+<p>问题演示:</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184600024.png"  alt="image-20211012184600024">
+      </p>
+
+        <h3 id="使用-reload-方法重新加载模块"   >
+          <a href="#使用-reload-方法重新加载模块" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用-reload-方法重新加载模块" class="headerlink" title="使用 reload 方法重新加载模块"></a>使用 reload 方法重新加载模块</h3>
+      <p>关键字：reload</p>
+<p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> imp <span class="keyword">import</span> reload</span><br><span class="line">reload（待加载的模块名）</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20211012184615552.png"  alt="image-20211012184615552">
+      </p>
+
+        <h2 id="from…import-的私有化问题【重点】"   >
+          <a href="#from…import-的私有化问题【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#from…import-的私有化问题【重点】" class="headerlink" title="from…import * 的私有化问题【重点】"></a>from…import * 的私有化问题【重点】</h2>
+      
+        <h3 id="什么是模块内变量私有化？"   >
+          <a href="#什么是模块内变量私有化？" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是模块内变量私有化？" class="headerlink" title="什么是模块内变量私有化？"></a>什么是模块内变量私有化？</h3>
+      <p>答：只允许模块内的变量在模块内运行时被调用打印，在别的程序内无法调用此变量</p>
+
+        <h3 id="怎么实现模块内变量的私有化？"   >
+          <a href="#怎么实现模块内变量的私有化？" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么实现模块内变量的私有化？" class="headerlink" title="怎么实现模块内变量的私有化？"></a>怎么实现模块内变量的私有化？</h3>
+      <p>关键词：_变量名</p>
+<p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> 模块名 <span class="keyword">import</span> *</span><br><span class="line"><span class="built_in">print</span>（_变量名）</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>注意：</p>
+<p>1：上述语法执行就会报错，因为用 from 模块名 import * 导入模块时，被下划线处理的变量是无法被导入的因此报错</p>
+<p>2：在模块内利用下划线_  处理的变量名，只有在 from 模块名 import * 时才能实现变量私有化，其他的任何导入方法都可以进行导入该变量！</p>
+<p>图示：</p>
+<p>模块内代码</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184711976.png"  alt="image-20211012184711976">
+      </p>
+<p>导入模块代码</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184720347.png"  alt="image-20211012184720347">
+      </p>
+
+        <h2 id="import和from…import的区别【重点】"   >
+          <a href="#import和from…import的区别【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#import和from…import的区别【重点】" class="headerlink" title="import和from…import的区别【重点】"></a>import和from…import的区别【重点】</h2>
+      <p>目标：掌握 import 与 from …. import …. 两种导入模块方式的区别</p>
+
+        <h3 id="import-与-from-…-import-…-两种导入模块方式的区别"   >
+          <a href="#import-与-from-…-import-…-两种导入模块方式的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#import-与-from-…-import-…-两种导入模块方式的区别" class="headerlink" title="import 与 from …. import …. 两种导入模块方式的区别"></a>import 与 from …. import …. 两种导入模块方式的区别</h3>
+      <p>import导入模块：直接引用模块里面的所有内容，导入模块后对该模块内的函数、变量做出更改，那么原始模块内的数据也随之发生改变</p>
+<p>from …. import ….导入模块：复制导入模块的所有变量、函数以及类并且拷贝到当前py文件内，不是直接引用模块内的方法等，这样对模块内的变量等进行修改后，原始模块内的数据将不发生变化！</p>
+<p>注意事项：在掌握两种导入模块的区别之后，当遇到多个文件共享一个模块内的变量时（一个文件更改模块内容，其他文件可一接收到更改后的内容），那我们就要用到第一种导入模块的方式哦（import）</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184743276.png"  alt="image-20211012184743276">
+      </p>
+<p>代码：</p>
+<p>girl模块内的代码</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184751624.png"  alt="image-20211012184751624">
+      </p>
+
+        <h2 id="可变参数的拆包问题【重点】"   >
+          <a href="#可变参数的拆包问题【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#可变参数的拆包问题【重点】" class="headerlink" title="可变参数的拆包问题【重点】"></a>可变参数的拆包问题【重点】</h2>
+      
+        <h3 id="可变参数-args-与-kwargs-分别接受什么形式的数据？"   >
+          <a href="#可变参数-args-与-kwargs-分别接受什么形式的数据？" class="heading-link"><i class="fas fa-link"></i></a><a href="#可变参数-args-与-kwargs-分别接受什么形式的数据？" class="headerlink" title="可变参数 *args 与 **kwargs 分别接受什么形式的数据？"></a>可变参数 *args 与 **kwargs 分别接受什么形式的数据？</h3>
+      <p><code>*args</code>：将接收的数据存储在元组内</p>
+<p>接收数据形式：a ,b,c,d,e      数据之间逗号分割</p>
+<p><code>**kwargs</code>：将接受的数据存储到字典内<br>接受数据形式：a = 10，b = 20        赋值的方式</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184810727.png"  alt="image-20211012184810727">
+      </p>
+
+        <h3 id="如何将数据拆包并传递给其他函数"   >
+          <a href="#如何将数据拆包并传递给其他函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何将数据拆包并传递给其他函数" class="headerlink" title="如何将数据拆包并传递给其他函数"></a>如何将数据拆包并传递给其他函数</h3>
+      <p>首先分析出现下面问题的原因</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184824680.png"  alt="image-20211012184824680">
+      </p>
+<p>问题修正</p>
+<p>加上<code>*</code>与 <code>**</code> 可将 元组和字典拆包</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184831694.png"  alt="image-20211012184831694">
+      </p>
+
+        <h2 id="单继承中的super【重点】"   >
+          <a href="#单继承中的super【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#单继承中的super【重点】" class="headerlink" title="单继承中的super【重点】"></a>单继承中的super【重点】</h2>
+      
+        <h3 id="类中的-super（）方法的作用"   >
+          <a href="#类中的-super（）方法的作用" class="heading-link"><i class="fas fa-link"></i></a><a href="#类中的-super（）方法的作用" class="headerlink" title="类中的 super（）方法的作用"></a>类中的 super（）方法的作用</h3>
+      <p>答：调用父类中的方法<br>语法：super（）. 父类方法     例如 super.（）<strong>init</strong>(参数1，参数2…..）  调用父类的初始化方法 <strong>init</strong>(参数1，参数2…..)<br>注意事项：super调用父类的方法是按照 mro 顺序来调用的，因此多继承中不一定调用的就是父类方法！！</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184831694.png" >
+      </p>
+
+        <h3 id="什么是-mro-序列"   >
+          <a href="#什么是-mro-序列" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是-mro-序列" class="headerlink" title="什么是__mro__序列"></a>什么是__mro__序列</h3>
+      <p>功能：查看目标类的父类以及祖父类等等一直向上，直到 object</p>
+<p>语法：目标类.<strong>mro</strong></p>
+<p>注意事项：super调用父类的方法是按照 mro 顺序来调用的，因此多继承中不一定调用的就是父类方法！！</p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184855505.png"  alt="image-20211012184855505">
+      </p>
+
+        <h3 id="单继承类中的-super-调用父类方法是遵循-mro-序列调用的"   >
+          <a href="#单继承类中的-super-调用父类方法是遵循-mro-序列调用的" class="heading-link"><i class="fas fa-link"></i></a><a href="#单继承类中的-super-调用父类方法是遵循-mro-序列调用的" class="headerlink" title="单继承类中的 super 调用父类方法是遵循__mro__序列调用的"></a>单继承类中的 super 调用父类方法是遵循__mro__序列调用的</h3>
+      <p>代码截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184915904.png"  alt="image-20211012184915904">
+      </p>
+<p>结果截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184922866.png"  alt="image-20211012184922866">
+      </p>
+
+        <h2 id="多继承和MRO顺序1【重点】"   >
+          <a href="#多继承和MRO顺序1【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#多继承和MRO顺序1【重点】" class="headerlink" title="多继承和MRO顺序1【重点】"></a>多继承和MRO顺序1【重点】</h2>
+      <p>注意事项：super调用父类的方法是按照 mro 顺序来调用的，因此多继承中不一定调用的就是父类方法！！</p>
+<p>目标：<br>1：掌握子类继承父类时调用父类方法的两种形式以及区别</p>
+<p>2：掌握什么是多继承中的菱形继承（钻石继承）</p>
+<p>2：掌握多继承中的mro顺序作用</p>
+
+        <h3 id="子类继承父类时调用父类方法的两种形式以及区别"   >
+          <a href="#子类继承父类时调用父类方法的两种形式以及区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#子类继承父类时调用父类方法的两种形式以及区别" class="headerlink" title="子类继承父类时调用父类方法的两种形式以及区别"></a>子类继承父类时调用父类方法的两种形式以及区别</h3>
+      <p>方法一：父类名.方法名（self，参数1，参数2……..）   例如 parent . <strong>init</strong>(self , name , age , gender)</p>
+<p>方法二：super（）. 方法名（参数1，参数2…..）        例如 super（）.__init__（name，age，gender）</p>
+<p>两种方法的区别：第一种方法继承时要传递参数 self    第二种方法不需要传递 self ！！</p>
+<p>图示：</p>
+<p>父类名.方法名（self，参数1，参数2……..）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184943566.png"  alt="image-20211012184943566">
+      </p>
+<p>super（）. 方法名（参数1，参数2…..）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012184958749.png"  alt="image-20211012184958749">
+      </p>
+
+        <h3 id="什么是多继承中的菱形继承（钻石继承）"   >
+          <a href="#什么是多继承中的菱形继承（钻石继承）" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是多继承中的菱形继承（钻石继承）" class="headerlink" title="什么是多继承中的菱形继承（钻石继承）"></a>什么是多继承中的菱形继承（钻石继承）</h3>
+      <p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185007087.png"  alt="image-20211012185007087">
+      </p>
+<p>注意事项：</p>
+<p>1：出现菱形继承时，如果操作不当（利用父类名调用父类方法），可能会出现祖父类的某方法调用多次（只想调用一次），这是我们必须要用super（）继承父类方法来解决这一问题！！！</p>
+<p>2：因此在多继承中应该尽量避免使用父类名.父类方法  这种形式调用父类的方法，会造成有的父类方法调用两次，使用super调用了完美解决</p>
+
+        <h3 id="多继承中的mro顺序作用"   >
+          <a href="#多继承中的mro顺序作用" class="heading-link"><i class="fas fa-link"></i></a><a href="#多继承中的mro顺序作用" class="headerlink" title="多继承中的mro顺序作用"></a>多继承中的mro顺序作用</h3>
+      <p>使用语法：</p>
+<p>1：类名.mro（）</p>
+<p>2：类名.<strong>mro</strong></p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185026156.png"  alt="image-20211012185026156">
+      </p>
+<p>注意事项：</p>
+<p>1：多继承中利用 super 调用父类的方法，不一定是调用父类的方法，而是按照多继承中的 mro 顺序来调用的</p>
+<p>2：如果子类利用super调用父类方法，父类中没有super方法 就不会按照 mro 顺序调用方法，因此要想按照 mro 顺序调用方法，必须要求所有参与继承的家族类中都要有 super方法！</p>
+<p>注意事项：super调用父类的方法是按照 mro 顺序来调用的，因此多继承中不一定调用的就是父类方法！！</p>
+
+        <h2 id="property装饰的基本使用【重点】"   >
+          <a href="#property装饰的基本使用【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#property装饰的基本使用【重点】" class="headerlink" title="property装饰的基本使用【重点】"></a>property装饰的基本使用【重点】</h2>
+      
+        <h3 id="property装饰类中的函数的作用！"   >
+          <a href="#property装饰类中的函数的作用！" class="heading-link"><i class="fas fa-link"></i></a><a href="#property装饰类中的函数的作用！" class="headerlink" title="property装饰类中的函数的作用！"></a>property装饰类中的函数的作用！</h3>
+      <p>功能：在类中被 property 装饰后的函数，调用这个函数可像调用类中的属性一样使用（不用加括号了）！</p>
+<p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">function</span>（<span class="title">self</span>）</span></span><br><span class="line"><span class="function">	…….</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185104567.png"  alt="image-20211012185104567">
+      </p>
+
+        <h3 id="在类中使用-property-装饰的注意事项"   >
+          <a href="#在类中使用-property-装饰的注意事项" class="heading-link"><i class="fas fa-link"></i></a><a href="#在类中使用-property-装饰的注意事项" class="headerlink" title="在类中使用 property 装饰的注意事项"></a>在类中使用 property 装饰的注意事项</h3>
+      <p>1：装饰的类函数中必须只有一个参数self，不允许有其他的参数！</p>
+
+        <h2 id="property装饰的其他使用方法【重点】"   >
+          <a href="#property装饰的其他使用方法【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#property装饰的其他使用方法【重点】" class="headerlink" title="property装饰的其他使用方法【重点】"></a>property装饰的其他使用方法【重点】</h2>
+      
+        <h3 id="property-装饰函数的-xxxxx-setter-形式的功能！"   >
+          <a href="#property-装饰函数的-xxxxx-setter-形式的功能！" class="heading-link"><i class="fas fa-link"></i></a><a href="#property-装饰函数的-xxxxx-setter-形式的功能！" class="headerlink" title="property 装饰函数的 @xxxxx.setter 形式的功能！"></a>property 装饰函数的 @xxxxx.setter 形式的功能！</h3>
+      <p>功能：被 @xxxxx.setter 装饰的类里面的函数可以传递参数进去</p>
+<p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@price.setter</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">price</span>（）</span></span><br><span class="line"><span class="function">	……..</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>注意事项：</p>
+<p>1：@xxxxx.setter 中的 xxxxx 是被装饰的函数名！</p>
+<p>2：被@xxxxx.setter 装饰后的函数 通过实例对象.装饰函数名 = 参数   即可向被装饰后的函数传递参数！</p>
+<p>3：@xxxxx.setter 这种装饰函数必须要在 property 装饰函数的基础上才能使用，也就是说类里面必须有 property装饰方法，才能使用 @xxxxx.setter ，并且这两种方法装饰的函数名一样！</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185131386.png"  alt="image-20211012185131386">
+      </p>
+
+        <h3 id="property-装饰函数的-xxxxx-deleter-形式的功能！"   >
+          <a href="#property-装饰函数的-xxxxx-deleter-形式的功能！" class="heading-link"><i class="fas fa-link"></i></a><a href="#property-装饰函数的-xxxxx-deleter-形式的功能！" class="headerlink" title="property 装饰函数的 @xxxxx.deleter 形式的功能！"></a>property 装饰函数的 @xxxxx.deleter 形式的功能！</h3>
+      <h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@price.deleter</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">price</span>（）</span></span><br><span class="line"><span class="function">	……..</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185142289.png"  alt="image-20211012185142289">
+      </p>
+
+        <h2 id="prepery作为类属性的值传入【重点】"   >
+          <a href="#prepery作为类属性的值传入【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#prepery作为类属性的值传入【重点】" class="headerlink" title="prepery作为类属性的值传入【重点】"></a>prepery作为类属性的值传入【重点】</h2>
+      
+        <h3 id="类属性与实例属性的区别"   >
+          <a href="#类属性与实例属性的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#类属性与实例属性的区别" class="headerlink" title="类属性与实例属性的区别"></a>类属性与实例属性的区别</h3>
+      <p>定义区别：实例属性是在__init__方法里面定义的属性，而类属性是在类里面并且所有方法外面定义的属性</p>
+<p>调用区别：实例属性只能用类创建的实例调用，类属性可以用类名调用也可以用类创建的实例调用</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185202109.png"  alt="image-20211012185202109">
+      </p>
+
+        <h3 id="property作为类属性的值传入其中四个参数作用及其使用方法！"   >
+          <a href="#property作为类属性的值传入其中四个参数作用及其使用方法！" class="heading-link"><i class="fas fa-link"></i></a><a href="#property作为类属性的值传入其中四个参数作用及其使用方法！" class="headerlink" title="property作为类属性的值传入其中四个参数作用及其使用方法！"></a>property作为类属性的值传入其中四个参数作用及其使用方法！</h3>
+      <p>语法：类属性变量名 = property（参数1，参数2，参数3，参数4）</p>
+<p>其中参数1到参数3都是函数名，参数4是字符串类型的值！</p>
+<p>使用方法：</p>
+<p>1：当写下 类对象 . 类属性变量名   会自动调用名为参数1的函数</p>
+<p>2：当写下 类对象 . 类属性变量名 = 500  会自动调用名为参数2的函数（这个函数有参数 传递实参为500）</p>
+<p>3：当写下 del 类对象 . 类属性变量名      会自动调用名为参数3的函数</p>
+<p>4：当写下 类名.类属性变量名._ <em>doc</em> _   可打印参数4的值</p>
+<p>注意事项：想打印参数4的值，要注意书写的不是类对象而是类名</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185218659.png"  alt="image-20211012185218659">
+      </p>
+
+        <h2 id="魔法属性和魔法方法【重点】"   >
+          <a href="#魔法属性和魔法方法【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#魔法属性和魔法方法【重点】" class="headerlink" title="魔法属性和魔法方法【重点】"></a>魔法属性和魔法方法【重点】</h2>
+      
+        <h3 id="类的魔法属性-doc-的功能"   >
+          <a href="#类的魔法属性-doc-的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#类的魔法属性-doc-的功能" class="headerlink" title="类的魔法属性 _ doc _的功能"></a>类的魔法属性 _ <em>doc</em> _的功能</h3>
+      <p>功能：查看类的说明（注释）或者类里面方法的注释</p>
+<p>语法：</p>
+<p>1：类名.<strong>doc</strong>    或 类对象.<strong>doc</strong>             查看类的注释</p>
+<p>2：类名.方法名.<strong>doc</strong>  或  类对象.方法名.<strong>doc</strong>              查看类里面方法的注释</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185237938.png"  alt="image-20211012185237938">
+      </p>
+
+        <h3 id="类的魔法属性-module-与-class-的功能"   >
+          <a href="#类的魔法属性-module-与-class-的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#类的魔法属性-module-与-class-的功能" class="headerlink" title="类的魔法属性 module 与 __class__的功能"></a>类的魔法属性 <strong>module</strong> 与 __class__的功能</h3>
+      <p>__module__功能：查看当前类所在的模块！</p>
+<p>语法：类名.<strong>module</strong>  或   类对象.<strong>module</strong></p>
+<p>__class__功能：查看当前对象所属的类！</p>
+<p>语法：类对象.<strong>classes</strong></p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185248902.png"  alt="image-20211012185248902">
+      </p>
+
+        <h3 id="类的魔法方法-init-与-del-的功能"   >
+          <a href="#类的魔法方法-init-与-del-的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#类的魔法方法-init-与-del-的功能" class="headerlink" title="类的魔法方法 init( ) 与 del( ) 的功能"></a>类的魔法方法 <strong>init</strong>( ) 与 <strong>del</strong>( ) 的功能</h3>
+      <p><strong>init</strong>( )功能：初始化魔法方法，在类创建对象时自动调用的方法！注意它不是构造方法，构造方法是__new__( ) 与 <strong>init</strong>( )的统称</p>
+<p> <strong>del</strong>( ) 功能：删除方法，当删除类创建的对象时自动调用的方法！</p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185258083.png"  alt="image-20211012185258083">
+      </p>
+
+        <h3 id="魔术属性-dict-的功能及其使用方法"   >
+          <a href="#魔术属性-dict-的功能及其使用方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#魔术属性-dict-的功能及其使用方法" class="headerlink" title="魔术属性 dict 的功能及其使用方法"></a>魔术属性 <strong>dict</strong> 的功能及其使用方法</h3>
+      <p>功能：查看类对象的实例属性并将属性以键值对的形式存放在字典内或查看类的所有类属性（实例属性除外）和类方法存放在字典内</p>
+<p>语法：</p>
+<p>1：类对象 . <strong>dict</strong><br>2：类名 . <strong>dict</strong></p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185314019.png"  alt="image-20211012185314019">
+      </p>
+
+        <h3 id="魔法方法-call-与-str-功能及其使用方法"   >
+          <a href="#魔法方法-call-与-str-功能及其使用方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#魔法方法-call-与-str-功能及其使用方法" class="headerlink" title="魔法方法 call( ) 与 str( ) 功能及其使用方法"></a>魔法方法 <strong>call</strong>( ) 与 <strong>str</strong>( ) 功能及其使用方法</h3>
+      <p><strong>call</strong>( )功能：当实例化对象加上括号时，就会调用魔法方法__call__( )</p>
+<p>语法：实例对象（）</p>
+<p><strong>str</strong>( ) 功能：当打印实例化对象时，就会调用__str__( ) 魔法方法，注意__str__方法内必须要有返回值，且返回值必须是字符串类型！</p>
+<p>语法：print（实例对象）</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185335037.png"  alt="image-20211012185335037">
+      </p>
+
+        <h3 id="魔法方法-getitem-key-、-setitem-key，value-、delitem-key-的调用方法"   >
+          <a href="#魔法方法-getitem-key-、-setitem-key，value-、delitem-key-的调用方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#魔法方法-getitem-key-、-setitem-key，value-、delitem-key-的调用方法" class="headerlink" title="魔法方法 getitem( key ) 、 setitem( key，value )、delitem( key )的调用方法"></a>魔法方法 <strong>getitem</strong>( key ) 、 <strong>setitem</strong>( key，value )、<strong>delitem</strong>( key )的调用方法</h3>
+      <p><strong>getitem</strong>( key )调用方法：实例对象[key]      就会调用此方法</p>
+<p> <strong>setitem</strong>( key，value )调用方法：实例对象[key] = value          就会调用此方法</p>
+<p><strong>delitem</strong>( key )调用方法：del 实例对象[key]        就会调用此方法</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185346280.png"  alt="image-20211012185346280">
+      </p>
+
+        <h2 id="with管理上下文方式【重点】"   >
+          <a href="#with管理上下文方式【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#with管理上下文方式【重点】" class="headerlink" title="with管理上下文方式【重点】"></a>with管理上下文方式【重点】</h2>
+      
+        <h3 id="利用-with-操作文件的优点"   >
+          <a href="#利用-with-操作文件的优点" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用-with-操作文件的优点" class="headerlink" title="利用 with 操作文件的优点"></a>利用 with 操作文件的优点</h3>
+      <p>答：与单纯的 open 打开文件相比，当 open 打开文件出现错误时，因为资源已经分配，所以对这个文件资源进行关闭操作就会失败，with 方式操作文件可有效解决这一问题！不会出现文件关闭失败的情况！</p>
+
+        <h3 id="with-操作文件的步骤！"   >
+          <a href="#with-操作文件的步骤！" class="heading-link"><i class="fas fa-link"></i></a><a href="#with-操作文件的步骤！" class="headerlink" title="with 操作文件的步骤！"></a>with 操作文件的步骤！</h3>
+      <p>第一步：执行上下文管理类里面的上文方法即 __enter__（）并且返回一个对象，也就是 as 后面的那个变量（实质是打开文件返回的对象）！</p>
+<p>第二步：利用返回的对象对文件进行读写等操作！</p>
+<p>第三步：执行上下文管理类里面的下文方法即 <strong>exit</strong>( ) 即关闭文件！</p>
+<p>注意事项：</p>
+<p>1：执行 __enter__（）上文方法返回的对象也就是 as 后面的 file ，file的实质为  file = open（“文件名”，“打开方式”）的打开文件操作的语句，而非是 open类</p>
+<p>2：下面的注释中有一处错误就是 with open（“text.txt”，“r”） 的 open 不是一个类，而是一个上下文管理函数！！</p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185403180.png"  alt="image-20211012185403180">
+      </p>
+
+        <h3 id="自己构建一个上下文管理器类实现读取指定文件内容"   >
+          <a href="#自己构建一个上下文管理器类实现读取指定文件内容" class="heading-link"><i class="fas fa-link"></i></a><a href="#自己构建一个上下文管理器类实现读取指定文件内容" class="headerlink" title="自己构建一个上下文管理器类实现读取指定文件内容"></a>自己构建一个上下文管理器类实现读取指定文件内容</h3>
+      <p>什么是上下文管理器？</p>
+<p>答：即支持 with 操作的类或者函数！</p>
+<p>上下文管理器类包含的方法：</p>
+<p>1：初始化方法__init__( )  用来接收参数【文件名、打开方式】</p>
+<p>2：上文方法__enter__( ) 用来打开文件并且返回这个对象</p>
+<p>3：下文方法__exit__( ) 用来关闭打开的文件！</p>
+<p>注意事项：类里面如果有多个方法想共用一个变量，那么这个变量要变成实例属性的方式才行，也就是加上self</p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185419418.png"  alt="image-20211012185419418">
+      </p>
+
+        <h3 id="利用装饰器装饰函数的方法实现-with-上下文管理操作文件（读取文件内所有数据）！"   >
+          <a href="#利用装饰器装饰函数的方法实现-with-上下文管理操作文件（读取文件内所有数据）！" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用装饰器装饰函数的方法实现-with-上下文管理操作文件（读取文件内所有数据）！" class="headerlink" title="利用装饰器装饰函数的方法实现 with 上下文管理操作文件（读取文件内所有数据）！"></a>利用装饰器装饰函数的方法实现 with 上下文管理操作文件（读取文件内所有数据）！</h3>
+      <p>实现关键字：</p>
+<p>yield：函数内 yield上方为上文，下方为下文，调用函数时，第一次调用执行到 yield 处，第二次执行从 yield 继续执行！<br>yield有返回数据以及退出函数的功能</p>
+<p>contextlib 库里面的装饰器 contextmanager ：利用 contextmanager 装饰器装饰写好的函数即可实现 with 上下文管理操作文件</p>
+<p>实现步骤：</p>
+<p>第一步：定义一个函数，传递两个参数即文件名以及文件打开方式</p>
+<p>第二步：在函数内部打开指定文件，并用 yield 返回打开文件的对象，yield上方的也就是上文</p>
+<p>第三步：在 yield 下方对打开的文件对象进行关闭！也就是上下文管理的下文</p>
+<p>第四步：导入 contextlib 模块里面的装饰器 contextmanager</p>
+<p>第五步：利用 @contextmanager 装饰写好的函数</p>
+<p>第六步：利用 </p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> 函数名（“文件名”，“打开方式”） <span class="keyword">as</span> file ：</span><br><span class="line">		result = file.read（）</span><br><span class="line">		<span class="built_in">print</span>（result）</span><br></pre></td></tr></table></div></figure>
+<p>读取指定文件的所有数据</p>
+<p>代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012185438098.png"  alt="image-20211012185438098">
+      </p>
+<p>未完待续……</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E4%B8%8E%E7%BB%A7%E6%89%BF%E9%97%AE%E9%A2%98/">http://pythonlamb.github.io/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E4%B8%8E%E7%BB%A7%E6%89%BF%E9%97%AE%E9%A2%98/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/Python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E7%AF%87/">Python基础语法篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/12/%E7%B2%BE%E8%87%B4BOY%E3%80%90%E7%AC%AC%E4%B8%80%E6%9C%9F%E3%80%91/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">精致BOY【第一期】</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94GIL%E9%94%81%E4%B8%8E%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/"><span class="paginator-prev__text">黑马程序员学Python——GIL锁与深浅拷贝</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A3%80%E6%B5%8B%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E4%BB%B6%E7%9A%84%E5%90%8E%E7%BC%80%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">1.</span> <span class="toc-text">
+          检测字符串文件的后缀【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%A3%80%E6%B5%8B%E6%96%87%E4%BB%B6%EF%BC%88%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%89%E7%9A%84%E5%90%8E%E7%BC%80%EF%BC%81"><span class="toc-number">1.1.</span> <span class="toc-text">
+          怎么检测文件（字符串）的后缀！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#import%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E8%B7%AF%E5%BE%84%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">2.</span> <span class="toc-text">
+          import导入模块路径【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9D%97%E5%86%85%E7%9A%84%E5%8F%98%E9%87%8F%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">
+          如何使用模块内的变量？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8B-python-%E8%A7%A3%E9%87%8A%E5%99%A8%E5%AF%BB%E6%89%BE%E6%A8%A1%E5%9D%97%E6%89%80%E5%9C%A8%E8%B7%AF%E5%BE%84%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">
+          如何查看 python 解释器寻找模块所在路径的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8-import-%E5%AF%BC%E5%85%A5%E6%8C%87%E5%AE%9A%E8%B7%AF%E5%BE%84%E7%9A%84%E6%A8%A1%E5%9D%97"><span class="toc-number">2.3.</span> <span class="toc-text">
+          如何利用 import 导入指定路径的模块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#import%E7%9A%84reload%E5%8A%A0%E8%BD%BD%E9%97%AE%E9%A2%98%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          import的reload加载问题【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%9C%A8%E4%B8%80%E6%AE%B5%E7%A8%8B%E5%BA%8F%E4%B8%AD%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD%E6%A8%A1%E5%9D%97"><span class="toc-number">3.1.</span> <span class="toc-text">
+          为什么要在一段程序中重新加载模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-reload-%E6%96%B9%E6%B3%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD%E6%A8%A1%E5%9D%97"><span class="toc-number">3.2.</span> <span class="toc-text">
+          使用 reload 方法重新加载模块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#from%E2%80%A6import-%E7%9A%84%E7%A7%81%E6%9C%89%E5%8C%96%E9%97%AE%E9%A2%98%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          from…import * 的私有化问题【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%A8%A1%E5%9D%97%E5%86%85%E5%8F%98%E9%87%8F%E7%A7%81%E6%9C%89%E5%8C%96%EF%BC%9F"><span class="toc-number">4.1.</span> <span class="toc-text">
+          什么是模块内变量私有化？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E6%A8%A1%E5%9D%97%E5%86%85%E5%8F%98%E9%87%8F%E7%9A%84%E7%A7%81%E6%9C%89%E5%8C%96%EF%BC%9F"><span class="toc-number">4.2.</span> <span class="toc-text">
+          怎么实现模块内变量的私有化？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#import%E5%92%8Cfrom%E2%80%A6import%E7%9A%84%E5%8C%BA%E5%88%AB%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          import和from…import的区别【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#import-%E4%B8%8E-from-%E2%80%A6-import-%E2%80%A6-%E4%B8%A4%E7%A7%8D%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E6%96%B9%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">5.1.</span> <span class="toc-text">
+          import 与 from …. import …. 两种导入模块方式的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E7%9A%84%E6%8B%86%E5%8C%85%E9%97%AE%E9%A2%98%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          可变参数的拆包问题【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0-args-%E4%B8%8E-kwargs-%E5%88%86%E5%88%AB%E6%8E%A5%E5%8F%97%E4%BB%80%E4%B9%88%E5%BD%A2%E5%BC%8F%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9F"><span class="toc-number">6.1.</span> <span class="toc-text">
+          可变参数 *args 与 **kwargs 分别接受什么形式的数据？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%B0%86%E6%95%B0%E6%8D%AE%E6%8B%86%E5%8C%85%E5%B9%B6%E4%BC%A0%E9%80%92%E7%BB%99%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0"><span class="toc-number">6.2.</span> <span class="toc-text">
+          如何将数据拆包并传递给其他函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E7%BB%A7%E6%89%BF%E4%B8%AD%E7%9A%84super%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">7.</span> <span class="toc-text">
+          单继承中的super【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E4%B8%AD%E7%9A%84-super%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">7.1.</span> <span class="toc-text">
+          类中的 super（）方法的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-mro-%E5%BA%8F%E5%88%97"><span class="toc-number">7.2.</span> <span class="toc-text">
+          什么是__mro__序列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E7%BB%A7%E6%89%BF%E7%B1%BB%E4%B8%AD%E7%9A%84-super-%E8%B0%83%E7%94%A8%E7%88%B6%E7%B1%BB%E6%96%B9%E6%B3%95%E6%98%AF%E9%81%B5%E5%BE%AA-mro-%E5%BA%8F%E5%88%97%E8%B0%83%E7%94%A8%E7%9A%84"><span class="toc-number">7.3.</span> <span class="toc-text">
+          单继承类中的 super 调用父类方法是遵循__mro__序列调用的</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BB%A7%E6%89%BF%E5%92%8CMRO%E9%A1%BA%E5%BA%8F1%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">8.</span> <span class="toc-text">
+          多继承和MRO顺序1【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E7%B1%BB%E7%BB%A7%E6%89%BF%E7%88%B6%E7%B1%BB%E6%97%B6%E8%B0%83%E7%94%A8%E7%88%B6%E7%B1%BB%E6%96%B9%E6%B3%95%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%BD%A2%E5%BC%8F%E4%BB%A5%E5%8F%8A%E5%8C%BA%E5%88%AB"><span class="toc-number">8.1.</span> <span class="toc-text">
+          子类继承父类时调用父类方法的两种形式以及区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%A4%9A%E7%BB%A7%E6%89%BF%E4%B8%AD%E7%9A%84%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF%EF%BC%88%E9%92%BB%E7%9F%B3%E7%BB%A7%E6%89%BF%EF%BC%89"><span class="toc-number">8.2.</span> <span class="toc-text">
+          什么是多继承中的菱形继承（钻石继承）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E7%BB%A7%E6%89%BF%E4%B8%AD%E7%9A%84mro%E9%A1%BA%E5%BA%8F%E4%BD%9C%E7%94%A8"><span class="toc-number">8.3.</span> <span class="toc-text">
+          多继承中的mro顺序作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#property%E8%A3%85%E9%A5%B0%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">9.</span> <span class="toc-text">
+          property装饰的基本使用【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#property%E8%A3%85%E9%A5%B0%E7%B1%BB%E4%B8%AD%E7%9A%84%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%81"><span class="toc-number">9.1.</span> <span class="toc-text">
+          property装饰类中的函数的作用！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E7%B1%BB%E4%B8%AD%E4%BD%BF%E7%94%A8-property-%E8%A3%85%E9%A5%B0%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">9.2.</span> <span class="toc-text">
+          在类中使用 property 装饰的注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#property%E8%A3%85%E9%A5%B0%E7%9A%84%E5%85%B6%E4%BB%96%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">10.</span> <span class="toc-text">
+          property装饰的其他使用方法【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#property-%E8%A3%85%E9%A5%B0%E5%87%BD%E6%95%B0%E7%9A%84-xxxxx-setter-%E5%BD%A2%E5%BC%8F%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%81"><span class="toc-number">10.1.</span> <span class="toc-text">
+          property 装饰函数的 @xxxxx.setter 形式的功能！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#property-%E8%A3%85%E9%A5%B0%E5%87%BD%E6%95%B0%E7%9A%84-xxxxx-deleter-%E5%BD%A2%E5%BC%8F%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%81"><span class="toc-number">10.2.</span> <span class="toc-text">
+          property 装饰函数的 @xxxxx.deleter 形式的功能！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">10.3.</span> <span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prepery%E4%BD%9C%E4%B8%BA%E7%B1%BB%E5%B1%9E%E6%80%A7%E7%9A%84%E5%80%BC%E4%BC%A0%E5%85%A5%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">11.</span> <span class="toc-text">
+          prepery作为类属性的值传入【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%B1%9E%E6%80%A7%E4%B8%8E%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">11.1.</span> <span class="toc-text">
+          类属性与实例属性的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#property%E4%BD%9C%E4%B8%BA%E7%B1%BB%E5%B1%9E%E6%80%A7%E7%9A%84%E5%80%BC%E4%BC%A0%E5%85%A5%E5%85%B6%E4%B8%AD%E5%9B%9B%E4%B8%AA%E5%8F%82%E6%95%B0%E4%BD%9C%E7%94%A8%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%EF%BC%81"><span class="toc-number">11.2.</span> <span class="toc-text">
+          property作为类属性的值传入其中四个参数作用及其使用方法！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AD%94%E6%B3%95%E5%B1%9E%E6%80%A7%E5%92%8C%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">12.</span> <span class="toc-text">
+          魔法属性和魔法方法【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E9%AD%94%E6%B3%95%E5%B1%9E%E6%80%A7-doc-%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">12.1.</span> <span class="toc-text">
+          类的魔法属性 _ doc _的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E9%AD%94%E6%B3%95%E5%B1%9E%E6%80%A7-module-%E4%B8%8E-class-%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">12.2.</span> <span class="toc-text">
+          类的魔法属性 module 与 __class__的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95-init-%E4%B8%8E-del-%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">12.3.</span> <span class="toc-text">
+          类的魔法方法 init( ) 与 del( ) 的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AD%94%E6%9C%AF%E5%B1%9E%E6%80%A7-dict-%E7%9A%84%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">12.4.</span> <span class="toc-text">
+          魔术属性 dict 的功能及其使用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95-call-%E4%B8%8E-str-%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">12.5.</span> <span class="toc-text">
+          魔法方法 call( ) 与 str( ) 功能及其使用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95-getitem-key-%E3%80%81-setitem-key%EF%BC%8Cvalue-%E3%80%81delitem-key-%E7%9A%84%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">12.6.</span> <span class="toc-text">
+          魔法方法 getitem( key ) 、 setitem( key，value )、delitem( key )的调用方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#with%E7%AE%A1%E7%90%86%E4%B8%8A%E4%B8%8B%E6%96%87%E6%96%B9%E5%BC%8F%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">13.</span> <span class="toc-text">
+          with管理上下文方式【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-with-%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-number">13.1.</span> <span class="toc-text">
+          利用 with 操作文件的优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#with-%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%E7%9A%84%E6%AD%A5%E9%AA%A4%EF%BC%81"><span class="toc-number">13.2.</span> <span class="toc-text">
+          with 操作文件的步骤！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%B7%B1%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E5%99%A8%E7%B1%BB%E5%AE%9E%E7%8E%B0%E8%AF%BB%E5%8F%96%E6%8C%87%E5%AE%9A%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="toc-number">13.3.</span> <span class="toc-text">
+          自己构建一个上下文管理器类实现读取指定文件内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E8%A3%85%E9%A5%B0%E5%99%A8%E8%A3%85%E9%A5%B0%E5%87%BD%E6%95%B0%E7%9A%84%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0-with-%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%EF%BC%88%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E5%86%85%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE%EF%BC%89%EF%BC%81"><span class="toc-number">13.4.</span> <span class="toc-text">
+          利用装饰器装饰函数的方法实现 with 上下文管理操作文件（读取文件内所有数据）！</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

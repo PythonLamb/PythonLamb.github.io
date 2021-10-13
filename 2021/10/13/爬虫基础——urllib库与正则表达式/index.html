@@ -1,0 +1,616 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：了解什么是爬虫、urllib请求库的使用、正则表达式的使用等…..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫基础——urllib库与正则表达式">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94urllib%E5%BA%93%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：了解什么是爬虫、urllib请求库的使用、正则表达式的使用等…..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092323280.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092402556.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092409918.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092417285.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092437732.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092445366.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092505732.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092521994.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092600107.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092614582.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/python.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/Snipaste_2021-04-28_20-31-44.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092723573.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092734436.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092752765.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092804554.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092844399.png">
+<meta property="article:published_time" content="2021-10-13T01:15:05.000Z">
+<meta property="article:modified_time" content="2021-10-13T01:29:42.645Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="爬虫基础篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092323280.png"><title>爬虫基础——urllib库与正则表达式 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94urllib%E5%BA%93%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">爬虫基础——urllib库与正则表达式</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-13</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.6k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">15分</span></span></div></header><div class="post-body"><p>本文主讲：了解什么是爬虫、urllib请求库的使用、正则表达式的使用等…..</p>
+<span id="more"></span>
+
+
+
+
+        <h2 id="什么是爬虫及其分类！"   >
+          <a href="#什么是爬虫及其分类！" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是爬虫及其分类！" class="headerlink" title="什么是爬虫及其分类！"></a>什么是爬虫及其分类！</h2>
+      
+        <h3 id="什么是网络爬虫？"   >
+          <a href="#什么是网络爬虫？" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是网络爬虫？" class="headerlink" title="什么是网络爬虫？"></a>什么是网络爬虫？</h3>
+      <p>答：网络爬虫就是利用一段程序模拟人操作浏览器获取数据的过程，且模拟人操作浏览器越逼真越好！</p>
+
+        <h3 id="网络爬虫的分类"   >
+          <a href="#网络爬虫的分类" class="heading-link"><i class="fas fa-link"></i></a><a href="#网络爬虫的分类" class="headerlink" title="网络爬虫的分类"></a>网络爬虫的分类</h3>
+      <p>通用爬虫：浏览器所用的爬虫，需要遵守 robots 君子协议</p>
+<p>聚焦爬虫：针对一些特定网页获取数据</p>
+<p>功能爬虫：利用爬虫实现一些功能，如自动投票、自动抢票等</p>
+<p>数据爬虫：利用爬虫获取一些指定网页的数据！</p>
+<p>注意事项：在网站的根目录下输入 /robots.txt 可查看网站的 robots 协议</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092323280.png"  alt="image-20211013092323280">
+      </p>
+
+        <h2 id="爬虫爬取数据的步骤！"   >
+          <a href="#爬虫爬取数据的步骤！" class="heading-link"><i class="fas fa-link"></i></a><a href="#爬虫爬取数据的步骤！" class="headerlink" title="爬虫爬取数据的步骤！"></a>爬虫爬取数据的步骤！</h2>
+      
+        <h3 id="爬虫获取数据的步骤！"   >
+          <a href="#爬虫获取数据的步骤！" class="heading-link"><i class="fas fa-link"></i></a><a href="#爬虫获取数据的步骤！" class="headerlink" title="爬虫获取数据的步骤！"></a>爬虫获取数据的步骤！</h3>
+      <p>第一：找到需要爬取数据的 url 地址</p>
+<p>第二：（包装请求头）向这个 url 地址发起请求</p>
+<p>第三：获取这个 url 服务器发来的响应数据（网页源代码）</p>
+<p>第四：利用 python 数据解析库在源码中获得想要的数据！</p>
+<p>第五：将数据进行清洗保存（csv、数据库、Excel）！</p>
+<p>第六：是否需要在原网页内进行链接跳转再抓取数据！</p>
+
+        <h2 id="urllib-request库的方法及功能【重点】"   >
+          <a href="#urllib-request库的方法及功能【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#urllib-request库的方法及功能【重点】" class="headerlink" title="urllib.request库的方法及功能【重点】"></a>urllib.request库的方法及功能【重点】</h2>
+      
+        <h3 id="urllib-request-库内的-urlopen（）方法功能"   >
+          <a href="#urllib-request-库内的-urlopen（）方法功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#urllib-request-库内的-urlopen（）方法功能" class="headerlink" title="urllib.request 库内的 urlopen（）方法功能"></a>urllib.request 库内的 urlopen（）方法功能</h3>
+      <p>功能：向目标 url 发送一个请求，并返回一个相应对象</p>
+<p>方法参数：</p>
+<p>url：发送请求的目标网站（网站一定要写全 例如 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.baidu.com/" >http://www.baidu.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> ，http不能忘以及最后的/）</p>
+<p>timeout：设置请求时间，超过设置的请求时间将抛出异常</p>
+<p>语法：<code>res_obj = urllib.request.urlopen（url）</code></p>
+<p>注意：res_obj 只是网站响应的对象，不是网站相应的数据！！！</p>
+
+        <h3 id="urllib-request-urlopen（）方法返回的响应对象的方法"   >
+          <a href="#urllib-request-urlopen（）方法返回的响应对象的方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#urllib-request-urlopen（）方法返回的响应对象的方法" class="headerlink" title="urllib.request.urlopen（）方法返回的响应对象的方法"></a>urllib.request.urlopen（）方法返回的响应对象的方法</h3>
+      <p>响应对象.read（）：获取网站响应的源代码（bytes数据格式）【字节串数据格式】</p>
+<p>响应对象.read.decode（编码格式）：获取网站响应的源代码（string数据格式）【字符串数据格式】</p>
+<p>响应对象.geturl（）：获取实际返回响应数据的网站url（考虑到重定向问题）</p>
+<p>响应对象.getcode（）：获取网站的http响应状态码</p>
+<p>注意：    bytes数据与string数据不一样，bytes是以字节为单位，string是以字符为单位， string通过encode（）编码可转换为bytes，bytes可通过decode（）解码转换为string，bytes数据格式为 b“数据”，string数据格式为 “数据”</p>
+<p>图示：</p>
+<p>响应对象的.read（）方法</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092402556.png"  alt="image-20211013092402556">
+      </p>
+<p>响应对象的.read（）.decode（）方法</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092409918.png"  alt="image-20211013092409918">
+      </p>
+<p>响应对象的.geturl（）与响应对象的.getcode（）方法</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092417285.png"  alt="image-20211013092417285">
+      </p>
+
+        <h3 id="怎么查看程序向网站发送请求时标头的-User-Agent"   >
+          <a href="#怎么查看程序向网站发送请求时标头的-User-Agent" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么查看程序向网站发送请求时标头的-User-Agent" class="headerlink" title="怎么查看程序向网站发送请求时标头的 User-Agent"></a>怎么查看程序向网站发送请求时标头的 User-Agent</h3>
+      <p>直接向下面 url 地址发送请求即可查看请求协议标头的 User-Agent</p>
+<p>网站：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://httpbin.org/get" >http://httpbin.org/get</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>图示：</p>
+<p>浏览器发送请求查看 User-Agent</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092437732.png"  alt="image-20211013092437732">
+      </p>
+<p>python的urllib库发送请求查看 User-Agent</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092445366.png"  alt="image-20211013092445366">
+      </p>
+
+        <h3 id="urllib-request库内的-Request（）方法功能"   >
+          <a href="#urllib-request库内的-Request（）方法功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#urllib-request库内的-Request（）方法功能" class="headerlink" title="urllib.request库内的 Request（）方法功能"></a>urllib.request库内的 Request（）方法功能</h3>
+      <p>功能：包装请求标头信息（一般是 User-Agent），并且返回这个包装好的请求头对象，用于向 url 发送请求</p>
+<p>语法：<code>req = urllib.request.Request（url = 网站域名，headers = &#123;“User-Agent”：“伪装的标头信息”&#125;）</code></p>
+<p>参数：</p>
+<p>url：待请求的链接地址</p>
+<p>headers：伪装的请求标头信息</p>
+<p>注意事项：Request方法并没有向网站发送请求，而是伪装请求标头，urlopen方法才向目标网站发送请求并且接收响应数据</p>
+<p>截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092505732.png"  alt="image-20211013092505732">
+      </p>
+
+        <h2 id="urllib-parse模块的方法功能解析【重点】"   >
+          <a href="#urllib-parse模块的方法功能解析【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#urllib-parse模块的方法功能解析【重点】" class="headerlink" title="urllib.parse模块的方法功能解析【重点】"></a>urllib.parse模块的方法功能解析【重点】</h2>
+      <p>目标：</p>
+<p>1：掌握搜索关键字 url 地址的组成部分</p>
+<p>2：掌握向目标查询关键字地址发送请求的注意事项</p>
+<p>3：urllib.parse.urlencode（）方法详解</p>
+<p>4：urllib.parse.quote（）方法详解</p>
+<p>5：掌握 urllib.parse库内的 urlencode 方法以及 quote 方法的区别~</p>
+
+        <h3 id="搜索关键字-url-地址的组成部分"   >
+          <a href="#搜索关键字-url-地址的组成部分" class="heading-link"><i class="fas fa-link"></i></a><a href="#搜索关键字-url-地址的组成部分" class="headerlink" title="搜索关键字 url 地址的组成部分"></a>搜索关键字 url 地址的组成部分</h3>
+      <p>组成：协议项+域名+数据库资源路径+查询参数</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092521994.png"  alt="image-20211013092521994">
+      </p>
+<p>注意：其实很多查询参数都没有用，上面的 url 可简化为 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.baidu.com/s?wd=%E7%BE%8E%E5%A5%B3" >https://www.baidu.com/s?wd=美女</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="向查询关键字地址服务器发送请求的注意事项"   >
+          <a href="#向查询关键字地址服务器发送请求的注意事项" class="heading-link"><i class="fas fa-link"></i></a><a href="#向查询关键字地址服务器发送请求的注意事项" class="headerlink" title="向查询关键字地址服务器发送请求的注意事项"></a>向查询关键字地址服务器发送请求的注意事项</h3>
+      <p>什么是查询关键字地址？：就是搜索相应关键字所对应的url地址，例如在百度上查询美女的url地址如下</p>
+<p> <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.baidu.com/s?wd=%E7%BE%8E%E5%A5%B3" >https://www.baidu.com/s?wd=美女</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>向查询关键字地址服务器发送请求的注意事项：需要将url地址内中文 编码后 才可以向服务器发送请求</p>
+<p>示例：</p>
+<p>编码前URL地址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.baidu.com/s?wd=%E7%BE%8E%E5%A5%B3" >https://www.baidu.com/s?wd=美女</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>编码后URL地址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.baidu.com/s?wd=%E7%BE%8E%E5%A5%B3" >https://www.baidu.com/s?wd=%E7%BE%8E%E5%A5%B3</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>注意：编码后三个%对应一个中文字符，例如%E7%BE%8E就对应 美 这个中文字符</p>
+
+        <h3 id="urllib-parse-urlencode（）方法详解"   >
+          <a href="#urllib-parse-urlencode（）方法详解" class="heading-link"><i class="fas fa-link"></i></a><a href="#urllib-parse-urlencode（）方法详解" class="headerlink" title="urllib.parse.urlencode（）方法详解"></a>urllib.parse.urlencode（）方法详解</h3>
+      <p>功能：将查询参数内的中文进行编码，并返回编码后的查询参数（返回多个编码后的查询参数时默认返回 &amp;）</p>
+<p>语法：返回编码后查询参数 = urllib.parse.urlencode（{查询参数1：待编码值1，查询参数2：待编码值2……….}）</p>
+<p>语法参数：</p>
+<p>字典：字典内存放需要编码的查询参数，例如查询参数为   wd=美女   就这么写 {“wd”：“美女”}</p>
+<p>语法参数返回值：</p>
+<p><code>params = urllib.parse.urlencode（&#123;“wd”：“美女”&#125;）</code>   params 就是 wd=%E7%BE%8E%E5%A5%B3</p>
+<p>注意事项：urllib.parse.urlencode（）方法只返回编码后的查询参数，并不是整个url地址，需要进行字符串拼接才能向目标url服务器发送请求</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092600107.png"  alt="image-20211013092600107">
+      </p>
+
+        <h3 id="urllib-parse-quote（）方法详解"   >
+          <a href="#urllib-parse-quote（）方法详解" class="heading-link"><i class="fas fa-link"></i></a><a href="#urllib-parse-quote（）方法详解" class="headerlink" title="urllib.parse.quote（）方法详解"></a>urllib.parse.quote（）方法详解</h3>
+      <p>功能：对查询参数内的中文进行编码，并且返回这个中文编码后的字符串</p>
+<p>语法：编码后的中文字符串 = urllib.parse.quote（”查询参数中的中文关键字“）</p>
+<p>例如：params = urllib.parse.quote（”美女“）  params 就是  %E7%BE%8E%E5%A5%B3  </p>
+<p>方法参数：</p>
+<p>查询参数内的中文：只是中文，没有相对应的 wd 等</p>
+<p>注意事项：这个方法只返回编码后的中文字符，连键都不返回需要自己写</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092614582.png"  alt="image-20211013092614582">
+      </p>
+
+        <h3 id="urllib-parse库内的-urlencode-方法以及-quote-方法的区别"   >
+          <a href="#urllib-parse库内的-urlencode-方法以及-quote-方法的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#urllib-parse库内的-urlencode-方法以及-quote-方法的区别" class="headerlink" title="urllib.parse库内的 urlencode 方法以及 quote 方法的区别~"></a>urllib.parse库内的 urlencode 方法以及 quote 方法的区别~</h3>
+      <p>区别：</p>
+<p>1：参数不同，urlencode参数为字典，quote参数是中文字符串</p>
+<p>2：返回值不同，urldecode返回的是键与值，例如 wd=%E7%BE%8E%E5%A5%B3 ，quote方法返回的只有值，例如 %E7%BE%8E%E5%A5%B3 </p>
+
+        <h2 id="简单爬虫的构架【重点】"   >
+          <a href="#简单爬虫的构架【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#简单爬虫的构架【重点】" class="headerlink" title="简单爬虫的构架【重点】"></a>简单爬虫的构架【重点】</h2>
+      
+        <h3 id="简单爬虫的老版本构架（面向对象编程）"   >
+          <a href="#简单爬虫的老版本构架（面向对象编程）" class="heading-link"><i class="fas fa-link"></i></a><a href="#简单爬虫的老版本构架（面向对象编程）" class="headerlink" title="简单爬虫的老版本构架（面向对象编程）"></a>简单爬虫的老版本构架（面向对象编程）</h3>
+      <p>可保存至电脑放大来看！</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/python.png" >
+      </p>
+
+        <h3 id="简单爬虫的新版本构架（面向对象编程）"   >
+          <a href="#简单爬虫的新版本构架（面向对象编程）" class="heading-link"><i class="fas fa-link"></i></a><a href="#简单爬虫的新版本构架（面向对象编程）" class="headerlink" title="简单爬虫的新版本构架（面向对象编程）"></a>简单爬虫的新版本构架（面向对象编程）</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/Snipaste_2021-04-28_20-31-44.png" >
+      </p>
+
+        <h2 id="正则模块（re）的使用【重点】"   >
+          <a href="#正则模块（re）的使用【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#正则模块（re）的使用【重点】" class="headerlink" title="正则模块（re）的使用【重点】"></a>正则模块（re）的使用【重点】</h2>
+      
+        <h3 id="正则模块-re-抓取数据的两种方法形式"   >
+          <a href="#正则模块-re-抓取数据的两种方法形式" class="heading-link"><i class="fas fa-link"></i></a><a href="#正则模块-re-抓取数据的两种方法形式" class="headerlink" title="正则模块 re 抓取数据的两种方法形式"></a>正则模块 re 抓取数据的两种方法形式</h3>
+      <p>第一种形式(直接使用findall（查找数据）方法)：</p>
+<p>data_list = re.findall（正则表达式，待匹配字符串，re.S）</p>
+<p>第二种形式（先创建正则编译对象在调用findall等方法）：</p>
+<p>pattern = re.compile（正则表达式，re.S）<br>data_list = pattern.findall(待匹配字符串)</p>
+<p>注意事项：一般大佬都用第二种形式，因为正则写好一个可以多次调用</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092723573.png"  alt="image-20211013092723573">
+      </p>
+
+        <h3 id="正则模块-re-方法的-re-S参数的作用"   >
+          <a href="#正则模块-re-方法的-re-S参数的作用" class="heading-link"><i class="fas fa-link"></i></a><a href="#正则模块-re-方法的-re-S参数的作用" class="headerlink" title="正则模块 re 方法的 re.S参数的作用"></a>正则模块 re 方法的 re.S参数的作用</h3>
+      <p>作用：正则表达式中的元字符 . 可以匹配任意字符（除了换行符/n），在findall等方法内部加上参数 re.S后 元字符 . 就可以匹配换行符/n啦</p>
+<p>注意：在抓取 html 代码时一定不要忘记写 re.S参数，因为 html 代码有很多换行符</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092734436.png"  alt="image-20211013092734436">
+      </p>
+
+        <h3 id="正则表达式贪婪模式以及非贪婪模式的注意事项"   >
+          <a href="#正则表达式贪婪模式以及非贪婪模式的注意事项" class="heading-link"><i class="fas fa-link"></i></a><a href="#正则表达式贪婪模式以及非贪婪模式的注意事项" class="headerlink" title="正则表达式贪婪模式以及非贪婪模式的注意事项"></a>正则表达式贪婪模式以及非贪婪模式的注意事项</h3>
+      <p>元字符 ？功能： ？ 前一个字符出现1次或者0次</p>
+<p>贪婪模式：在满足匹配规则的前提下尽可能多的匹配数据</p>
+<p>非贪婪模式：在满足匹配规则的前提下尽可能少的匹配数据</p>
+<p>注意事项：</p>
+<p>1：贪婪模式与非贪婪模式说的都是在匹配多个字符时才适用，即元字符 * + ？</p>
+<p>2：python程序默认是贪婪模式匹配数据</p>
+<p>3：在匹配多个数据的元字符（* + ？）后面加上 ？ 就可将贪婪模式转变为非贪婪模式，注意一定是在匹配多个元字符后面加才管用！！！</p>
+
+        <h3 id="正则表达式单个分组以及多个分组的用法"   >
+          <a href="#正则表达式单个分组以及多个分组的用法" class="heading-link"><i class="fas fa-link"></i></a><a href="#正则表达式单个分组以及多个分组的用法" class="headerlink" title="正则表达式单个分组以及多个分组的用法"></a>正则表达式单个分组以及多个分组的用法</h3>
+      <p>用法【单个分组】：如果在正则表达式的一部分加上单个分组，也就是一个（） 那么在调用 findall方法时，只将符合分组内的数据提取到列表内！</p>
+<p>用法【多个分组】：如果在正则表达式的一部分加上多个分组，也就是多个（） 那么在调用 findall方法时，将符合多个分组内的数据先保存到一个元组内，然后在匹配其他符合分组的数据，再次存放到另一个元组内，然后在将多个元组存放至列表中【列表内嵌套元组】</p>
+<p>图示【单个分组】  【多个分组】：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092752765.png"  alt="image-20211013092752765">
+      </p>
+
+        <h2 id="正则表达式匹配html数据的技巧【重点】"   >
+          <a href="#正则表达式匹配html数据的技巧【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#正则表达式匹配html数据的技巧【重点】" class="headerlink" title="正则表达式匹配html数据的技巧【重点】"></a>正则表达式匹配html数据的技巧【重点】</h2>
+      <p>目标：掌握正则表达式匹配 html 代码的技巧</p>
+
+        <h3 id="正则表达式匹配-html-代码的技巧"   >
+          <a href="#正则表达式匹配-html-代码的技巧" class="heading-link"><i class="fas fa-link"></i></a><a href="#正则表达式匹配-html-代码的技巧" class="headerlink" title="正则表达式匹配 html 代码的技巧"></a>正则表达式匹配 html 代码的技巧</h3>
+      <p>实例html代码如下（提取电影名、主演、上映时间）：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092804554.png"  alt="image-20211013092804554">
+      </p>
+<p>正则表达式可以这么写！！</p>
+<p>对应的正则表达式：</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;movie-item-info&quot;&gt;.*?&lt;a href&#x3D;&quot;&#x2F;films&#x2F;[0-9]+&quot; title&#x3D;&quot;(.*?)&quot;.*?&lt;p class&#x3D;&quot;star&quot;&gt;\s+主演：(.*?)\s+&lt;&#x2F;p&gt;\s+&lt;p class&#x3D;&quot;releasetime&quot;&gt;上映时间：(.*?)&lt;&#x2F;p&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+
+<p>书写正则的技巧：</p>
+<p>1：第一个包含类的标签一定要写出来（例如 <code>&lt;div class=&quot;movie-item-info&quot;&gt;</code>）这样正则可一下就找出来匹配的数据在那个标签类</p>
+<p>2：待匹配的数据要加上分组，一般都是这么写 <code>（.*？）</code>，这样可被findall方法直接匹配出来</p>
+<p>3：待匹配数据的前一个标签一般要按照给出的写出来（也可以不写！）</p>
+<p>4：<code>.*？</code>正则表达式是一个很好的东西哦，一定要学会使用！！！</p>
+<p>5：因为加上了 re.S 参数，所以 . 可以匹配任何数据</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013092844399.png"  alt="image-20211013092844399">
+      </p>
+<p>未完待续……</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94urllib%E5%BA%93%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94urllib%E5%BA%93%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E7%AF%87/">爬虫基础篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94CSV%E6%96%87%E4%BB%B6%E4%B8%8EmongoDB/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">数据存储——CSV文件与mongoDB</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/13/%E7%88%AC%E8%99%AB%E7%9A%84%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87%E3%80%90%E7%AC%AC%E4%B8%80%E6%9C%9F%E3%80%91/"><span class="paginator-prev__text">爬虫的疑难杂症【第一期】</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%88%AC%E8%99%AB%E5%8F%8A%E5%85%B6%E5%88%86%E7%B1%BB%EF%BC%81"><span class="toc-number">1.</span> <span class="toc-text">
+          什么是爬虫及其分类！</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">
+          什么是网络爬虫？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.2.</span> <span class="toc-text">
+          网络爬虫的分类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%AC%E8%99%AB%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E6%AD%A5%E9%AA%A4%EF%BC%81"><span class="toc-number">2.</span> <span class="toc-text">
+          爬虫爬取数据的步骤！</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E6%AD%A5%E9%AA%A4%EF%BC%81"><span class="toc-number">2.1.</span> <span class="toc-text">
+          爬虫获取数据的步骤！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#urllib-request%E5%BA%93%E7%9A%84%E6%96%B9%E6%B3%95%E5%8F%8A%E5%8A%9F%E8%83%BD%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          urllib.request库的方法及功能【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#urllib-request-%E5%BA%93%E5%86%85%E7%9A%84-urlopen%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95%E5%8A%9F%E8%83%BD"><span class="toc-number">3.1.</span> <span class="toc-text">
+          urllib.request 库内的 urlopen（）方法功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#urllib-request-urlopen%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95%E8%BF%94%E5%9B%9E%E7%9A%84%E5%93%8D%E5%BA%94%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text">
+          urllib.request.urlopen（）方法返回的响应对象的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%90%91%E7%BD%91%E7%AB%99%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82%E6%97%B6%E6%A0%87%E5%A4%B4%E7%9A%84-User-Agent"><span class="toc-number">3.3.</span> <span class="toc-text">
+          怎么查看程序向网站发送请求时标头的 User-Agent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#urllib-request%E5%BA%93%E5%86%85%E7%9A%84-Request%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95%E5%8A%9F%E8%83%BD"><span class="toc-number">3.4.</span> <span class="toc-text">
+          urllib.request库内的 Request（）方法功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#urllib-parse%E6%A8%A1%E5%9D%97%E7%9A%84%E6%96%B9%E6%B3%95%E5%8A%9F%E8%83%BD%E8%A7%A3%E6%9E%90%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          urllib.parse模块的方法功能解析【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E5%85%B3%E9%94%AE%E5%AD%97-url-%E5%9C%B0%E5%9D%80%E7%9A%84%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86"><span class="toc-number">4.1.</span> <span class="toc-text">
+          搜索关键字 url 地址的组成部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E6%9F%A5%E8%AF%A2%E5%85%B3%E9%94%AE%E5%AD%97%E5%9C%B0%E5%9D%80%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">4.2.</span> <span class="toc-text">
+          向查询关键字地址服务器发送请求的注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#urllib-parse-urlencode%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95%E8%AF%A6%E8%A7%A3"><span class="toc-number">4.3.</span> <span class="toc-text">
+          urllib.parse.urlencode（）方法详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#urllib-parse-quote%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95%E8%AF%A6%E8%A7%A3"><span class="toc-number">4.4.</span> <span class="toc-text">
+          urllib.parse.quote（）方法详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#urllib-parse%E5%BA%93%E5%86%85%E7%9A%84-urlencode-%E6%96%B9%E6%B3%95%E4%BB%A5%E5%8F%8A-quote-%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.5.</span> <span class="toc-text">
+          urllib.parse库内的 urlencode 方法以及 quote 方法的区别~</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E7%9A%84%E6%9E%84%E6%9E%B6%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          简单爬虫的构架【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E7%9A%84%E8%80%81%E7%89%88%E6%9C%AC%E6%9E%84%E6%9E%B6%EF%BC%88%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%EF%BC%89"><span class="toc-number">5.1.</span> <span class="toc-text">
+          简单爬虫的老版本构架（面向对象编程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E7%9A%84%E6%96%B0%E7%89%88%E6%9C%AC%E6%9E%84%E6%9E%B6%EF%BC%88%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%EF%BC%89"><span class="toc-number">5.2.</span> <span class="toc-text">
+          简单爬虫的新版本构架（面向对象编程）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E6%A8%A1%E5%9D%97%EF%BC%88re%EF%BC%89%E7%9A%84%E4%BD%BF%E7%94%A8%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          正则模块（re）的使用【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E6%A8%A1%E5%9D%97-re-%E6%8A%93%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95%E5%BD%A2%E5%BC%8F"><span class="toc-number">6.1.</span> <span class="toc-text">
+          正则模块 re 抓取数据的两种方法形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E6%A8%A1%E5%9D%97-re-%E6%96%B9%E6%B3%95%E7%9A%84-re-S%E5%8F%82%E6%95%B0%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">6.2.</span> <span class="toc-text">
+          正则模块 re 方法的 re.S参数的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F%E4%BB%A5%E5%8F%8A%E9%9D%9E%E8%B4%AA%E5%A9%AA%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">6.3.</span> <span class="toc-text">
+          正则表达式贪婪模式以及非贪婪模式的注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8D%95%E4%B8%AA%E5%88%86%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%A4%9A%E4%B8%AA%E5%88%86%E7%BB%84%E7%9A%84%E7%94%A8%E6%B3%95"><span class="toc-number">6.4.</span> <span class="toc-text">
+          正则表达式单个分组以及多个分组的用法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8Dhtml%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8A%80%E5%B7%A7%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">7.</span> <span class="toc-text">
+          正则表达式匹配html数据的技巧【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8D-html-%E4%BB%A3%E7%A0%81%E7%9A%84%E6%8A%80%E5%B7%A7"><span class="toc-number">7.1.</span> <span class="toc-text">
+          正则表达式匹配 html 代码的技巧</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

@@ -1,0 +1,864 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：函数的定义与调用、lambda表达式等…..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="黑马程序员学Python——函数">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：函数的定义与调用、lambda表达式等…..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009152945554.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153051083.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153116770.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153202547.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153215807.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153237980.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153254974.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153307265.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153331268.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153341992.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153351596.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153402255.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153411600.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153428240.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153438023.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153450140.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153503371.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153512794.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153534176.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153550964.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153603174.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153610278.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153704353.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153722163.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153729548.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153751316.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153800035.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153911209.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153918309.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153926273.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153935578.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154001553.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154008142.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154054361.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154104878.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154113674.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154126590.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154135127.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154151562.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154203771.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154341168.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154354792.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154405120.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154418839.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154433998.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154450068.png">
+<meta property="article:published_time" content="2021-10-09T07:11:59.000Z">
+<meta property="article:modified_time" content="2021-10-09T07:44:59.257Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="Python基础语法篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009152945554.png"><title>黑马程序员学Python——函数 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E5%87%BD%E6%95%B0/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">黑马程序员学Python——函数</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-09</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-09</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">4.3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">23分</span></span></div></header><div class="post-body"><p>本文主讲：函数的定义与调用、lambda表达式等…..</p>
+<span id="more"></span>
+
+
+
+
+        <h2 id="了解函数"   >
+          <a href="#了解函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#了解函数" class="headerlink" title="了解函数"></a>了解函数</h2>
+      <p>函数是什么：函数就是将一段可以独立执行的代码整合到一个整体，并命名，在需要这段代码的位置直接调用这个整体的名称即。</p>
+<p>函数作用：所以函数在开发过程中，可以更高效的实现代码重用</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009152945554.png"  alt="image-20211009152945554">
+      </p>
+
+        <h2 id="函数使用步骤"   >
+          <a href="#函数使用步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#函数使用步骤" class="headerlink" title="函数使用步骤"></a>函数使用步骤</h2>
+      <p>读前须知：函数在定义的时候，函数体下面的代码不执行，调用的时候才执行</p>
+<p>第一步：定义函数</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> 函数名（参数）：</span></span><br><span class="line"><span class="function">	代码1</span></span><br><span class="line"><span class="function">	代码2</span></span><br><span class="line"><span class="function">	……….</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>第二步：调用函数</p>
+<p>函数名（参数）</p>
+<p>注意事项：</p>
+<p>1：函数必须先定义在调用<br>2：函数名内的参数可有可无，论情况而定<br>3：调用函数时，解释器回到定义函数体下方的缩进代码执行，执行完毕后回到调用函数代码处<br>4：定义函数时，函数体下方缩进的代码不会被执行</p>
+
+        <h2 id="函数的参数"   >
+          <a href="#函数的参数" class="heading-link"><i class="fas fa-link"></i></a><a href="#函数的参数" class="headerlink" title="函数的参数"></a>函数的参数</h2>
+      <p>读前须知：函数在定义的时候，函数体下面的代码不执行，调用的时候才执行</p>
+<p>函数的参数</p>
+<p>功能：让函数变得更加灵活，用户可以给出指定数据让函数进行数据处理</p>
+<p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span>  函数名（形参）：</span></span><br><span class="line"><span class="function">		代码1</span></span><br><span class="line"><span class="function">		代码2</span></span><br><span class="line"><span class="function">		…….</span></span><br></pre></td></tr></table></div></figure>
+
+<p>函数名（实参）</p>
+<p>实例：利用函数实现两个数据的相加，这两个数据是用户随意给出的</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153051083.png"  alt="image-20211009153051083">
+      </p>
+
+        <h2 id="函数的返回值"   >
+          <a href="#函数的返回值" class="heading-link"><i class="fas fa-link"></i></a><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h2>
+      <p>读前须知：函数在定义的时候，函数体下面的代码不执行，调用的时候才执行</p>
+<p>函数返回值</p>
+<p>功能：在函数中，如果需要函数返回结果数据就需要用到函数返回值了，返回值的值就是调用函数时函数的值<br>注意事项：函数的返回值就像是在调用函数时将返回值赋值给调用函数</p>
+<p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span>  <span class="title">buy</span>（）：</span></span><br><span class="line"><span class="function">		<span class="title">return</span> “烟”</span></span><br><span class="line"><span class="function">	    <span class="title">print</span>（<span class="title">buy</span>（））</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>return返回值功能：</p>
+<p>1，返回函数的结果数据<br>2，return具有退出函数功能，即调用函数时，在函数体内return下方的所有代码不执行</p>
+<p>实例：用户输入两个数据值，分别为6和8，利用函数求和并且返回和的值</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153116770.png"  alt="image-20211009153116770">
+      </p>
+
+        <h2 id="函数的说明文档"   >
+          <a href="#函数的说明文档" class="heading-link"><i class="fas fa-link"></i></a><a href="#函数的说明文档" class="headerlink" title="函数的说明文档"></a>函数的说明文档</h2>
+      <p>函数的说明文档</p>
+<p>功能：快速查看定义的函数功能以及其程序员给出的解释</p>
+<p>语法1(说明文档的书写)：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span>  函数名（参数）：</span></span><br><span class="line"><span class="function">“”“函数说明文档”“”</span></span><br><span class="line"><span class="function">代码1</span></span><br><span class="line"><span class="function">代码2</span></span><br><span class="line"><span class="function">…….</span></span><br></pre></td></tr></table></div></figure>
+
+<p>语法2（函数说明文档的查看）：利用<code> help（查看的函数名）</code> </p>
+<p>注意事项：</p>
+<p>1，函数的说明文档只能书写在定义函数的第一行，采用多行注释的格式<br>2，利用 help（查看的函数名）查看函数的说明文档时，查看的函数名书写不要带括号</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153202547.png"  alt="image-20211009153202547">
+      </p>
+<p>函数说明文档的高级写法（多行注释中间敲回车）：</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153215807.png"  alt="image-20211009153215807">
+      </p>
+
+        <h2 id="函数的嵌套"   >
+          <a href="#函数的嵌套" class="heading-link"><i class="fas fa-link"></i></a><a href="#函数的嵌套" class="headerlink" title="函数的嵌套"></a>函数的嵌套</h2>
+      <p>读前须知：函数在定义的时候，函数体下面的代码不执行，调用的时候才执行</p>
+<p>什么是函数的嵌套？</p>
+<p>答：函数的嵌套就是在定义函数下方缩进的代码中调用另外一个函数</p>
+<p>函数嵌套功能：简化代码</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153237980.png"  alt="image-20211009153237980">
+      </p>
+<p>函数嵌套例题</p>
+<p>例题1：利用函数的嵌套打印多条横杠 —————- 用户要求打印几条，就要打印几条</p>
+<p>步骤：<br>第一步，先定义一个函数打印一条横杠<br>第二步，在定义另外一个函数，要求有形参（形参是用户要求打印的条数）<br>第三步：利用形参以及循环调用函数打印多条横杠</p>
+<p>快速代码演示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153254974.png"  alt="image-20211009153254974">
+      </p>
+<p>例题2：利用函数的嵌套求解三个数据和的平均值</p>
+<p>结题步骤：</p>
+<p>1，先定义一个函数用来求解三个数据的和<br>2，在定义一个函数，函数内部嵌套上面定义的函数，用来求解三个数据的平均数<br>3，最后调用后面的函数来打印三个数据的平均值</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153307265.png"  alt="image-20211009153307265">
+      </p>
+
+        <h2 id="函数进阶：变量作用域"   >
+          <a href="#函数进阶：变量作用域" class="heading-link"><i class="fas fa-link"></i></a><a href="#函数进阶：变量作用域" class="headerlink" title="函数进阶：变量作用域"></a>函数进阶：变量作用域</h2>
+      <p>读前须知：函数在定义的时候，函数体下面的代码不执行，调用函数的时候才执行</p>
+<p>什么是局部变量以及全局变量呢？</p>
+<p>答：局部变量就是定义在函数体内部的变量，函数调用完成后则销毁这个变量，当外界访问此变量时会报错（作用范围是局部）</p>
+<p>全局变量就是定义在函数体外部的变量，在任何位置都可以进行访问 （作用范围全局）</p>
+<p>快速代码体验（局部变量）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153331268.png"  alt="image-20211009153331268">
+      </p>
+<p>快速代码体验（全局变量）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153341992.png"  alt="image-20211009153341992">
+      </p>
+<p>怎么在函数内部修改全局变量呢？</p>
+<p>答：利用 global 在函数内部声明变量为全局变量后，在进行更改即可</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153351596.png"  alt="image-20211009153351596">
+      </p>
+
+        <h2 id="函数返回值（多个返回值）"   >
+          <a href="#函数返回值（多个返回值）" class="heading-link"><i class="fas fa-link"></i></a><a href="#函数返回值（多个返回值）" class="headerlink" title="函数返回值（多个返回值）"></a>函数返回值（多个返回值）</h2>
+      <p>读前须知：定义函数的时候，函数体下方的代码不执行，调用该函数的时候，函数体下方的代码才执行</p>
+<p>函数返回多个返回值的错误代码演示以及正确代码演示</p>
+<p>错误代码演示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153402255.png"  alt="image-20211009153402255">
+      </p>
+<p>正确代码演示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153411600.png"  alt="image-20211009153411600">
+      </p>
+<p>函数多个返回值注意事项：</p>
+<p>1：函数多个返回值是在return后面写多个数据，而不是在函数内部写多个return</p>
+<p>2：return后面书写的多个数据，默认返回格式为元组，当然也可以是列表、字典，需用户手动更改格式</p>
+
+        <h2 id="函数的参数（四种形式）"   >
+          <a href="#函数的参数（四种形式）" class="heading-link"><i class="fas fa-link"></i></a><a href="#函数的参数（四种形式）" class="headerlink" title="函数的参数（四种形式）"></a>函数的参数（四种形式）</h2>
+      <p>函数参数第一种形式：位置参数</p>
+<p>位置参数详解：定义函数的形参以及调用函数的实参他们的意思以及位置是一一对应的</p>
+<p>注意事项：形参与实参相互之间传递数据时，形参以及实参的位置和顺序及数量要一致</p>
+<p>快速代码体验（name对应TOM，age对应20，gender对应男）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153428240.png"  alt="image-20211009153428240">
+      </p>
+<p>函数参数第二种形式：关键字参数</p>
+<p>关键词参数详解：调用函数的实参利用赋值的形式将实参值传递给形参（关键字参数不在乎位置）</p>
+<p>注意事项：如果在函数调用的时候，有位置参数，那么位置参数的位置一定要在关键字参数前面</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153438023.png"  alt="image-20211009153438023">
+      </p>
+<p>函数参数第三种形式：缺省参数（默认值参数）</p>
+<p>注意事项：</p>
+<p>1，如果在定义函数时给形参赋值了默认值，但在调用函数的时候，又给形参赋了另外值，则这个形参值为另外值</p>
+<p>2，所有位置参数都要在缺省参数前面（包括函数定义以及调用）</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153450140.png"  alt="image-20211009153450140">
+      </p>
+<p>函数参数第四种形式：不定长参数（包裹位置参数，包裹关键字参数）</p>
+<p>应用场景：调用函数时不确定传递参数的个数时候用到的方法（参数个数可以是0也可以是其他数）</p>
+<p>包裹位置参数语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span>  函数名（*<span class="title">args</span>）：</span></span><br><span class="line"><span class="function">	<span class="title">print</span>（<span class="title">args</span>）</span></span><br><span class="line"><span class="function">函数名（数据1，数据2，数据3，………）</span></span><br><span class="line"><span class="function">函数名（）</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>快速代码体验（包裹位置参数）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153503371.png"  alt="image-20211009153503371">
+      </p>
+<p>包裹关键字参数语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> 函数名（**<span class="title">kwargs</span>）：</span></span><br><span class="line"><span class="function">	<span class="title">print</span>（<span class="title">kwargs</span>）</span></span><br><span class="line">函数名（name = “TOM”，age = 20，……..）</span><br><span class="line">函数名（）</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>快速代码体验（包裹关键字参数）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153512794.png"  alt="image-20211009153512794">
+      </p>
+<p>注意事项：</p>
+<p>1：无论是包裹位置参数还是包裹关键字参数，都是一个组包的过程<br>2：包裹位置参数在调用函数打印数据的时候，参数数据是存放在元组中的<br>3：包裹关键字参数在调用函数打印数据的时候，参数数据是存放在字典中的</p>
+
+        <h2 id="拆包（元组与字典）"   >
+          <a href="#拆包（元组与字典）" class="heading-link"><i class="fas fa-link"></i></a><a href="#拆包（元组与字典）" class="headerlink" title="拆包（元组与字典）"></a>拆包（元组与字典）</h2>
+      
+        <h3 id="元组的拆包"   >
+          <a href="#元组的拆包" class="heading-link"><i class="fas fa-link"></i></a><a href="#元组的拆包" class="headerlink" title="元组的拆包"></a>元组的拆包</h3>
+      <p>功能：将元组进行拆分，分解成独立的数据（元组内有几个数据，就用几个变量来接收，这就是拆包）</p>
+<p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">package</span>（）：</span></span><br><span class="line"><span class="function">	<span class="title">return</span> 1，2</span></span><br><span class="line">num1，num2 = package（）</span><br><span class="line"><span class="built_in">print</span>（num1）</span><br><span class="line"><span class="built_in">print</span>（num2）</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>快速体验元组的拆包</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153534176.png"  alt="image-20211009153534176">
+      </p>
+
+        <h3 id="字典的拆包"   >
+          <a href="#字典的拆包" class="heading-link"><i class="fas fa-link"></i></a><a href="#字典的拆包" class="headerlink" title="字典的拆包"></a>字典的拆包</h3>
+      <p>字典拆包详解：字典拆包就是将字典内所有键赋值给变量（提取字典中所有的键，有几个键，就要用几个变量接收）</p>
+<p>注意事项：字典中有几个键，就用几个变量来接收键</p>
+<p>语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dict1 = &#123;“name”：“TOM”，“age”：<span class="number">21</span>&#125;</span><br><span class="line">key1 ，key2 = dict1</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>快速上机体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153550964.png"  alt="image-20211009153550964">
+      </p>
+
+        <h2 id="交换两个变量的值"   >
+          <a href="#交换两个变量的值" class="heading-link"><i class="fas fa-link"></i></a><a href="#交换两个变量的值" class="headerlink" title="交换两个变量的值"></a>交换两个变量的值</h2>
+      <p>方法一：定义中间变量法<br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153603174.png"  alt="image-20211009153603174">
+      </p>
+<p>方法二：互转法（更简单，代码量更少，工作时推荐这种方法）<br>语法：a , b = b , a</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153610278.png"  alt="image-20211009153610278">
+      </p>
+
+        <h2 id="引用（id）"   >
+          <a href="#引用（id）" class="heading-link"><i class="fas fa-link"></i></a><a href="#引用（id）" class="headerlink" title="引用（id）"></a>引用（id）</h2>
+      <p>了解应用（id）</p>
+<p>在python中，值（数据）是靠引用来传递的</p>
+<p>理解引用：计算机内存是用来存放数据的，引用就像是内存的地址门牌号，引用是一个十进制的值（引用粗暴理解就是变量名）</p>
+<p>语法：利用 id（变量名）来求引用，引用是一个十进制数</p>
+<p>图解：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153704353.png"  alt="image-20211009153704353">
+      </p>
+<p>注意事项：</p>
+<p>1，如果两个不可变类型变量的引用（id）是一样的，那么说明这两个变量的值是相同的</p>
+<p>2，int是不可变类型！！</p>
+<p>不可变类型（int）引用代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153722163.png"  alt="image-20211009153722163">
+      </p>
+<p>可变数据类型（list）引用代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153729548.png"  alt="image-20211009153729548">
+      </p>
+
+        <h2 id="可变数据类型与不可变数据类型"   >
+          <a href="#可变数据类型与不可变数据类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#可变数据类型与不可变数据类型" class="headerlink" title="可变数据类型与不可变数据类型"></a>可变数据类型与不可变数据类型</h2>
+      <p>可变数据类型如下：</p>
+<p>1，列表<br>2，字典<br>3，集合</p>
+<p>不可变数据类型如下：</p>
+<p>1，整形（int）<br>2，浮点型（float）<br>3，字符串<br>4，元组</p>
+<p>可变类型和不可变类型本质就是变量存储的数据发生改变时，内存是否开辟出新的内存空间存储改变后的数据，如果开辟了则是不可变数据类型，没有开辟就是可变数据类型</p>
+<p>图解（不可变数据类型）：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153751316.png"  alt="image-20211009153751316">
+      </p>
+<p>图解（可变数据类型）：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153800035.png"  alt="image-20211009153800035">
+      </p>
+
+        <h2 id="递归（重要！！）"   >
+          <a href="#递归（重要！！）" class="heading-link"><i class="fas fa-link"></i></a><a href="#递归（重要！！）" class="headerlink" title="递归（重要！！）"></a>递归（重要！！）</h2>
+      
+        <h3 id="什么是递归？（教程223p）"   >
+          <a href="#什么是递归？（教程223p）" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是递归？（教程223p）" class="headerlink" title="什么是递归？（教程223p）"></a>什么是递归？（教程223p）</h3>
+      <p>答：递归特点</p>
+<p>1，递归就是，定义函数的时候，函数体内部再调用函数自身（函数内部自己调用自己）<br>2，递归必须要有出口<br>3，注意函数返回值的位置是在调用函数时（就相当于把返回值赋值给调用函数语句）</p>
+
+        <h3 id="递归应用场景"   >
+          <a href="#递归应用场景" class="heading-link"><i class="fas fa-link"></i></a><a href="#递归应用场景" class="headerlink" title="递归应用场景"></a>递归应用场景</h3>
+      <p>1，遍历一个文件夹下所有文件时，会利用递归<br>2，人工智能算法离不开递归，比如说快速排序</p>
+<p>​                </p>
+
+        <h3 id="利用递归实现数据1到6的相加之和"   >
+          <a href="#利用递归实现数据1到6的相加之和" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用递归实现数据1到6的相加之和" class="headerlink" title="利用递归实现数据1到6的相加之和"></a>利用递归实现数据1到6的相加之和</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153911209.png"  alt="image-20211009153911209">
+      </p>
+
+        <h3 id="利用递归函数实现1到100累加的和"   >
+          <a href="#利用递归函数实现1到100累加的和" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用递归函数实现1到100累加的和" class="headerlink" title="利用递归函数实现1到100累加的和"></a>利用递归函数实现1到100累加的和</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153918309.png"  alt="image-20211009153918309">
+      </p>
+<p>递归流程</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153926273.png"  alt="image-20211009153926273">
+      </p>
+<p>递归没有设置出口的情况：</p>
+<p>最大递归深度不同计算机数值不同，一般为（990——1000）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009153935578.png"  alt="image-20211009153935578">
+      </p>
+
+        <h2 id="lambda表达式（重要）"   >
+          <a href="#lambda表达式（重要）" class="heading-link"><i class="fas fa-link"></i></a><a href="#lambda表达式（重要）" class="headerlink" title="lambda表达式（重要）"></a>lambda表达式（重要）</h2>
+      <p>lambda表达式（匿名函数）</p>
+<p>功能：简化函数代码</p>
+<p>应用场景：定义函数时，函数只有一个返回值且函数体内部只有一行代码，就可用lambda表达式简化代码</p>
+<p>语法：<br>第一种形式：变量名 =  lambda 参数的形参 ：返回值<br>第二种形式：（ lambda 参数的形参 ：返回值） （参数的实参）<br>第二种形式可直接用print（（ lambda 参数的形参 ：返回值） （参数的实参））打印</p>
+<p>注意事项：</p>
+<p>1，同等情况下，书写函数代码比书写lambda表达式占用内存高<br>2，lambda表达式又叫匿名函数，因此打印返回值时，变量名要加括号例如print（fun（））否则打印lambda地址<br>3，lambda表达式的参数可以是多个，也可以没有<br>4，lambda表达式只能有一个返回值</p>
+<p>快速代码体验（计算两个数据的和）第一种语法：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154001553.png"  alt="image-20211009154001553">
+      </p>
+<p>第二种语法：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154008142.png"  alt="image-20211009154008142">
+      </p>
+
+        <h2 id="lambda表达式参数（重要）"   >
+          <a href="#lambda表达式参数（重要）" class="heading-link"><i class="fas fa-link"></i></a><a href="#lambda表达式参数（重要）" class="headerlink" title="lambda表达式参数（重要）"></a>lambda表达式参数（重要）</h2>
+      <p>第一种：无参数<br>语法：<code>变量名 = lambda ： 返回值</code><br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154054361.png"  alt="image-20211009154054361">
+      </p>
+<p>第二种：一个参数<br>语法：<code>变量名 = lambda 参数的形参  ：返回值</code><br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154104878.png"  alt="image-20211009154104878">
+      </p>
+<p>第三种：缺省参数<br>语法：<code>变量名 = lambda b, c, d = 100 : b + c + d</code><br>注意事项：缺省参数 d = 100 无论是在定义lambda表达式，还是调用都要放在参数的最后面赋默认值<br>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154113674.png"  alt="image-20211009154113674">
+      </p>
+<p>第四种：不定长参数——包裹位置参</p>
+<p>应用场景：在不确定参数的个数时使用</p>
+<p>语法：<code>变量名 = lambda *args ：args</code></p>
+<p>注意事项：包裹位置参数返回值的数据类型为元组</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154126590.png"  alt="image-20211009154126590">
+      </p>
+<p>不定长参数——包裹关键字参数</p>
+<p>语法：<code>量名 = lambda **kwargs ：kwargs</code></p>
+<p>注意事项：包裹关键字参数返回值的数据类型为字典</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154135127.png"  alt="image-20211009154135127">
+      </p>
+
+        <h2 id="lambda表达式应用（重要）"   >
+          <a href="#lambda表达式应用（重要）" class="heading-link"><i class="fas fa-link"></i></a><a href="#lambda表达式应用（重要）" class="headerlink" title="lambda表达式应用（重要）"></a>lambda表达式应用（重要）</h2>
+      <p>应用一：带判断的lambda表达式</p>
+<p>功能：判断lambda的参数是否满足某些条件，从而返回一个值</p>
+<p>语法：<code>量名 = lambda 形参1，形参2 ：形参1 if 形参1 &gt; 形参2 else 形参2</code></p>
+<p>其中  形参1 if 形参1 &gt; 形参2 else 形参2 是三目运算符，意思为如果形参1大于形参2则返回值为形参1，反之返回形参2</p>
+<p>实例：判断两个数据a，b的大小，a大于b返回值为a，a小于b返回值为b</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154151562.png"  alt="image-20211009154151562">
+      </p>
+<p>应用二：列表内嵌套字典，要求在列表内按照字典的某个key对应的value进行排序</p>
+<p>注意事项：</p>
+<p>1：列表排序用sort方法，当列表内嵌套字典时sort有两个值，一个是key的值，一个是reverse的值</p>
+<p>2：列表嵌套字典时sort的key值表示按照字典哪个key对应的value进行排列</p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154203771.png"  alt="image-20211009154203771">
+      </p>
+
+        <h2 id="高阶函数"   >
+          <a href="#高阶函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h2>
+      
+        <h3 id="高阶函数的定义"   >
+          <a href="#高阶函数的定义" class="heading-link"><i class="fas fa-link"></i></a><a href="#高阶函数的定义" class="headerlink" title="高阶函数的定义"></a>高阶函数的定义</h3>
+      <p>高阶函数就是把一个函数的函数名（通常是abs函数与round函数）作为另外一个函数的实参传入，这就叫做高阶函数</p>
+
+        <h3 id="abs（）函数与-round（）函数"   >
+          <a href="#abs（）函数与-round（）函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#abs（）函数与-round（）函数" class="headerlink" title="abs（）函数与 round（）函数"></a>abs（）函数与 round（）函数</h3>
+      <p>abs（）函数详解</p>
+<p>功能：绝对值函数，就是将abs（数字数据）括号里面的数字数据进行绝对值化</p>
+<p>语法：<code>abs（数字数据）</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154341168.png"  alt="image-20211009154341168">
+      </p>
+<p>round（）函数详解</p>
+<p>功能：四舍五入函数，就是将folat数据进行四舍五入</p>
+<p>语法：<code>round（需要四舍五入的数据）</code></p>
+<p>快速代码体验</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154354792.png"  alt="image-20211009154354792">
+      </p>
+
+        <h3 id="高阶函数体验"   >
+          <a href="#高阶函数体验" class="heading-link"><i class="fas fa-link"></i></a><a href="#高阶函数体验" class="headerlink" title="高阶函数体验"></a>高阶函数体验</h3>
+      <p>高阶函数：将一个函数的函数名作为另外一个函数的实参传入</p>
+<p>功能：让代码更加简洁，函数更加灵活</p>
+<p>快速代码体验（将abs（）函数的abs函数名传入到fn（）函数中)</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154405120.png"  alt="image-20211009154405120">
+      </p>
+
+        <h2 id="高阶函数-1"   >
+          <a href="#高阶函数-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#高阶函数-1" class="headerlink" title="高阶函数"></a>高阶函数</h2>
+      <p>一：map（func，lst）函数</p>
+<p>功能：map（func，lst）函数是将传入的功能函数func作用在lst列表的每一个元素中，并返回python2/列表，python/迭代器（func和lst只是序列名，func代表函数名，lst代表列表名）</p>
+<p>语法：<code>p（功能函数，序列）其中func代表为传入的函数名，lst代表列表序列</code></p>
+<p>注意事项：map函数的返回值在python3是迭代器，因此查看结果要将迭代器转换为列表</p>
+<p>实例：利用map（）函数将列表list1 = [1，2，4，8]中的每一个数据加平方</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154418839.png"  alt="image-20211009154418839">
+      </p>
+<p>二：reduce（func，lst）函数</p>
+<p>功能：将函数名为func的函数作用在lst整个列表序列中，实现列表中所有数据的累计计算处理（通常是所有数据的相加、相乘等）</p>
+<p>语法：<code>functools . reduce（功能函数，序列）</code>，其中调用reduce函数要先导入functools模块</p>
+<p>注意事项：</p>
+<p>1：传入reduce函数的func函数必须要有两个形参，因为func功能是将序列中的所有数据做累积运算<br>2：使用reduce函数前要先导入functools模块</p>
+<p>实例：将列表list1 = [1，5，6，8]中的所有数据进行相加或相乘</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154433998.png"  alt="image-20211009154433998">
+      </p>
+<p>三：filter（func，lst）过滤函数</p>
+<p>功能：将func函数的功能作用在lst这个序列的所有元素中，func函数通常是过滤功能。</p>
+<p>语法：<code>filter（功能函数，序列）</code></p>
+<p>注意事项：</p>
+<p>1：调用filter函数返回值在python3中是一个迭代器，因此查看序列过滤后的结果要将迭代器转换为列表等其他序列<br>2：功能函数func通常是过滤功能，因此func函数的返回值是序列中满足条件的数据</p>
+<p>实例：过滤列表序列list1 = [1，2，3，4，5，6，7，8，9]的数据，过滤条件为可以被2整除的数据</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211009154450068.png"  alt="image-20211009154450068">
+      </p>
+<p>总结注意事项：</p>
+<p>map函数与reduce函数区别：</p>
+<p>1：调用map函数返回值是迭代器，而reduce是一个数值<br>2：map函数可直接调用，reduce调用前需要导入functools模块<br>3：map函数的功能函数只有一个参数，而reduce的功能函数有两个参数<br>4：map函数每次对序列中一个数据进行处理，而reduce是两个数据，因此reduce有两个参数</p>
+<p>未完待续……</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E5%87%BD%E6%95%B0/">http://pythonlamb.github.io/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E5%87%BD%E6%95%B0/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/Python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E7%AF%87/">Python基础语法篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">黑马程序员学Python——文件操作</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/09/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E6%8E%A8%E5%AF%BC%E5%BC%8F/"><span class="paginator-prev__text">黑马程序员学Python——推导式</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">
+          了解函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">
+          函数使用步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">
+          函数的参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-number">4.</span> <span class="toc-text">
+          函数的返回值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3"><span class="toc-number">5.</span> <span class="toc-text">
+          函数的说明文档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%B5%8C%E5%A5%97"><span class="toc-number">6.</span> <span class="toc-text">
+          函数的嵌套</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6%EF%BC%9A%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">7.</span> <span class="toc-text">
+          函数进阶：变量作用域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC%EF%BC%88%E5%A4%9A%E4%B8%AA%E8%BF%94%E5%9B%9E%E5%80%BC%EF%BC%89"><span class="toc-number">8.</span> <span class="toc-text">
+          函数返回值（多个返回值）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0%EF%BC%88%E5%9B%9B%E7%A7%8D%E5%BD%A2%E5%BC%8F%EF%BC%89"><span class="toc-number">9.</span> <span class="toc-text">
+          函数的参数（四种形式）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%86%E5%8C%85%EF%BC%88%E5%85%83%E7%BB%84%E4%B8%8E%E5%AD%97%E5%85%B8%EF%BC%89"><span class="toc-number">10.</span> <span class="toc-text">
+          拆包（元组与字典）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E7%BB%84%E7%9A%84%E6%8B%86%E5%8C%85"><span class="toc-number">10.1.</span> <span class="toc-text">
+          元组的拆包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E5%85%B8%E7%9A%84%E6%8B%86%E5%8C%85"><span class="toc-number">10.2.</span> <span class="toc-text">
+          字典的拆包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E4%B8%A4%E4%B8%AA%E5%8F%98%E9%87%8F%E7%9A%84%E5%80%BC"><span class="toc-number">11.</span> <span class="toc-text">
+          交换两个变量的值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%EF%BC%88id%EF%BC%89"><span class="toc-number">12.</span> <span class="toc-text">
+          引用（id）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">13.</span> <span class="toc-text">
+          可变数据类型与不可变数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%81%EF%BC%81%EF%BC%89"><span class="toc-number">14.</span> <span class="toc-text">
+          递归（重要！！）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%80%92%E5%BD%92%EF%BC%9F%EF%BC%88%E6%95%99%E7%A8%8B223p%EF%BC%89"><span class="toc-number">14.1.</span> <span class="toc-text">
+          什么是递归？（教程223p）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">14.2.</span> <span class="toc-text">
+          递归应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE1%E5%88%B06%E7%9A%84%E7%9B%B8%E5%8A%A0%E4%B9%8B%E5%92%8C"><span class="toc-number">14.3.</span> <span class="toc-text">
+          利用递归实现数据1到6的相加之和</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B01%E5%88%B0100%E7%B4%AF%E5%8A%A0%E7%9A%84%E5%92%8C"><span class="toc-number">14.4.</span> <span class="toc-text">
+          利用递归函数实现1到100累加的和</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%89"><span class="toc-number">15.</span> <span class="toc-text">
+          lambda表达式（重要）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8F%82%E6%95%B0%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%89"><span class="toc-number">16.</span> <span class="toc-text">
+          lambda表达式参数（重要）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%BA%94%E7%94%A8%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%89"><span class="toc-number">17.</span> <span class="toc-text">
+          lambda表达式应用（重要）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0"><span class="toc-number">18.</span> <span class="toc-text">
+          高阶函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">18.1.</span> <span class="toc-text">
+          高阶函数的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#abs%EF%BC%88%EF%BC%89%E5%87%BD%E6%95%B0%E4%B8%8E-round%EF%BC%88%EF%BC%89%E5%87%BD%E6%95%B0"><span class="toc-number">18.2.</span> <span class="toc-text">
+          abs（）函数与 round（）函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E4%BD%93%E9%AA%8C"><span class="toc-number">18.3.</span> <span class="toc-text">
+          高阶函数体验</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0-1"><span class="toc-number">19.</span> <span class="toc-text">
+          高阶函数</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

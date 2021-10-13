@@ -1,0 +1,529 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：Mysql数据库中的高级操作，例如建立与删除索引、管理用户等……">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql操作——数据库高级">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/12/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E9%AB%98%E7%BA%A7/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：Mysql数据库中的高级操作，例如建立与删除索引、管理用户等……">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153012185.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153021236.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153029769.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153041798.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153103669.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153124479.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153133021.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153201477.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153218766.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153230513.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153241543.png">
+<meta property="article:published_time" content="2021-10-12T07:23:29.000Z">
+<meta property="article:modified_time" content="2021-10-12T07:33:11.274Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="Mysql操作">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153012185.png"><title>Mysql操作——数据库高级 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/12/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E9%AB%98%E7%BA%A7/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Mysql操作——数据库高级</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-12</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-12</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">1.4k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">8分</span></span></div></header><div class="post-body"><p>本文主讲：Mysql数据库中的高级操作，例如建立与删除索引、管理用户等……</p>
+<span id="more"></span>
+
+
+
+
+
+
+        <h2 id="数据库索引——建立和删除索引【重点】"   >
+          <a href="#数据库索引——建立和删除索引【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据库索引——建立和删除索引【重点】" class="headerlink" title="数据库索引——建立和删除索引【重点】"></a>数据库索引——建立和删除索引【重点】</h2>
+      
+        <h3 id="数据库索引的应用场景"   >
+          <a href="#数据库索引的应用场景" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据库索引的应用场景" class="headerlink" title="数据库索引的应用场景"></a>数据库索引的应用场景</h3>
+      <p>答：假设数据库内有大量数据时，我们要查找某一行数据，为这个数据字段加上索引会大大的提高查询效率，提高查询速度！</p>
+<p>索引在数据库内的保存机制是平衡查询树机制，即 B+tree</p>
+
+        <h3 id="怎么在数据库内创建索引"   >
+          <a href="#怎么在数据库内创建索引" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么在数据库内创建索引" class="headerlink" title="怎么在数据库内创建索引"></a>怎么在数据库内创建索引</h3>
+      <p>语法：</p>
+<p>1：create index 索引名称 on 数据表名（字段名（长度））</p>
+<p>2：create index 索引名称 on 数据表名（字段名）</p>
+<p>注意事项：</p>
+<p>1：如果数据库内是唯一索引，索引名称按照 unip_字段名称 来命名，非唯一索引按照 idx_字段名称来命名</p>
+<p>2：索引名称必须全部为小写</p>
+<p>3：如果需要加索引的那个字段是字符串类型，那么在创建索引时要加上这个字段的最大长度，例如 varchar（10），就要加上10</p>
+<p>4：单张表中索引数量不超过5个</p>
+<p>快速代码体验：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153012185.png"  alt="image-20211012153012185">
+      </p>
+
+        <h3 id="怎么查看数据库内的索引"   >
+          <a href="#怎么查看数据库内的索引" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么查看数据库内的索引" class="headerlink" title="怎么查看数据库内的索引"></a>怎么查看数据库内的索引</h3>
+      <p>语法：show  index from 数据表名</p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153021236.png"  alt="image-20211012153021236">
+      </p>
+
+        <h3 id="怎么删除数据库的索引"   >
+          <a href="#怎么删除数据库的索引" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么删除数据库的索引" class="headerlink" title="怎么删除数据库的索引"></a>怎么删除数据库的索引</h3>
+      <p>语法：drop index 索引名称 on 数据表</p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153029769.png"  alt="image-20211012153029769">
+      </p>
+
+        <h2 id="数据库索引——插入10万条数据"   >
+          <a href="#数据库索引——插入10万条数据" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据库索引——插入10万条数据" class="headerlink" title="数据库索引——插入10万条数据"></a>数据库索引——插入10万条数据</h2>
+      
+        <h3 id="怎么在-python-端向数据库插入100000-条数据"   >
+          <a href="#怎么在-python-端向数据库插入100000-条数据" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么在-python-端向数据库插入100000-条数据" class="headerlink" title="怎么在 python 端向数据库插入100000 条数据"></a>怎么在 python 端向数据库插入100000 条数据</h3>
+      <p>答：利用 for 循环</p>
+<p>代码：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153041798.png"  alt="image-20211012153041798">
+      </p>
+
+        <h2 id="数据库索引——验证索引效率【重点】"   >
+          <a href="#数据库索引——验证索引效率【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据库索引——验证索引效率【重点】" class="headerlink" title="数据库索引——验证索引效率【重点】"></a>数据库索引——验证索引效率【重点】</h2>
+      
+        <h3 id="如何验证数据库插入索引后查询某条数据的效率会提升！"   >
+          <a href="#如何验证数据库插入索引后查询某条数据的效率会提升！" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何验证数据库插入索引后查询某条数据的效率会提升！" class="headerlink" title="如何验证数据库插入索引后查询某条数据的效率会提升！"></a>如何验证数据库插入索引后查询某条数据的效率会提升！</h3>
+      <p>答：利用 mysql 数据库内置的SQL语句耗时监视方法 —— profiling （耗时监视方法）</p>
+<p>验证步骤：</p>
+<p>第一步：打开 SQL语句耗时监视方法 即 set profiling = 1 ；</p>
+<p>第二步：执行查询某条数据的SQL语句 例如 select * from indes_ceshi where title = “haha_99999”；</p>
+<p>第三步：为要查询的数据字段加上索引再次查询第二步相同的数据</p>
+<p>第四步：执行显示耗时语句 即 show profiles；</p>
+<p>第五步：对比耗时，看加入索引是否提升了效率</p>
+<p>图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153103669.png"  alt="image-20211012153103669">
+      </p>
+
+        <h2 id="用户管理【重点】"   >
+          <a href="#用户管理【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#用户管理【重点】" class="headerlink" title="用户管理【重点】"></a>用户管理【重点】</h2>
+      
+        <h3 id="Mysql用户的应用场景"   >
+          <a href="#Mysql用户的应用场景" class="heading-link"><i class="fas fa-link"></i></a><a href="#Mysql用户的应用场景" class="headerlink" title="Mysql用户的应用场景"></a>Mysql用户的应用场景</h3>
+      <p>答：就像做公众号一样，多人团队协作，创建其他用户并分配一些权限用于多人协作，每一个用户有自己的职责</p>
+
+        <h3 id="怎么查看指定数据库的所有用户"   >
+          <a href="#怎么查看指定数据库的所有用户" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么查看指定数据库的所有用户" class="headerlink" title="怎么查看指定数据库的所有用户"></a>怎么查看指定数据库的所有用户</h3>
+      <p>第一步：利用 root 用户登录数据库，并且进入默认创建的 mysql 数据库，即 use mysql；</p>
+<p>第二步：利用 desc 查看 user 数据表内的字段结构 即desc user；</p>
+<p>第三步：利用 select 查看用户、主机等字段信息，即 select host，host  from user；</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153124479.png"  alt="image-20211012153124479">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153133021.png"  alt="image-20211012153133021">
+      </p>
+
+        <h3 id="怎么创建用户并且分配权限"   >
+          <a href="#怎么创建用户并且分配权限" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么创建用户并且分配权限" class="headerlink" title="怎么创建用户并且分配权限"></a>怎么创建用户并且分配权限</h3>
+      <p>创建用户步骤：</p>
+<p>第一步：利用 root 登录数据库，进入指定数据库</p>
+<p>第二步：创建用户，即 create user “用户名”@“主机名”identified by “密码”；</p>
+<p>第三步：给这个用户分配权限，即 grant 权限 on python_ceshi2 . *  to“用户名”@“主机名”；</p>
+<p>其中 python_ceshi2 . * 表示为 python_ceshi2 数据库内的所有数据表添加这个用户权限，也可以是为特定数据表添加权限等！</p>
+<p>用户权限有很多种，例如 create select ，insert ，update，delete等，其中 all privileges 代表添加所有权限</p>
+<p>注意区分主机名是localhost与%的区别</p>
+<p>第四步：刷新权限，即 flush privileges；</p>
+<p>截图：</p>
+<p>注意：下面的截图忘记了第四步骤即刷新权限 flush privileges；</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153201477.png"  alt="image-20211012153201477">
+      </p>
+
+        <h3 id="怎么查询一个用户的所有权限"   >
+          <a href="#怎么查询一个用户的所有权限" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么查询一个用户的所有权限" class="headerlink" title="怎么查询一个用户的所有权限"></a>怎么查询一个用户的所有权限</h3>
+      <p>语法：show  grants for “用户名”@“主机”；</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153218766.png"  alt="image-20211012153218766">
+      </p>
+
+        <h2 id="用户管理——增加权限【重点】"   >
+          <a href="#用户管理——增加权限【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#用户管理——增加权限【重点】" class="headerlink" title="用户管理——增加权限【重点】"></a>用户管理——增加权限【重点】</h2>
+      
+        <h3 id="怎么增加指定用户的权限"   >
+          <a href="#怎么增加指定用户的权限" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么增加指定用户的权限" class="headerlink" title="怎么增加指定用户的权限"></a>怎么增加指定用户的权限</h3>
+      <p>语法：grant update on 数据库.数据表 to “用户名”@“主机” with grant option；<br>表示向指定用户新增 update 权限</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153230513.png"  alt="image-20211012153230513">
+      </p>
+
+        <h2 id="用户管理——重置密码【重点】"   >
+          <a href="#用户管理——重置密码【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#用户管理——重置密码【重点】" class="headerlink" title="用户管理——重置密码【重点】"></a>用户管理——重置密码【重点】</h2>
+      
+        <h3 id="如何在知道密码的情况下重置用户密码"   >
+          <a href="#如何在知道密码的情况下重置用户密码" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何在知道密码的情况下重置用户密码" class="headerlink" title="如何在知道密码的情况下重置用户密码"></a>如何在知道密码的情况下重置用户密码</h3>
+      <p>语法：alter user “用户名”@“主机” identified by “新密码”</p>
+<p>注意事项：这个操作需要用户先输入数据库原始密码进入数据库之后才能操作</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211012153241543.png"  alt="image-20211012153241543">
+      </p>
+
+        <h3 id="如何在丢失用户数据库密码的情况下修改密码"   >
+          <a href="#如何在丢失用户数据库密码的情况下修改密码" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何在丢失用户数据库密码的情况下修改密码" class="headerlink" title="如何在丢失用户数据库密码的情况下修改密码"></a>如何在丢失用户数据库密码的情况下修改密码</h3>
+      <p>第一步：停止数据库服务，即 sudo service mysql stop</p>
+<p>第二步：编辑数据库文件，即 sudo gedit  找到某一个数据库文件，在[mysqld]字段下面添加 skip-grant-tables</p>
+<p>第三步：重启数据库 service mysql start</p>
+<p>第四步：直接在命令行输入 mysql 即可进入数据库</p>
+<p>第五步：用这个指令修改密码 update user set authentication_string = “” where user=”root”  重置 root 用户的密码</p>
+<p>第六步：退出数据库 输入空密码进行登录数据库 即 mysql -u root -p </p>
+<p>第七步：通过指令 alter user “root”@“%”identified by “新密码”进行重置密码</p>
+
+        <h2 id="用户管理——删除用户【重点】"   >
+          <a href="#用户管理——删除用户【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#用户管理——删除用户【重点】" class="headerlink" title="用户管理——删除用户【重点】"></a>用户管理——删除用户【重点】</h2>
+      
+        <h3 id="如何指定用户远程登录数据库"   >
+          <a href="#如何指定用户远程登录数据库" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何指定用户远程登录数据库" class="headerlink" title="如何指定用户远程登录数据库"></a>如何指定用户远程登录数据库</h3>
+      <p>第一步：本地数据库内检查用户的主机是否为%，如果是localhost就不能远程登录，只能本机登录，需要修改</p>
+<p>第二步：在 Windows 中输入指令即可远程连接数据库，即 mysql -h windows的ip地址 -u 用户名 -p  然后输入密码即可</p>
+
+        <h3 id="如何删除数据库指定用户"   >
+          <a href="#如何删除数据库指定用户" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何删除数据库指定用户" class="headerlink" title="如何删除数据库指定用户"></a>如何删除数据库指定用户</h3>
+      <p>语法：</p>
+<p>1：drop user “用户名”@“主机”<br>2：delete from user where user = “laowang”  （进入mysql数据库内的user表内删除用户）</p>
+
+        <h2 id="爬虫实战——爬取数据保存至数据库内【应用】"   >
+          <a href="#爬虫实战——爬取数据保存至数据库内【应用】" class="heading-link"><i class="fas fa-link"></i></a><a href="#爬虫实战——爬取数据保存至数据库内【应用】" class="headerlink" title="爬虫实战——爬取数据保存至数据库内【应用】"></a>爬虫实战——爬取数据保存至数据库内【应用】</h2>
+      <p>……..</p>
+
+        <h2 id="爬虫实战——展示爬取的数据【应用】"   >
+          <a href="#爬虫实战——展示爬取的数据【应用】" class="heading-link"><i class="fas fa-link"></i></a><a href="#爬虫实战——展示爬取的数据【应用】" class="headerlink" title="爬虫实战——展示爬取的数据【应用】"></a>爬虫实战——展示爬取的数据【应用】</h2>
+      <p>未完待续……</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/12/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E9%AB%98%E7%BA%A7/">http://pythonlamb.github.io/2021/10/12/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E9%AB%98%E7%BA%A7/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/Mysql%E6%93%8D%E4%BD%9C/">Mysql操作</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/12/%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AD%A6Python%E2%80%94%E2%80%94%E8%A3%85%E9%A5%B0%E5%99%A8%E5%9F%BA%E7%A1%80/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">黑马程序员学Python——装饰器基础</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/12/Mysql%E6%93%8D%E4%BD%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%96%E7%A8%8B/"><span class="paginator-prev__text">Mysql操作——数据库编程</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B4%A2%E5%BC%95%E2%80%94%E2%80%94%E5%BB%BA%E7%AB%8B%E5%92%8C%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">1.</span> <span class="toc-text">
+          数据库索引——建立和删除索引【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B4%A2%E5%BC%95%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.</span> <span class="toc-text">
+          数据库索引的应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">1.2.</span> <span class="toc-text">
+          怎么在数据库内创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E7%9A%84%E7%B4%A2%E5%BC%95"><span class="toc-number">1.3.</span> <span class="toc-text">
+          怎么查看数据库内的索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%B4%A2%E5%BC%95"><span class="toc-number">1.4.</span> <span class="toc-text">
+          怎么删除数据库的索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B4%A2%E5%BC%95%E2%80%94%E2%80%94%E6%8F%92%E5%85%A510%E4%B8%87%E6%9D%A1%E6%95%B0%E6%8D%AE"><span class="toc-number">2.</span> <span class="toc-text">
+          数据库索引——插入10万条数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%9C%A8-python-%E7%AB%AF%E5%90%91%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%92%E5%85%A5100000-%E6%9D%A1%E6%95%B0%E6%8D%AE"><span class="toc-number">2.1.</span> <span class="toc-text">
+          怎么在 python 端向数据库插入100000 条数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B4%A2%E5%BC%95%E2%80%94%E2%80%94%E9%AA%8C%E8%AF%81%E7%B4%A2%E5%BC%95%E6%95%88%E7%8E%87%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          数据库索引——验证索引效率【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%AA%8C%E8%AF%81%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%92%E5%85%A5%E7%B4%A2%E5%BC%95%E5%90%8E%E6%9F%A5%E8%AF%A2%E6%9F%90%E6%9D%A1%E6%95%B0%E6%8D%AE%E7%9A%84%E6%95%88%E7%8E%87%E4%BC%9A%E6%8F%90%E5%8D%87%EF%BC%81"><span class="toc-number">3.1.</span> <span class="toc-text">
+          如何验证数据库插入索引后查询某条数据的效率会提升！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          用户管理【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Mysql%E7%94%A8%E6%88%B7%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">4.1.</span> <span class="toc-text">
+          Mysql用户的应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%9F%A5%E7%9C%8B%E6%8C%87%E5%AE%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%89%80%E6%9C%89%E7%94%A8%E6%88%B7"><span class="toc-number">4.2.</span> <span class="toc-text">
+          怎么查看指定数据库的所有用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7%E5%B9%B6%E4%B8%94%E5%88%86%E9%85%8D%E6%9D%83%E9%99%90"><span class="toc-number">4.3.</span> <span class="toc-text">
+          怎么创建用户并且分配权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%9F%A5%E8%AF%A2%E4%B8%80%E4%B8%AA%E7%94%A8%E6%88%B7%E7%9A%84%E6%89%80%E6%9C%89%E6%9D%83%E9%99%90"><span class="toc-number">4.4.</span> <span class="toc-text">
+          怎么查询一个用户的所有权限</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E2%80%94%E2%80%94%E5%A2%9E%E5%8A%A0%E6%9D%83%E9%99%90%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          用户管理——增加权限【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%A2%9E%E5%8A%A0%E6%8C%87%E5%AE%9A%E7%94%A8%E6%88%B7%E7%9A%84%E6%9D%83%E9%99%90"><span class="toc-number">5.1.</span> <span class="toc-text">
+          怎么增加指定用户的权限</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E2%80%94%E2%80%94%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          用户管理——重置密码【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8%E7%9F%A5%E9%81%93%E5%AF%86%E7%A0%81%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E9%87%8D%E7%BD%AE%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81"><span class="toc-number">6.1.</span> <span class="toc-text">
+          如何在知道密码的情况下重置用户密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8%E4%B8%A2%E5%A4%B1%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%86%E7%A0%81%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81"><span class="toc-number">6.2.</span> <span class="toc-text">
+          如何在丢失用户数据库密码的情况下修改密码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E2%80%94%E2%80%94%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">7.</span> <span class="toc-text">
+          用户管理——删除用户【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%8C%87%E5%AE%9A%E7%94%A8%E6%88%B7%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">7.1.</span> <span class="toc-text">
+          如何指定用户远程登录数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8C%87%E5%AE%9A%E7%94%A8%E6%88%B7"><span class="toc-number">7.2.</span> <span class="toc-text">
+          如何删除数据库指定用户</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98%E2%80%94%E2%80%94%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE%E4%BF%9D%E5%AD%98%E8%87%B3%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E3%80%90%E5%BA%94%E7%94%A8%E3%80%91"><span class="toc-number">8.</span> <span class="toc-text">
+          爬虫实战——爬取数据保存至数据库内【应用】</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98%E2%80%94%E2%80%94%E5%B1%95%E7%A4%BA%E7%88%AC%E5%8F%96%E7%9A%84%E6%95%B0%E6%8D%AE%E3%80%90%E5%BA%94%E7%94%A8%E3%80%91"><span class="toc-number">9.</span> <span class="toc-text">
+          爬虫实战——展示爬取的数据【应用】</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

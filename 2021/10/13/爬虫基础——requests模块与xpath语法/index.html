@@ -1,0 +1,877 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/lamb.jpg?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="本文主讲：爬虫请求库requests的使用与xpath语法解析数据、User-agent随机生成库、代理IP、搭建代理IP池、关于js加密那些事等等…..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫基础——requests模块与xpath语法">
+<meta property="og:url" content="http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94requests%E6%A8%A1%E5%9D%97%E4%B8%8Expath%E8%AF%AD%E6%B3%95/index.html">
+<meta property="og:site_name" content="Lamb Python Blog">
+<meta property="og:description" content="本文主讲：爬虫请求库requests的使用与xpath语法解析数据、User-agent随机生成库、代理IP、搭建代理IP池、关于js加密那些事等等…..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20211013105030475.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105037895.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105054440.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105105938.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105112398.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105138508.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105157588.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105224121.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105241914.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105329439.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105409947.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105447337.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105454198.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105520303.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105558759.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105617724.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105647739.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105737207.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105743874.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105800933.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105809267.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105819657.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105858633.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105908065.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105922519.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110011885.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110021162.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110030164.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110038526.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110047499.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110054831.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110103415.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110114786.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110131351.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110139384.png">
+<meta property="og:image" content="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110149295.png">
+<meta property="article:published_time" content="2021-10-13T01:56:17.000Z">
+<meta property="article:modified_time" content="2021-10-13T03:01:53.282Z">
+<meta property="article:author" content="CodeLamb">
+<meta property="article:tag" content="爬虫基础篇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20211013105030475.png"><title>爬虫基础——requests模块与xpath语法 | Lamb Python Blog</title><link ref="canonical" href="http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94requests%E6%A8%A1%E5%9D%97%E4%B8%8Expath%E8%AF%AD%E6%B3%95/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: {"switchPost":true},
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Lamb Python Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-python"></i></span><span class="header-nav-menu-item__text">Python基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Python基础语法篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-code"></i></span><span class="header-nav-submenu-item__text">基础语法篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Linux实操/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-ubuntu"></i></span><span class="header-nav-submenu-item__text">Linux实操</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/通信协议篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-internet-explorer"></i></span><span class="header-nav-submenu-item__text">通信协议篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/多任务编程/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-network-wired"></i></span><span class="header-nav-submenu-item__text">多任务编程</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Mysql操作/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-database"></i></span><span class="header-nav-submenu-item__text">MySql操作</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/疑难杂症篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-feather-alt"></i></span><span class="header-nav-submenu-item__text">疑难杂症篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-spider"></i></span><span class="header-nav-menu-item__text">Python爬虫</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫基础篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-chess-pawn"></i></span><span class="header-nav-submenu-item__text">爬虫基础篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/sxlk.png/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-ruler-vertical"></i></span><span class="header-nav-submenu-item__text">常用类库篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫常用工具/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-tools"></i></span><span class="header-nav-submenu-item__text">常用工具篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/数据存储篇/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-download"></i></span><span class="header-nav-submenu-item__text">数据存储篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫主流框架/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-phoenix-framework"></i></span><span class="header-nav-submenu-item__text">主流框架篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/js.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-history"></i></span><span class="header-nav-submenu-item__text">JS逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/az.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-android"></i></span><span class="header-nav-submenu-item__text">安卓逆向篇</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/pcsz.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-sliders-h"></i></span><span class="header-nav-submenu-item__text">爬虫实战篇</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-laptop-code"></i></span><span class="header-nav-menu-item__text">前端基础</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/HTML基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-html5"></i></span><span class="header-nav-submenu-item__text">HTML</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/CSS基础/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-css3-alt"></i></span><span class="header-nav-submenu-item__text">CSS基础</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/JavaScript/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-js-square"></i></span><span class="header-nav-submenu-item__text">JavaScript</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fab fa-leanpub"></i></span><span class="header-nav-menu-item__text">综合学习</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫在线工具网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-plug"></i></span><span class="header-nav-submenu-item__text">在线工具</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫练习/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-running"></i></span><span class="header-nav-submenu-item__text">爬虫练习</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/爬虫论坛/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-forumbee"></i></span><span class="header-nav-submenu-item__text">爬虫论坛</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/学习网站/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-university"></i></span><span class="header-nav-submenu-item__text">学习网站</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/Github/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-github-alt"></i></span><span class="header-nav-submenu-item__text">Github</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="https://pythonlamb.github.io/tags/精致BOY/"><span class="header-nav-menu-item__icon"><i class="fas fa-hat-cowboy"></i></span><span class="header-nav-menu-item__text">精致Boy</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather"></i></span><span class="header-nav-menu-item__text">其他相关</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/"><span class="header-nav-submenu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-submenu-item__text">首页</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="tags fas fa-tag"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="th fas fa-paw"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="images/gzh2.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fab fa-weixin"></i></span><span class="header-nav-submenu-item__text">公众号</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/images/zzjj.png"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-at"></i></span><span class="header-nav-submenu-item__text">作者简介</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="https://pythonlamb.github.io/tags/生活随笔/"><span class="header-nav-submenu-item__icon"><i class="fa(s|r|l|d|b) fas fa-pen-nib"></i></span><span class="header-nav-submenu-item__text">生活随笔</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">爬虫基础——requests模块与xpath语法</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-10-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-13</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">5.5k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">32分</span></span></div></header><div class="post-body"><p>本文主讲：爬虫请求库requests的使用与xpath语法解析数据、User-agent随机生成库、代理IP、搭建代理IP池、关于js加密那些事等等…..</p>
+<span id="more"></span>
+
+
+
+
+
+
+        <h2 id="requests模块的使用【重点】"   >
+          <a href="#requests模块的使用【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#requests模块的使用【重点】" class="headerlink" title="requests模块的使用【重点】"></a>requests模块的使用【重点】</h2>
+      <p>须知：一个网页右键检查（F12）所看到的代码是浏览器最终渲染完成的代码，它和网站服务器给你相应的源代码不一定相同，抓取数据的时候一定要以源代码为主，检查可以帮助你快速查找数据！！！</p>
+<p>目标：</p>
+<p>1：掌握 requests 模块的基本使用（获取url响应数据）</p>
+<p>2：掌握 requests 模块响应对象一些基本属性</p>
+<p>3：掌握 requests 模块响应对象的 json（）方法作用</p>
+<p>​<br>​    </p>
+
+        <h3 id="requests-模块的基本使用（获取url响应数据）"   >
+          <a href="#requests-模块的基本使用（获取url响应数据）" class="heading-link"><i class="fas fa-link"></i></a><a href="#requests-模块的基本使用（获取url响应数据）" class="headerlink" title="requests 模块的基本使用（获取url响应数据）"></a>requests 模块的基本使用（获取url响应数据）</h3>
+      <p>实现功能：向指定url发送请求（User-Agent经过包装）获取响应数据</p>
+<p>语法：</p>
+<p>1：res_obj = requests.get（url = url，headers = headers）          →向目标url发送get请求，返回响应对象</p>
+<p>html_data = res_obj.text                                                           →利用响应对象的text属性获取响应源代码</p>
+<p>2：html_data = requests.get（url = url，headers = headers，timeout=3）.text            → 向目标url发送get请求，获取响应源代码</p>
+<p>参数：</p>
+<p>1.url：请求的目标url</p>
+<p>2.headers：包装的请求标头信息</p>
+<p>3.timeout：设置请求时间，如果向指定网站发送请求，等待的响应时间超过3秒，则抛出异常（可捕获用！）</p>
+<p>注意事项：</p>
+<p>1：在 requests 模块内的响应对象没有方法，全都是属性，例如 text 属性</p>
+<p>2：requests 模块是第三方模块安装语法 pip3 install requests</p>
+<p>3：响应对象的text属性获取的是字符串响应数据</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20211013105030475.png"  alt="image-20211013105030475">
+      </p>
+<p>设置timeout参数抛出异常截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105037895.png"  alt="image-20211013105037895">
+      </p>
+
+        <h3 id="requests-模块响应对象一些基本属性"   >
+          <a href="#requests-模块响应对象一些基本属性" class="heading-link"><i class="fas fa-link"></i></a><a href="#requests-模块响应对象一些基本属性" class="headerlink" title="requests 模块响应对象一些基本属性"></a>requests 模块响应对象一些基本属性</h3>
+      <p>res_obj = requests.get(url = url,headers = headers)          →创建指定url服务器的响应对象</p>
+<p>下面是响应对象的一些常用属性</p>
+<p>res_obj.text：获取指定url的响应源代码（字符串类型的）</p>
+<p>res_obj.content：获取指定url的响应源代码（bytes类型的，也就是二进制的响应源代码）</p>
+<p>res_obj.url：获取服务器响应数据的真实url地址</p>
+<p>res_obj.status_code：获取客户端与服务端进行http通信的状态码</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105054440.png"  alt="image-20211013105054440">
+      </p>
+
+        <h3 id="requests-模块响应对象的-json（）方法作用"   >
+          <a href="#requests-模块响应对象的-json（）方法作用" class="heading-link"><i class="fas fa-link"></i></a><a href="#requests-模块响应对象的-json（）方法作用" class="headerlink" title="requests 模块响应对象的 json（）方法作用"></a>requests 模块响应对象的 json（）方法作用</h3>
+      <p>方法名：json（）</p>
+<p>语法：requests响应对象.json（）</p>
+<p>功能：将 json 格式的字符串【字典格式的字符串】转换为python格式的字典！</p>
+<p>代码演示</p>
+<p>不使用json（）方法返回的数据类型</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105105938.png"  alt="image-20211013105105938">
+      </p>
+<p>使用json（）方法返回的数据类型</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105112398.png"  alt="image-20211013105112398">
+      </p>
+
+        <h2 id="requests模块抓取图片、视频等【重点】"   >
+          <a href="#requests模块抓取图片、视频等【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#requests模块抓取图片、视频等【重点】" class="headerlink" title="requests模块抓取图片、视频等【重点】"></a>requests模块抓取图片、视频等【重点】</h2>
+      <p>须知：一个网页右键检查（F12）所看到的代码是浏览器最终渲染完成的代码，它和网站服务器给你相应的源代码不一定相同，抓取数据的时候一定要以源代码为主，检查可以帮助你快速查找数据！！！</p>
+<p>目标：</p>
+<p>1：掌握抓取网站图片、视频的一些注意事项</p>
+<p>2：掌握怎么利用 os 标准库判断一个路径是否存在以及怎么创建文件夹！</p>
+<p>2：掌握利用 requests 模块抓取网站图片的步骤</p>
+<p>​    </p>
+
+        <h3 id="抓取网站图片、视频的一些注意事项"   >
+          <a href="#抓取网站图片、视频的一些注意事项" class="heading-link"><i class="fas fa-link"></i></a><a href="#抓取网站图片、视频的一些注意事项" class="headerlink" title="抓取网站图片、视频的一些注意事项"></a>抓取网站图片、视频的一些注意事项</h3>
+      <p>图片、视频在计算机内的存储方式：图片、视频、音频均以二进制（bytes）数据的方式进行存储</p>
+<p>图片、视频等的 url 地址：图片、视频等文件的源url地址不是浏览器最上方的地址，而是在图片上右击选择复制图片源地址的地址</p>
+<p>抓取注意事项：</p>
+<p>1：因此在向图片、视频等 url 源地址发送请求获取源代码数据时，应该获取二进制（bytes）网页源代码</p>
+<p>2：获取到二进制网页源代码后，保存文件时，只要是图片、视频等，都要以二进制的方式打开指定文件！！</p>
+<p>​            </p>
+
+        <h3 id="怎么利用-os-标准库判断一个路径是否存在以及怎么创建文件夹！"   >
+          <a href="#怎么利用-os-标准库判断一个路径是否存在以及怎么创建文件夹！" class="heading-link"><i class="fas fa-link"></i></a><a href="#怎么利用-os-标准库判断一个路径是否存在以及怎么创建文件夹！" class="headerlink" title="怎么利用 os 标准库判断一个路径是否存在以及怎么创建文件夹！"></a>怎么利用 os 标准库判断一个路径是否存在以及怎么创建文件夹！</h3>
+      <p>判断路径是否存在功能语法实现：</p>
+<p>1.<code>import os</code>              →导入模块<br>2.<code>is_no = os.path.exists（指定路径文件夹或文件） </code>    →判断指定路径文件夹（文件）是否在计算机存在，是返回True，不在返回False</p>
+<p>创建文件夹语法实现：</p>
+<p>1.<code>import os</code>              →导入模块<br>2.<code>os.mkdir（文件夹名）</code>              →文件夹名可以是指定路径（绝对路径、相对路径）下的文件夹</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105138508.png"  alt="image-20211013105138508">
+      </p>
+
+        <h3 id="三：利用-requests-模块抓取网站图片的步骤"   >
+          <a href="#三：利用-requests-模块抓取网站图片的步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#三：利用-requests-模块抓取网站图片的步骤" class="headerlink" title="三：利用 requests 模块抓取网站图片的步骤"></a>三：利用 requests 模块抓取网站图片的步骤</h3>
+      <p>第一步：找到图片的源地址（不是浏览器最上方的url）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105157588.png"  alt="image-20211013105157588">
+      </p>
+<p>第二步：利用 requests 模块向图片源地址发送请求，获取二进制（bytes）类型的网页源代码</p>
+<p>实现语法：</p>
+<p>res_obj = requests.get(url=图片源地址，headers=包装的请求头)          →创建图片源地址响应对象<br>html_b_data = res_obj.content                                                     →利用对象的content获取网页二进制源代码</p>
+<p>第三步：利用 os 模块判断图片待保存的路径（文件夹）是否存在，不存在创建这个路径文件夹</p>
+<p>实现语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>  os.path.exists（图片待保存文件夹路径）：</span><br><span class="line">	<span class="built_in">print</span>（“路径存在”）</span><br><span class="line"><span class="keyword">else</span>：</span><br><span class="line">	<span class="built_in">print</span>（“路径不存在即将创建”）</span><br><span class="line">	os.mkdir（图片待保存的文件夹路径）</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>第四步：根据自己的想法创建图片待保存的文件名，并且拼接图片待保存路径以及文件名</p>
+<p>创建图片名实现语法：</p>
+<p>1.根据图片源地址创建图片保存名称（源地址后缀必须是.jpg或者.png等）：  图片源地址字符串 [ -10 : ]                  →获取图片源地址的最后10个字符串作为文件名</p>
+<p>2：根据抓取的图片标题创建图片保存名称</p>
+<p>3：单纯的遍历某个数字区间命名</p>
+<p>拼接图片待保存路径以及文件名语法：带保存路径 + 图片带保存名</p>
+<p>第五步：以二进制读写方法打开已经拼接好的的路径文件（不是路径文件夹）</p>
+<p>实现语法：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span> （拼装好的路径文件，“wb”）<span class="keyword">as</span> f ：</span><br><span class="line">	f.wither（向图片源地址请求的二进制源代码）</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>实现代码截图（部分）：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105224121.png"  alt="image-20211013105224121">
+      </p>
+
+        <h2 id="User-Agent库随机生成用户代理【重点】"   >
+          <a href="#User-Agent库随机生成用户代理【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#User-Agent库随机生成用户代理【重点】" class="headerlink" title="User-Agent库随机生成用户代理【重点】"></a>User-Agent库随机生成用户代理【重点】</h2>
+      <p>目标：掌握怎么用 Python 库 fake_useragent（非标准库） 生成随机的用户代理</p>
+
+        <h3 id="Python-库-fake-useragent（非标准库）生成随机的用户代理"   >
+          <a href="#Python-库-fake-useragent（非标准库）生成随机的用户代理" class="heading-link"><i class="fas fa-link"></i></a><a href="#Python-库-fake-useragent（非标准库）生成随机的用户代理" class="headerlink" title="Python 库 fake_useragent（非标准库）生成随机的用户代理"></a>Python 库 fake_useragent（非标准库）生成随机的用户代理</h3>
+      <p>安装：<code>pip3 install fake_useragent</code></p>
+<p>功能：随机生成用户代理（User-Agent）</p>
+<p>语法：<br>导入模块：<code>from fake_useragent import UserAgent</code><br>生成随机代理：<code>UserAgent（）.random</code></p>
+<p>爬虫用法：</p>
+<p>导入模块：<code>from fake_useragent import UserAgent</code></p>
+<p>生成随机代理：<code>headers = &#123;“User-Agent”：UserAgent（）.random&#125;</code></p>
+<p>注意事项：生成随机用户代理时，利用的是UserAgent方法，不是random方法，random只是属性！！！</p>
+<p>截图演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105241914.png"  alt="image-20211013105241914">
+      </p>
+
+        <h2 id="安装爬虫相关的浏览器插件【重点】"   >
+          <a href="#安装爬虫相关的浏览器插件【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装爬虫相关的浏览器插件【重点】" class="headerlink" title="安装爬虫相关的浏览器插件【重点】"></a>安装爬虫相关的浏览器插件【重点】</h2>
+      <p>目标：<br>1：掌握安装插件的两种方式<br>2：掌握与爬虫相关的插件都有哪些以及其功能</p>
+
+        <h3 id="的两种方式"   >
+          <a href="#的两种方式" class="heading-link"><i class="fas fa-link"></i></a><a href="#的两种方式" class="headerlink" title="的两种方式"></a>的两种方式</h3>
+      <p>第一种方式：直接在浏览器对应的扩展商店里面搜索安装即可</p>
+<p>第二种方式：如果浏览器里面的扩展商店没有目标插件，可去第三方插件网站将插件下载至计算机内，在进行离线安装<br>推荐第三方插件网：极简插件_Chrome扩展插件商店_优质crx应用 (zzzmh.cn)</p>
+
+        <h3 id="关的插件都有哪些以及其功能"   >
+          <a href="#关的插件都有哪些以及其功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#关的插件都有哪些以及其功能" class="headerlink" title="关的插件都有哪些以及其功能"></a>关的插件都有哪些以及其功能</h3>
+      <p>插件1：xpath helper    （解析网页源代码中的html（xml）代码，提取相应数据）</p>
+<p>插件2：JSONView         （解析网页源代码中的json文档）</p>
+<p>插件3：Proxy SwitchyOmega  （轻松切换代理）</p>
+<p>插件截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105329439.png"  alt="image-20211013105329439">
+      </p>
+
+        <h2 id="xpath语法详解【重点】"   >
+          <a href="#xpath语法详解【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#xpath语法详解【重点】" class="headerlink" title="xpath语法详解【重点】"></a>xpath语法详解【重点】</h2>
+      <p>目标：<br>1：掌握什么是 xpath<br>2：掌握 xpath 匹配数据的几种语法格式<br>3：使用 xpath 的一些注意事项</p>
+
+        <h3 id="xpath"   >
+          <a href="#xpath" class="heading-link"><i class="fas fa-link"></i></a><a href="#xpath" class="headerlink" title="xpath"></a>xpath</h3>
+      <p>答：xpath 是在 xml 文档中匹配数据的一种查询语言（俗称xml路径语言），因为 xml 文档与 html 文档结构非常类似，所以 xpath 也可以用在匹配 html 文档数据中（爬虫提取数据）</p>
+
+        <h3 id="xpath匹配数据的几种语法格式"   >
+          <a href="#xpath匹配数据的几种语法格式" class="heading-link"><i class="fas fa-link"></i></a><a href="#xpath匹配数据的几种语法格式" class="headerlink" title="xpath匹配数据的几种语法格式"></a>xpath匹配数据的几种语法格式</h3>
+      <p><code>/div</code>匹配文档中所有的 div 标签，返回匹配的内容对象</p>
+<p><code>/div/p</code>匹配文档中所有的div标签下的一级 p 标签，返回 p 标签下（包括p标签子标签）的所有的文本内容对象（是文本结点对象，不是字符串类型的文本）</p>
+<p><code>/div//p</code>匹配文档中所有 div 标签下的所有级别 p 标签（包含在div标签内其他标签下p标签），返回 p 标签下（包括p标签内子标签）的所有的文本内容对象（是文本结点对象，不是字符串类型的文本）</p>
+<p><code>/div/p[1]</code>匹配文档中所有div标签内的第一个 p 标签，返回这个 p 标签下的所有文本内容对象</p>
+<p><code>/div[@class=&quot;name&quot;]</code>匹配文档中属性包含 class=”name”的所有div标签，返回这个div标签下的所有文本内容对象</p>
+<p><code>/div/p@src</code>匹配文档内所有div标签下的p标签，获取p标签中src属性的值（是字符串类型不是文本对象类型）</p>
+<p><code>/div[@class=&quot;byd&quot;] | //div[@class=&quot;bm&quot;]</code>匹配文档内class属性为“byd”或者“bm”的所有div标签，返回下面所有标签的文本内容对象（不是字符串类型）</p>
+<p><code>/li[ contains(@class,&quot;car_&quot;)]</code>匹配class属性中包含“car_”内容的所有 li 标签，返回下面所有标签的文本内容对象（不是字符串类型）</p>
+<p><code>/li[@class=&quot;name&quot;]/text（）</code>匹配 class 属性值为“name’”的所有 li 标签，并且返回 li 标签中（不包括li子标签）的文本内容（字符串类型）</p>
+<p>整体图示</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105409947.png"  alt="image-20211013105409947">
+      </p>
+
+        <h3 id="path-的一些注意事项"   >
+          <a href="#path-的一些注意事项" class="heading-link"><i class="fas fa-link"></i></a><a href="#path-的一些注意事项" class="headerlink" title="path 的一些注意事项"></a>path 的一些注意事项</h3>
+      <p>最重要一条：xpath语法的开头查找标签必须要加两条//，一条/不能成功匹配</p>
+<p>1.xpath语法中只要与条件有关，就要在条件两侧加上 [ ]</p>
+<p>2.xpath语法内只要与标签属性有关，就要在属性前面加上@</p>
+<p>3.xpath语法中末尾是 /text（）或者 /@属性值，那么获取的值就是字符串类型的文本内容，除此之外获取的全部都是文本内容对象（不是字符串）</p>
+<p>4.xpath语法是 //div/p/text（），只匹配所有div标签下p标签中的文本内容（字符串），不能匹配p标签下其他子标签的文本内容！！！</p>
+<p>5.xpath语法是 //div/p，匹配所有div标签下p标签中（包含p标签下的其他子标签）的文本内容对象（不是字符串）</p>
+<p>6.html一段文档是 &lt;p class=”name”, id=6&gt; 姓名 </p>，其中class与id都是属性，匹配的文本内容是姓名，不是其他的！</p>
+
+        <h2 id="lxml库搭配xpath语法实现数据提取【重点】"   >
+          <a href="#lxml库搭配xpath语法实现数据提取【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#lxml库搭配xpath语法实现数据提取【重点】" class="headerlink" title="lxml库搭配xpath语法实现数据提取【重点】"></a>lxml库搭配xpath语法实现数据提取【重点】</h2>
+      <p>目标：<br>1：掌握 python 的第三方库 lxml 搭配 xpath 语法在 html 文档内提取数据的使用方法！<br>2：掌握 for 循环的另外一种用法以及怎么将列表内元素拼接为一个字符串</p>
+
+        <h3 id="on-的第三方库-lxml-搭配-xpath-语法在-html-文档内提取数据的使用方法！"   >
+          <a href="#on-的第三方库-lxml-搭配-xpath-语法在-html-文档内提取数据的使用方法！" class="heading-link"><i class="fas fa-link"></i></a><a href="#on-的第三方库-lxml-搭配-xpath-语法在-html-文档内提取数据的使用方法！" class="headerlink" title="on 的第三方库 lxml 搭配 xpath 语法在 html 文档内提取数据的使用方法！"></a>on 的第三方库 lxml 搭配 xpath 语法在 html 文档内提取数据的使用方法！</h3>
+      <p>lxml库功能：与 xpath 语法搭配使用从而在 html 或者 xml 文档中提取出自己想要的数据</p>
+<p>lxml库安装（unubtu）：pip3 install lxml</p>
+<p>lxml库在html文档代码内提取数据使用步骤：</p>
+<p>from lxml import etree                                                导入模块<br>lxml_obj = etree.HTML( 网页的html源代码 )               创建 lxml 对象用于提取数据</p>
+<p>data_list = lxml_obj.xpath（xpath语法）              利用 xpath 语法从网页的html源代码中提取数据</p>
+<p>lxml库搭配xpath语法在html文档中提取数据（电影、汽车等）最常用法如下：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree                                                导入模块</span><br><span class="line">lxml_obj = etree.HTML( 网页的html源代码 )               创建 lxml 对象用于提取数据</span><br><span class="line">lable_obj_list = lxml_obj.xpath（xpath语法）           利用 xpath 语法从网页的 html 源代码中 提取 数据存在的 标签结点对象</span><br><span class="line"><span class="keyword">for</span>  lable <span class="keyword">in</span> data_list:                                          <span class="keyword">for</span>循环遍历这个标签结点对象</span><br><span class="line">	data_list = lable.xpath(xpath语法)           调用这个标签结点对象的xpath方法，在当前路径下匹配数据</span><br><span class="line">	<span class="built_in">print</span>(data_list)                                     打印数据</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>注意事项：</p>
+<p>1：只要 lxml 对象调用了 xpath 方法，那么获取的数据类型一定是列表！！！！</p>
+<p>2：在 html 文档中提取数据最常用法中通过 for 循环遍历数据结点对象里面那个xpath语法（第二个xpath）开头要以 . 开头，表示在当前标签结点下查找标签数据！</p>
+<p>代码体验（提取数据使用步骤）：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105447337.png"  alt="image-20211013105447337">
+      </p>
+<p>最常用法截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105454198.png"  alt="image-20211013105454198">
+      </p>
+
+        <h2 id="requests模块的高级参数【重点】"   >
+          <a href="#requests模块的高级参数【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#requests模块的高级参数【重点】" class="headerlink" title="requests模块的高级参数【重点】"></a>requests模块的高级参数【重点】</h2>
+      <p>目标：<br>1：掌握 requests 模块 params 参数的功能<br>2：掌握 http与https有什么不同<br>3掌握 requests 模块 verify 参数的功能</p>
+
+        <h3 id="requests-模块-params-参数的功能"   >
+          <a href="#requests-模块-params-参数的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#requests-模块-params-参数的功能" class="headerlink" title="requests 模块 params 参数的功能"></a>requests 模块 params 参数的功能</h3>
+      <p>参数名：params</p>
+<p>参数类型：字典</p>
+<p>功能：对目标 url 的查询参数（中文或英文）进行编码然后拼接整体 url</p>
+<p>语法：requests对象.get（url=基准url，headers=headers，params={“查询参数名1”：“查询参数值1”，查询参数名2”：“查询参数值2”}）</p>
+<p>注意事项：利用 requests 库加上 params 参数向目标url发送请求时，url是基准url，也就是不包含查询参数的url，但是要包含最后的 ？</p>
+<p>代码演示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105520303.png"  alt="image-20211013105520303">
+      </p>
+
+        <h3 id="http与https有什么不同以及http怎么变为https"   >
+          <a href="#http与https有什么不同以及http怎么变为https" class="heading-link"><i class="fas fa-link"></i></a><a href="#http与https有什么不同以及http怎么变为https" class="headerlink" title="http与https有什么不同以及http怎么变为https"></a>http与https有什么不同以及http怎么变为https</h3>
+      <p>第一：http端口号是80，https端口号是443</p>
+<p>第二：https就是在http基础加上了安全套接层（ssl），就是客户端向https协议的网站服务器发送请求，请求报文会被加密，目标url服务器响应的报文也就进行加密</p>
+<p>http怎么升级为https：http协议网站向第三方数字证书认证机构进行ssl认证即可，注意必须是要经过第三方数字证书认证机构认证，个人做的ssl证书，浏览器是不信任的！</p>
+
+        <h3 id="requests-模块-verify-参数的功能"   >
+          <a href="#requests-模块-verify-参数的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#requests-模块-verify-参数的功能" class="headerlink" title="requests 模块 verify 参数的功能"></a>requests 模块 verify 参数的功能</h3>
+      <p>参数名称：verify</p>
+<p>参数类型：bool 类型（ True【默认】 |  False ）</p>
+<p>功能：是否对目标 url （https协议的）进行 ssl 检查，默认检查，如果目标 https协议的url 没有经过第三方数字证书认证机构认证，会抛出 SSLError错误</p>
+<p>适用场景：向未经过第三方数字证书认证机构的https网站发送请求时，如果出现SSLError异常，可将verify参数值设置为False</p>
+<p>语法：requests对象.get（url=基准url，headers=headers，verify=False）</p>
+
+        <h2 id="代理IP的使用【重点】"   >
+          <a href="#代理IP的使用【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#代理IP的使用【重点】" class="headerlink" title="代理IP的使用【重点】"></a>代理IP的使用【重点】</h2>
+      <p>目标：<br>1：掌握为什么要用代理IP访问web服务器<br>2：掌握本机IP与出口IP的区别<br>3：掌握代理IP分类以及代理IP的网站<br>4：掌握利用requests库如何实现代理IP请求web服务器</p>
+
+        <h3 id="为什么要用代理IP访问web服务器"   >
+          <a href="#为什么要用代理IP访问web服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#为什么要用代理IP访问web服务器" class="headerlink" title="为什么要用代理IP访问web服务器"></a>为什么要用代理IP访问web服务器</h3>
+      <p>答：如果利用自身IP频率过高的访问web服务器，网站一般都有反爬措施，会将自身的IP（出口IP）封掉，这是我们就提现出代理IP的重要性了</p>
+<p>利用代理IP访问web服务器图示：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105558759.png"  alt="image-20211013105558759">
+      </p>
+
+        <h3 id="本机IP与出口IP的区别"   >
+          <a href="#本机IP与出口IP的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#本机IP与出口IP的区别" class="headerlink" title="本机IP与出口IP的区别"></a>本机IP与出口IP的区别</h3>
+      <p>本机IP：局域网内的IP地址，只能在局域网中使用（内网IP），在windows终端内通过 ipconfig 指令查看的 IP 即本机IP，需要上网的话会通过NET出口，分配出口IP进行上网</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105617724.png"  alt="image-20211013105617724">
+      </p>
+<p>出口IP：外网IP，是你的计算机真正的IP地址（可以显示IP的具体地理位置）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105647739.png"  alt="image-20211013105647739">
+      </p>
+
+        <h3 id="代理IP分类以及代理IP的网站"   >
+          <a href="#代理IP分类以及代理IP的网站" class="heading-link"><i class="fas fa-link"></i></a><a href="#代理IP分类以及代理IP的网站" class="headerlink" title="代理IP分类以及代理IP的网站"></a>代理IP分类以及代理IP的网站</h3>
+      <p>高匿代理IP：通过高匿代理IP访问网站服务器，服务器不知道这是用户通过代理IP访问的（知道代理IP地址），不知道真实用户的IP</p>
+<p>普通代理IP：通过普通代理IP访问网站服务器，服务器知道这是用户通过这个代理IP进行访问的（知道代理IP地址），但是不知道用户的真实IP</p>
+<p>透明代理IP：通过透明代理IP访问网站服务器，服务器知道代理IP地址以及用户的真实IP地址</p>
+<p>常用的免费代理IP网站：</p>
+<p>快代理：快代理 - 企业级代理云服务提供商 (kuaidaili.com)</p>
+<p>66代理：免费代理ip_服务器http代理_最新ip代理_免费ip提取网站_国内外代理_66免费代理ip (66ip.cn)</p>
+<p>​                </p>
+
+        <h3 id="利用requests库如何实现代理IP请求web服务器"   >
+          <a href="#利用requests库如何实现代理IP请求web服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用requests库如何实现代理IP请求web服务器" class="headerlink" title="利用requests库如何实现代理IP请求web服务器"></a>利用requests库如何实现代理IP请求web服务器</h3>
+      <p>实现参数：proxies</p>
+<p>参数类型：字典     </p>
+<p>参数设置：</p>
+<p>设置基本代理IP                           →  proxies =   {“协议类型”，“协议类型：//代理IP地址：代理IP端口号”}</p>
+<p>设置专享 | 私密 代理IP                →  proxies = {“协议类型”，“协议类型：//用户名：密码@代理IP地址：代理IP端口号”}</p>
+<p>实例（基本代理IP）：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">proxies = &#123;“http”：“http：//<span class="number">123.51</span><span class="number">.56</span><span class="number">.124</span>：<span class="number">8695</span>”，</span><br><span class="line">					      “https”：“https：//<span class="number">123.51</span><span class="number">.56</span><span class="number">.124</span>：<span class="number">8695</span>”&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>实例（独享 | 私密 代理IP）：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">proxies = &#123;“http”：“http：//xxx：……@<span class="number">256.36</span><span class="number">.125</span><span class="number">.35</span>：<span class="number">8695</span>”，</span><br><span class="line">					     “https”：“https：//xxx：……@<span class="number">256.36</span><span class="number">.125</span><span class="number">.35</span>：<span class="number">8695</span>”&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>实现语法：</p>
+<p><code>html_data = requests.get(url=url , headers=headers ,  params=params , proxies=proxies )</code></p>
+<p>注意事项：</p>
+<p>1：为什么设置代理IP时要设置两个协议的（http|https），当访问网站类型为http时，就用http协议的代理IP进行访问！</p>
+<p>2：私密代理以及独享代理或者基本代理都是可以花钱买的，私密代理以及独享代理使用时需要验证用户名和密码！</p>
+<p>3：爬虫最常用的是私密代理！！</p>
+<p>代码演示：</p>
+<p>没设置代理IP</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105737207.png"  alt="image-20211013105737207">
+      </p>
+<p>设置了代理IP</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105743874.png"  alt="image-20211013105743874">
+      </p>
+
+        <h2 id="搭建IP代理池【重点】"   >
+          <a href="#搭建IP代理池【重点】" class="heading-link"><i class="fas fa-link"></i></a><a href="#搭建IP代理池【重点】" class="headerlink" title="搭建IP代理池【重点】"></a>搭建IP代理池【重点】</h2>
+      <p>注意：再利用xpath语法提取数据时，右键检查发现数据所在的标签在 tbody下面这时就要小心了，因为很有可能网页源代码内没有这个tbody标签！！</p>
+<p>目标：掌握搭建代理IP池的步骤（免费代理ip网站）</p>
+
+        <h3 id="搭建代理IP池的步骤"   >
+          <a href="#搭建代理IP池的步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#搭建代理IP池的步骤" class="headerlink" title="搭建代理IP池的步骤"></a>搭建代理IP池的步骤</h3>
+      <p>第一步：从免费代理IP网站提取出代理IP以及端口号（xpath提取目标ip以及端口号）</p>
+<p>第二步：通过代理ip向测试网站发送请求（设置timeout）如果超过timeout设置的时间则认为当前代理IP不可用！</p>
+<p>第三步：将可用的代理IP以及端口号保存到列表内或者txt文件内！</p>
+<p>代码截图</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105800933.png"  alt="image-20211013105800933">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105809267.png"  alt="image-20211013105809267">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105819657.png"  alt="image-20211013105819657">
+      </p>
+
+        <h2 id="requests的post请求【重中之重】"   >
+          <a href="#requests的post请求【重中之重】" class="heading-link"><i class="fas fa-link"></i></a><a href="#requests的post请求【重中之重】" class="headerlink" title="requests的post请求【重中之重】"></a>requests的post请求【重中之重】</h2>
+      <p>目标：<br>1：掌握控制台抓包的具体步骤以及参数功能</p>
+<p>2：掌握什么是post请求</p>
+<p>3：掌握利用requests模块向目标url发送post请求的语法</p>
+<p>4：掌握利用pycharm正则批量处理字符串的步骤</p>
+<p>​    </p>
+
+        <h3 id="控制台抓包的具体步骤以及参数功能"   >
+          <a href="#控制台抓包的具体步骤以及参数功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#控制台抓包的具体步骤以及参数功能" class="headerlink" title="控制台抓包的具体步骤以及参数功能"></a>控制台抓包的具体步骤以及参数功能</h3>
+      <p>第一步：打开网站按下F12打开控制台</p>
+<p>第二步：刷新网站，对网站进行一些操作后进行二次刷新（动态显示的网站无需二次刷新，数据包已经加载，比如有道翻译网站）</p>
+<p>第三步：根据一些规则（响应数据）找到自己需要的数据包</p>
+<p>第四步：分析请求的目标URL以及请求方式</p>
+<p>注意事项：</p>
+<p>1：如果待抓取的数据在网页源代码内没有，基本都是异步（动态）加载的，我们可以考虑抓取XHR的包</p>
+<p>2：多多利用好数据包信息栏里面的Preview选项（对服务器响应数据的预览），可以根据这个快速找到我们待抓取的包</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105858633.png"  alt="image-20211013105858633">
+      </p>
+
+        <h3 id="什么是post请求"   >
+          <a href="#什么是post请求" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是post请求" class="headerlink" title="什么是post请求"></a>什么是post请求</h3>
+      <p>答：post请求就是客户端带着Form data 表单数据（字典）向服务器发送的请求</p>
+
+        <h3 id="利用requests模块向目标url发送post请求的语法"   >
+          <a href="#利用requests模块向目标url发送post请求的语法" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用requests模块向目标url发送post请求的语法" class="headerlink" title="利用requests模块向目标url发送post请求的语法"></a>利用requests模块向目标url发送post请求的语法</h3>
+      <p>语法：requests.post（url=…….，headers={}，data={}）.text</p>
+<p>重要参数：data          data 参数就是客户端需要带着的Form data 表单数据</p>
+<p>参数类型：字典</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105908065.png"  alt="image-20211013105908065">
+      </p>
+
+        <h3 id="利用pycharm正则批量处理字符串的步骤（一般是将字符串变为字典形式）"   >
+          <a href="#利用pycharm正则批量处理字符串的步骤（一般是将字符串变为字典形式）" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用pycharm正则批量处理字符串的步骤（一般是将字符串变为字典形式）" class="headerlink" title="利用pycharm正则批量处理字符串的步骤（一般是将字符串变为字典形式）"></a>利用pycharm正则批量处理字符串的步骤（一般是将字符串变为字典形式）</h3>
+      <p>第一步：在pycharm内新建txt文件</p>
+<p>第二步：将待批量处理的字符串复制进来</p>
+<p>第三步：按下快捷键 Ctrl + r</p>
+<p>第四步：利用 pycharm 自己的正则对字符串进行批量处理</p>
+<p>截图：</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013105922519.png"  alt="image-20211013105922519">
+      </p>
+
+        <h2 id="关于js加密【重中之重】"   >
+          <a href="#关于js加密【重中之重】" class="heading-link"><i class="fas fa-link"></i></a><a href="#关于js加密【重中之重】" class="headerlink" title="关于js加密【重中之重】"></a>关于js加密【重中之重】</h2>
+      <p>目标：<br>1：掌握 分析 js 加密的过程（打断点、控制台等）<br>2：掌握抓取有道翻译的注意事项</p>
+
+        <h3 id="分析-js-加密的过程（打断点、控制台等）"   >
+          <a href="#分析-js-加密的过程（打断点、控制台等）" class="heading-link"><i class="fas fa-link"></i></a><a href="#分析-js-加密的过程（打断点、控制台等）" class="headerlink" title="分析 js 加密的过程（打断点、控制台等）"></a>分析 js 加密的过程（打断点、控制台等）</h3>
+      <p>分析背景：</p>
+<p>答：在发送post请求时，要带着Form_data表单数据向目标服务器发送请求，因为网站反爬的原因，有的Form_data表单数据是经过js加密的，因此就要分析js加密的原理从而进行破解利用python实现</p>
+<p>分析js加密过程示例：</p>
+<p>第一步：查看post请求中哪几个表单数据是经过 js 加密的</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110011885.png"  alt="image-20211013110011885">
+      </p>
+<p>第二步：在全部包中搜索表单数据的变量名（salt、sign、lts）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110021162.png"  alt="image-20211013110021162">
+      </p>
+<p>第三步：将一行代码进行格式化（多行代码）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110030164.png"  alt="image-20211013110030164">
+      </p>
+<p>第四步：在包含表单数据变量名的代码中搜索表单变量名，分析js加密原理</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110038526.png"  alt="image-20211013110038526">
+      </p>
+<p>第五步：分析经过js加密后的表单数据变量（打断点、控制台）</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110047499.png"  alt="image-20211013110047499">
+      </p>
+<p>控制台输出代码</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110054831.png"  alt="image-20211013110054831">
+      </p>
+<p>对程序打断点</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110103415.png"  alt="image-20211013110103415">
+      </p>
+<p>分析完成利用python实现这个几个字段的加密然后向目标url发送post请求即可</p>
+
+        <h3 id="二：抓取有道翻译的注意事项"   >
+          <a href="#二：抓取有道翻译的注意事项" class="heading-link"><i class="fas fa-link"></i></a><a href="#二：抓取有道翻译的注意事项" class="headerlink" title="二：抓取有道翻译的注意事项"></a>二：抓取有道翻译的注意事项</h3>
+      <p>因为有道翻译反爬严重，请求标头要道带上所有的请求标头去发送请求</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110114786.png"  alt="image-20211013110114786">
+      </p>
+
+        <h2 id="爬取民政部行政区号遇到的反爬【目标】"   >
+          <a href="#爬取民政部行政区号遇到的反爬【目标】" class="heading-link"><i class="fas fa-link"></i></a><a href="#爬取民政部行政区号遇到的反爬【目标】" class="headerlink" title="爬取民政部行政区号遇到的反爬【目标】"></a>爬取民政部行政区号遇到的反爬【目标】</h2>
+      <p>重点：掌握在爬取民政部行政区号遇到的反爬怎么解决</p>
+
+        <h3 id="爬取民政部行政区号遇到了怎样的反爬"   >
+          <a href="#爬取民政部行政区号遇到了怎样的反爬" class="heading-link"><i class="fas fa-link"></i></a><a href="#爬取民政部行政区号遇到了怎样的反爬" class="headerlink" title="爬取民政部行政区号遇到了怎样的反爬"></a>爬取民政部行政区号遇到了怎样的反爬</h3>
+      <p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110131351.png"  alt="image-20211013110131351">
+      </p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110139384.png"  alt="image-20211013110139384">
+      </p>
+<p>检查发现还他娘真有这段js跳转脚本代码</p>
+<p>
+        <img   class="lazyload lazyload-block"
+          src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="https://gitee.com/PythonLamb/blogimgs/raw/master/img/image-20211013110149295.png"  alt="image-20211013110149295">
+      </p>
+<p>未完待续…….</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://PythonLamb.github.io">CodeLamb</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94requests%E6%A8%A1%E5%9D%97%E4%B8%8Expath%E8%AF%AD%E6%B3%95/">http://pythonlamb.github.io/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94requests%E6%A8%A1%E5%9D%97%E4%B8%8Expath%E8%AF%AD%E6%B3%95/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://pythonlamb.github.io/tags/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E7%AF%87/">爬虫基础篇</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/10/13/%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94%E7%88%AC%E5%8F%96%E5%8A%A8%E6%80%81%E7%BD%91%E9%A1%B5%E4%B8%8ECookie%E6%A8%A1%E6%8B%9F%E7%99%BB%E5%BD%95/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">爬虫基础——爬取动态网页与Cookie模拟登录</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/10/13/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94Mysql%E4%B8%8Eredis%E5%AD%98%E5%82%A8/"><span class="paginator-prev__text">数据存储——Mysql与redis存储</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#requests%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BD%BF%E7%94%A8%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">1.</span> <span class="toc-text">
+          requests模块的使用【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#requests-%E6%A8%A1%E5%9D%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%88%E8%8E%B7%E5%8F%96url%E5%93%8D%E5%BA%94%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">
+          requests 模块的基本使用（获取url响应数据）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#requests-%E6%A8%A1%E5%9D%97%E5%93%8D%E5%BA%94%E5%AF%B9%E8%B1%A1%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E5%B1%9E%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text">
+          requests 模块响应对象一些基本属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#requests-%E6%A8%A1%E5%9D%97%E5%93%8D%E5%BA%94%E5%AF%B9%E8%B1%A1%E7%9A%84-json%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95%E4%BD%9C%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">
+          requests 模块响应对象的 json（）方法作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#requests%E6%A8%A1%E5%9D%97%E6%8A%93%E5%8F%96%E5%9B%BE%E7%89%87%E3%80%81%E8%A7%86%E9%A2%91%E7%AD%89%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">2.</span> <span class="toc-text">
+          requests模块抓取图片、视频等【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%93%E5%8F%96%E7%BD%91%E7%AB%99%E5%9B%BE%E7%89%87%E3%80%81%E8%A7%86%E9%A2%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.1.</span> <span class="toc-text">
+          抓取网站图片、视频的一些注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%A9%E7%94%A8-os-%E6%A0%87%E5%87%86%E5%BA%93%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E8%B7%AF%E5%BE%84%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E4%BB%A5%E5%8F%8A%E6%80%8E%E4%B9%88%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9%EF%BC%81"><span class="toc-number">2.2.</span> <span class="toc-text">
+          怎么利用 os 标准库判断一个路径是否存在以及怎么创建文件夹！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%EF%BC%9A%E5%88%A9%E7%94%A8-requests-%E6%A8%A1%E5%9D%97%E6%8A%93%E5%8F%96%E7%BD%91%E7%AB%99%E5%9B%BE%E7%89%87%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.3.</span> <span class="toc-text">
+          三：利用 requests 模块抓取网站图片的步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#User-Agent%E5%BA%93%E9%9A%8F%E6%9C%BA%E7%94%9F%E6%88%90%E7%94%A8%E6%88%B7%E4%BB%A3%E7%90%86%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">
+          User-Agent库随机生成用户代理【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-%E5%BA%93-fake-useragent%EF%BC%88%E9%9D%9E%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%89%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E7%9A%84%E7%94%A8%E6%88%B7%E4%BB%A3%E7%90%86"><span class="toc-number">3.1.</span> <span class="toc-text">
+          Python 库 fake_useragent（非标准库）生成随机的用户代理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E7%88%AC%E8%99%AB%E7%9B%B8%E5%85%B3%E7%9A%84%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8F%92%E4%BB%B6%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">
+          安装爬虫相关的浏览器插件【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">
+          的两种方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E7%9A%84%E6%8F%92%E4%BB%B6%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BB%A5%E5%8F%8A%E5%85%B6%E5%8A%9F%E8%83%BD"><span class="toc-number">4.2.</span> <span class="toc-text">
+          关的插件都有哪些以及其功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xpath%E8%AF%AD%E6%B3%95%E8%AF%A6%E8%A7%A3%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">5.</span> <span class="toc-text">
+          xpath语法详解【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xpath"><span class="toc-number">5.1.</span> <span class="toc-text">
+          xpath</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xpath%E5%8C%B9%E9%85%8D%E6%95%B0%E6%8D%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E8%AF%AD%E6%B3%95%E6%A0%BC%E5%BC%8F"><span class="toc-number">5.2.</span> <span class="toc-text">
+          xpath匹配数据的几种语法格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#path-%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">5.3.</span> <span class="toc-text">
+          path 的一些注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lxml%E5%BA%93%E6%90%AD%E9%85%8Dxpath%E8%AF%AD%E6%B3%95%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8F%90%E5%8F%96%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">6.</span> <span class="toc-text">
+          lxml库搭配xpath语法实现数据提取【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#on-%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93-lxml-%E6%90%AD%E9%85%8D-xpath-%E8%AF%AD%E6%B3%95%E5%9C%A8-html-%E6%96%87%E6%A1%A3%E5%86%85%E6%8F%90%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%EF%BC%81"><span class="toc-number">6.1.</span> <span class="toc-text">
+          on 的第三方库 lxml 搭配 xpath 语法在 html 文档内提取数据的使用方法！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#requests%E6%A8%A1%E5%9D%97%E7%9A%84%E9%AB%98%E7%BA%A7%E5%8F%82%E6%95%B0%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">7.</span> <span class="toc-text">
+          requests模块的高级参数【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#requests-%E6%A8%A1%E5%9D%97-params-%E5%8F%82%E6%95%B0%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">7.1.</span> <span class="toc-text">
+          requests 模块 params 参数的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E4%B8%8Ehttps%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C%E4%BB%A5%E5%8F%8Ahttp%E6%80%8E%E4%B9%88%E5%8F%98%E4%B8%BAhttps"><span class="toc-number">7.2.</span> <span class="toc-text">
+          http与https有什么不同以及http怎么变为https</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#requests-%E6%A8%A1%E5%9D%97-verify-%E5%8F%82%E6%95%B0%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">7.3.</span> <span class="toc-text">
+          requests 模块 verify 参数的功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%90%86IP%E7%9A%84%E4%BD%BF%E7%94%A8%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">8.</span> <span class="toc-text">
+          代理IP的使用【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E4%BB%A3%E7%90%86IP%E8%AE%BF%E9%97%AEweb%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">8.1.</span> <span class="toc-text">
+          为什么要用代理IP访问web服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E6%9C%BAIP%E4%B8%8E%E5%87%BA%E5%8F%A3IP%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">8.2.</span> <span class="toc-text">
+          本机IP与出口IP的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%90%86IP%E5%88%86%E7%B1%BB%E4%BB%A5%E5%8F%8A%E4%BB%A3%E7%90%86IP%E7%9A%84%E7%BD%91%E7%AB%99"><span class="toc-number">8.3.</span> <span class="toc-text">
+          代理IP分类以及代理IP的网站</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8requests%E5%BA%93%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%90%86IP%E8%AF%B7%E6%B1%82web%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">8.4.</span> <span class="toc-text">
+          利用requests库如何实现代理IP请求web服务器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%AD%E5%BB%BAIP%E4%BB%A3%E7%90%86%E6%B1%A0%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="toc-number">9.</span> <span class="toc-text">
+          搭建IP代理池【重点】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%90%86IP%E6%B1%A0%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-number">9.1.</span> <span class="toc-text">
+          搭建代理IP池的步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#requests%E7%9A%84post%E8%AF%B7%E6%B1%82%E3%80%90%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D%E3%80%91"><span class="toc-number">10.</span> <span class="toc-text">
+          requests的post请求【重中之重】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%8A%93%E5%8C%85%E7%9A%84%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4%E4%BB%A5%E5%8F%8A%E5%8F%82%E6%95%B0%E5%8A%9F%E8%83%BD"><span class="toc-number">10.1.</span> <span class="toc-text">
+          控制台抓包的具体步骤以及参数功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFpost%E8%AF%B7%E6%B1%82"><span class="toc-number">10.2.</span> <span class="toc-text">
+          什么是post请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8requests%E6%A8%A1%E5%9D%97%E5%90%91%E7%9B%AE%E6%A0%87url%E5%8F%91%E9%80%81post%E8%AF%B7%E6%B1%82%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="toc-number">10.3.</span> <span class="toc-text">
+          利用requests模块向目标url发送post请求的语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8pycharm%E6%AD%A3%E5%88%99%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%AD%A5%E9%AA%A4%EF%BC%88%E4%B8%80%E8%88%AC%E6%98%AF%E5%B0%86%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%98%E4%B8%BA%E5%AD%97%E5%85%B8%E5%BD%A2%E5%BC%8F%EF%BC%89"><span class="toc-number">10.4.</span> <span class="toc-text">
+          利用pycharm正则批量处理字符串的步骤（一般是将字符串变为字典形式）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Ejs%E5%8A%A0%E5%AF%86%E3%80%90%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D%E3%80%91"><span class="toc-number">11.</span> <span class="toc-text">
+          关于js加密【重中之重】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90-js-%E5%8A%A0%E5%AF%86%E7%9A%84%E8%BF%87%E7%A8%8B%EF%BC%88%E6%89%93%E6%96%AD%E7%82%B9%E3%80%81%E6%8E%A7%E5%88%B6%E5%8F%B0%E7%AD%89%EF%BC%89"><span class="toc-number">11.1.</span> <span class="toc-text">
+          分析 js 加密的过程（打断点、控制台等）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%EF%BC%9A%E6%8A%93%E5%8F%96%E6%9C%89%E9%81%93%E7%BF%BB%E8%AF%91%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">11.2.</span> <span class="toc-text">
+          二：抓取有道翻译的注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%AC%E5%8F%96%E6%B0%91%E6%94%BF%E9%83%A8%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%8F%B7%E9%81%87%E5%88%B0%E7%9A%84%E5%8F%8D%E7%88%AC%E3%80%90%E7%9B%AE%E6%A0%87%E3%80%91"><span class="toc-number">12.</span> <span class="toc-text">
+          爬取民政部行政区号遇到的反爬【目标】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%88%AC%E5%8F%96%E6%B0%91%E6%94%BF%E9%83%A8%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%8F%B7%E9%81%87%E5%88%B0%E4%BA%86%E6%80%8E%E6%A0%B7%E7%9A%84%E5%8F%8D%E7%88%AC"><span class="toc-number">12.1.</span> <span class="toc-text">
+          爬取民政部行政区号遇到了怎样的反爬</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/touxiang.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Code Lamb</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="/images/weixin.png" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://github.com/PythonLamb?tab=repositories" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="/images/qq.jpg" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a><a class="sidebar-ov-social-item" href="/images/zhihu.jpg" target="_blank" rel="noopener" data-popover="知乎" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">知</span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>CodeLamb</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="73,177,245" opacity="0.8" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>
